@@ -1,4 +1,4 @@
-namespace StoreService.Extensions;
+namespace StoreService.Core.Extensions;
 
 public static class PagerExtension
 {

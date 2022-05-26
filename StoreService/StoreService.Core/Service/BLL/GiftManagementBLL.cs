@@ -1,13 +1,13 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using StoreService.Service.DAL;
-using StoreService.Service.Library;
-using StoreService.Service.Model.Based;
-using StoreService.Service.Model.Enums;
-using StoreService.Service.Model.GiftManagement;
+using StoreService.Core.Service.DAL;
+using StoreService.Core.Service.Library;
+using StoreService.Core.Service.Model.Based;
+using StoreService.Core.Service.Model.Enums;
+using StoreService.Core.Service.Model.GiftManagement;
 
-namespace StoreService.Service.BLL;
+namespace StoreService.Core.Service.BLL;
 
 public class GiftManagementBLL
 {

@@ -2,7 +2,6 @@ using Serilog;
 using Serilog.Exceptions;
 using StoreService.Extensions;
 
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddRemoteJsonConfig(builder.Configuration.GetSection("ConfigService").Get<string[]>());
 

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using StoreService.Service.BLL;
-using StoreService.Service.Model;
-using StoreService.Service.Model.Enums;
-using StoreService.Service.Model.GiftManagement;
+using StoreService.Core.Service.BLL;
+using StoreService.Core.Service.Model;
+using StoreService.Core.Service.Model.Enums;
+using StoreService.Core.Service.Model.GiftManagement;
 
 namespace StoreService.Controllers;
 

@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
-using StoreService.Extensions;
-using StoreService.Service.Model.Based;
+using StoreService.Core.Extensions;
+using StoreService.Core.Service.Model.Based;
 
-namespace StoreService.Service.Model.GiftManagement;
+namespace StoreService.Core.Service.Model.GiftManagement;
 
 public class GetListParams : PagerParamModel
 {

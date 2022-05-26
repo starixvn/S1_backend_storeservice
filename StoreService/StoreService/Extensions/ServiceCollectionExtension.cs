@@ -1,10 +1,7 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using StoreService.Service.BLL;
-using StoreService.Service.DAL;
-using StoreService.Service.Library;
-using StoreService.Service.Model.Enums;
+using StoreService.Core.Service.BLL;
+using StoreService.Core.Service.DAL;
+using StoreService.Core.Service.Library;
+using StoreService.Core.Service.Model.Enums;
 
 namespace StoreService.Extensions;
 

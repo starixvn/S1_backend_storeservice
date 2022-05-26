@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Serilog.Context;
-using StoreService.Service.Model;
+using StoreService.Core.Service.Model;
 
-namespace StoreService.Service.Library;
+namespace StoreService.Core.Service.Library;
 
 public class CourierAdapter
     {

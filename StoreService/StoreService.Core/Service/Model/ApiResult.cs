@@ -1,4 +1,4 @@
-namespace StoreService.Service.Model;
+namespace StoreService.Core.Service.Model;
 
 public interface ISelLang
 {

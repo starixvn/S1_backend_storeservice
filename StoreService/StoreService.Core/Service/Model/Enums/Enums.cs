@@ -1,4 +1,4 @@
-namespace StoreService.Service.Model.Enums;
+namespace StoreService.Core.Service.Model.Enums;
 
 public enum DataBaseEnum
 {

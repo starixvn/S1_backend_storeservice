@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace StoreService.Service.Model.Based;
+namespace StoreService.Core.Service.Model.Based;
 
 public class PagerRequestModel
 {

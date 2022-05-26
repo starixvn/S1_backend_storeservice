@@ -3,13 +3,13 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
+using StoreService.Core.Service.Library;
+using StoreService.Core.Service.Model.Based;
+using StoreService.Core.Service.Model.Enums;
+using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Extensions;
-using StoreService.Service.Library;
-using StoreService.Service.Model.Based;
-using StoreService.Service.Model.Enums;
-using StoreService.Service.Model.GiftManagement;
 
-namespace StoreService.Service.DAL;
+namespace StoreService.Core.Service.DAL;
 
 public class GiftManagementService
 {

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace StoreService.Service.Library;
+namespace StoreService.Core.Service.Library;
 
 public class CacheHelper
 {

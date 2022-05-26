@@ -4,9 +4,9 @@ using Dapper;
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using Serilog.Context;
-using StoreService.Service.Model.Enums;
+using StoreService.Core.Service.Model.Enums;
 
-namespace StoreService.Service.Library;
+namespace StoreService.Core.Service.Library;
 
 public class MySqlClient
 {

@@ -1,7 +1,7 @@
-using StoreService.Service.Model.Based;
-using StoreService.Service.Model.Enums;
+using StoreService.Core.Service.Model.Based;
+using StoreService.Core.Service.Model.Enums;
 
-namespace StoreService.Service.Model.GiftManagement;
+namespace StoreService.Core.Service.Model.GiftManagement;
 
 public class GetListRequest : PagerRequestModel
 {

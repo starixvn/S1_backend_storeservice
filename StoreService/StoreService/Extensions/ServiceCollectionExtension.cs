@@ -31,6 +31,7 @@ public static class ServiceCollectionExtension
         public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
             return services
+                .AddMemoryCache()
                 .AddSingleton<CacheHelper>()
                 //.AddTransient<CourierAdapter>()
                 .AddSingleton<GiftManagementService>()

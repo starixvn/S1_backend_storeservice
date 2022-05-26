@@ -14,7 +14,8 @@ public class Startup
     {
         services
             .AddDatabaseConnection(_configuration)
-            .RegisterServices(_configuration);
+            .RegisterServices(_configuration)
+            .AddControllers();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -29,6 +30,7 @@ public class Startup
             {
                 await context.Response.WriteAsync($"{env.EnvironmentName}-{DateTime.Now:yyyy/MM/dd HH:mm:ss}");
             });
+            endpoints.MapControllers();
         });
     }
 }

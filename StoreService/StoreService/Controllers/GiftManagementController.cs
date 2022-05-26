@@ -7,6 +7,7 @@ using StoreService.Service.Model.GiftManagement;
 namespace StoreService.Controllers;
 
 [Route("api/[controller]/[action]")]
+[ApiController]
 public class GiftManagementController : ControllerBase
 {
     private readonly GiftManagementBLL _giftManagementBll;

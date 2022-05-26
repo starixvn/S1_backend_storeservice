@@ -1,6 +1,5 @@
 using Serilog;
 using Serilog.Exceptions;
-using StoreService;
 using StoreService.Extensions;
 
 
@@ -15,10 +14,23 @@ builder.Host.UseSerilog((context, configuration) =>
         .Enrich.WithExceptionDetails();
 });
 
-var startup = new Startup(builder.Configuration);
-startup.ConfigureServices(builder.Services);
+builder.Services
+    .AddDatabaseConnection(builder.Configuration)
+    .RegisterServices(builder.Configuration)
+    .AddControllers();
 
 var app = builder.Build();
-startup.Configure(app, builder.Environment);
+app.UseRouting();
+app.UseRequestLogMiddleware();
+app.UseResponseLogMiddleware();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGet("/health", async context =>
+    {
+        await context.Response.WriteAsync($"OK");
+    });
+    endpoints.MapControllers();
+});
 
 app.Run();

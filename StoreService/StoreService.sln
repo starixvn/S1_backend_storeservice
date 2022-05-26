@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32002.185
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreServiceWorker", "StoreServiceWorker\StoreServiceWorker.csproj", "{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreService", "StoreService\StoreService.csproj", "{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7AD82921-667A-4C8F-A11F-A7E8B308E6D0}
+	EndGlobalSection
+EndGlobal

@@ -1,4 +1,4 @@
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 using StoreService.Service.BLL;
 using StoreService.Service.Model;
 using StoreService.Service.Model.Enums;
@@ -7,7 +7,7 @@ using StoreService.Service.Model.GiftManagement;
 namespace StoreService.Controllers;
 
 [Route("api/[controller]/[action]")]
-public class GiftManagementController : ApiController
+public class GiftManagementController : ControllerBase
 {
     private readonly GiftManagementBLL _giftManagementBll;
     

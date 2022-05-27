@@ -16,7 +16,8 @@ builder.Host.UseSerilog((context, configuration) =>
 builder.Services
     .AddDatabaseConnection(builder.Configuration)
     .RegisterServices(builder.Configuration)
-    .AddControllers();
+    .AddControllers()
+    .AddNewtonsoftJson();
 
 var app = builder.Build();
 app.UseRouting();

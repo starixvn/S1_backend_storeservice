@@ -35,4 +35,9 @@ public class CacheHelper
         }
         return (TItem)result;
     }
+    
+    public void Remove(string key)
+    {
+        _cache.Remove(key);
+    }
 }

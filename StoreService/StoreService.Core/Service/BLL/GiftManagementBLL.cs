@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Based;
@@ -22,12 +23,35 @@ public class GiftManagementBLL
         _logger = provider.GetRequiredService<ILogger<GiftManagementBLL>>();
     }
 
-    public Task<PagerResultModel<Gift>> GetGiftListAsync(GetListParams input)
-        => _giftManagementService.GetGiftListAsync(input);
+    public async Task<PagerResultModel<Gift>> GetGiftListAsync(GetListParams input)
+    {
+        var result = await _giftManagementService.GetGiftListAsync(input);
+        var tags = await GetGiftTagsAsync(new GetTagsParams
+        {
+            SiteId = input.SiteId,
+            CurrencyId = input.CurrencyId,
+            StrLangCodes = "[\"en\"]"
+        });
+        
+        foreach (var data in result.Datas)
+        {
+            if (string.IsNullOrEmpty(data.TagIds))
+            {
+                data.Tags = new List<GiftTag>();
+            }
+            else
+            {
+                var tagArr = JsonConvert.DeserializeObject<IEnumerable<int>>(data.TagIds);
+                data.Tags = tags.Where(x => tagArr.Contains(x.TagId));
+            }
+        }
+
+        return result;
+    }
 
     public async Task<IEnumerable<GiftTag>> GetGiftTagsAsync(GetTagsParams input)
     {
-        var key = $"GiftTags_{input.CurrencyId}_{input.SiteId}";
+        var key = GetGiftTagCacheKey(input.SiteId, input.CurrencyId);
         
         return await _cacheHelper.TryGetOrCreate(key,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)),
@@ -36,7 +60,7 @@ public class GiftManagementBLL
 
     public async Task<IEnumerable<GiftCategory>> GetGiftCategoriesAsync(GetCategoriesParams input)
     {
-        var key = $"GiftCategories_{input.CurrencyId}_{input.SiteId}";
+        var key = GetGiftCategoryCacheKey(input.SiteId, input.CurrencyId);
         
         return await _cacheHelper.TryGetOrCreate(key,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)),
@@ -56,18 +80,8 @@ public class GiftManagementBLL
         return success;
     }
     
-    public async Task<bool> UpdateGiftAsync(UpdateGiftParams input)
-    {
-        var resultCode = await _giftManagementService.UpdateGiftAsync(input);
-        var success = resultCode == (int) ErrorCodeEnum.Success;
-
-        if (!success)
-        {
-            _logger.LogError($"Update Gift Failed, Result Code: ({resultCode})");
-        }
-        
-        return success;
-    }
+    public Task<bool> UpdateGiftAsync(UpdateGiftParams input)
+        => _giftManagementService.UpdateGiftAsync(input);
     
     public async Task<bool> CreateCategoryAsync(CreateCategoryParams input)
     {
@@ -78,6 +92,9 @@ public class GiftManagementBLL
         {
             _logger.LogError("Insert Gift Category Failed");
         }
+        
+        var key = GetGiftCategoryCacheKey(input.SiteId, input.CurrencyId);
+        _cacheHelper.Remove(key);
         
         return success;
     }
@@ -92,6 +109,9 @@ public class GiftManagementBLL
             _logger.LogError("Update Gift Category Failed");
         }
         
+        var key = GetGiftCategoryCacheKey(input.SiteId, input.CurrencyId);
+        _cacheHelper.Remove(key);
+
         return success;
     }
     
@@ -105,6 +125,9 @@ public class GiftManagementBLL
             _logger.LogError("Insert Gift Tag Failed");
         }
         
+        var key = GetGiftTagCacheKey(input.SiteId, input.CurrencyId);
+        _cacheHelper.Remove(key);
+        
         return success;
     }
     
@@ -117,6 +140,9 @@ public class GiftManagementBLL
         {
             _logger.LogError("Update Gift Tag Failed");
         }
+        
+        var key = GetGiftTagCacheKey(input.SiteId, input.CurrencyId);
+        _cacheHelper.Remove(key);
         
         return success;
     }
@@ -136,4 +162,13 @@ public class GiftManagementBLL
         
         return success;
     }
+
+    #region Private Methods
+
+    private string GetGiftTagCacheKey(int siteId, int currencyId)
+        => $"GiftTags_{siteId}_{currencyId}";
+    private string GetGiftCategoryCacheKey(int siteId, int currencyId)
+        => $"GiftCategories_{siteId}_{currencyId}";
+
+    #endregion
 }

@@ -3,6 +3,7 @@ namespace StoreService.Core.Service.Model.Based;
 public class LastUpdateModel
 {
     private DateTimeOffset _lastUpdateTime { get; set; }
+    public string LastUpdater { get; set; }
     public DateTimeOffset LastUpdateTime
     {
         get => _lastUpdateTime;

@@ -17,14 +17,14 @@ public class GetTagsRequest
 {
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
-    public IEnumerable<int> LangCodes { get; set; }
+    public IEnumerable<string> LangCodes { get; set; }
 }
 
 public class GetCategoriesRequest
 {
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
-    public IEnumerable<int> LangCodes { get; set; }
+    public IEnumerable<string> LangCodes { get; set; }
 }
 
 public class CreateGiftRequest
@@ -66,6 +66,8 @@ public class CreateCategoryRequest
 public class UpdateCategoryRequest
 {
     public int CategoryId { get; set; }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
     public IEnumerable<LangNameModel> Infos { get; set; }
 }
 
@@ -79,6 +81,8 @@ public class CreateTagRequest
 public class UpdateTagRequest
 {
     public int TagId { get; set; }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
     public IEnumerable<LangNameModel> Infos { get; set; }
 }
 

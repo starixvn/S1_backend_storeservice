@@ -31,7 +31,7 @@ public class GiftManagementService
         var para = new DynamicParameters()
             .AddPagerParams(input.PageSize, input.StartIndex);
 
-        para.Add("_SiteIds", input.SiteId);
+        para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Status", input.StrStatus);
         para.Add("_CategoryIds", input.StrCategoryIds);
@@ -53,7 +53,7 @@ public class GiftManagementService
     {
         var para = new DynamicParameters();
 
-        para.Add("_SiteIds", input.SiteId);
+        para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Langs", input.StrLangCodes);
 
@@ -64,7 +64,7 @@ public class GiftManagementService
     {
         var para = new DynamicParameters();
 
-        para.Add("_SiteIds", input.SiteId);
+        para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Langs", input.StrLangCodes);
 
@@ -75,7 +75,7 @@ public class GiftManagementService
     {
         var resultCode = -9;
         var para = new DynamicParameters();
-        para.Add("_SiteIds", input.SiteId);
+        para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Status", input.Status);
         para.Add("_CategoryId", input.CategoryId);
@@ -115,7 +115,7 @@ public class GiftManagementService
         return resultCode;
     }
 
-    public async Task<int> UpdateGiftAsync(UpdateGiftParams input)
+    public async Task<bool> UpdateGiftAsync(UpdateGiftParams input)
     {
         var para = new DynamicParameters();
         para.Add("_GiftId", input.GiftId);
@@ -129,12 +129,10 @@ public class GiftManagementService
         para.Add("_Sort", input.Sort);
         para.Add("_Infos", input.StrInfos);
         para.Add("_Operator", input.Operator);
-        para.Add("_Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-        _ = _mainDbClient.ExecuteAsync("Store_GiftInfo_Set", para);
-        var resultCode = para.Get<int?>("_Result") ?? -9;
+        _ = await _mainDbClient.ExecuteAsync("Store_GiftInfo_Set", para);
 
-        return resultCode;
+        return true;
     }
     
     public Task<int> CreateCategoryAsync(CreateCategoryParams input)

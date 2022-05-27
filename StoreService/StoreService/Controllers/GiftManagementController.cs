@@ -16,15 +16,6 @@ public class GiftManagementController : ControllerBase
     {
         _giftManagementBll = provider.GetRequiredService<GiftManagementBLL>();
     }
-    
-    [HttpPost]
-    public ApiResult Test()
-    {
-        return new ApiResult
-        {
-            ErrorCode = (int) ErrorCodeEnum.Success
-        };
-    }
 
     [HttpPost]
     public async Task<ApiResult> GetListAsync(GetListRequest request)
@@ -108,7 +99,7 @@ public class GiftManagementController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ApiResult> CreateAsync(CreateCategoryRequest request)
+    public async Task<ApiResult> CreateCategoryAsync(CreateCategoryRequest request)
     {
         var result =
             await _giftManagementBll.CreateCategoryAsync(new CreateCategoryParams(request));
@@ -120,7 +111,7 @@ public class GiftManagementController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ApiResult> UpdateAsync(UpdateCategoryRequest request)
+    public async Task<ApiResult> UpdateCategoryAsync(UpdateCategoryRequest request)
     {
         var result =
             await _giftManagementBll.UpdateCategoryAsync(new UpdateCategoryParams(request));
@@ -132,7 +123,7 @@ public class GiftManagementController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ApiResult> CreateAsync(CreateTagRequest request)
+    public async Task<ApiResult> CreateTagAsync(CreateTagRequest request)
     {
         var result =
             await _giftManagementBll.CreateTagAsync(new CreateTagParams(request));
@@ -144,7 +135,7 @@ public class GiftManagementController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ApiResult> UpdateAsync(UpdateTagRequest request)
+    public async Task<ApiResult> UpdateTagAsync(UpdateTagRequest request)
     {
         var result =
             await _giftManagementBll.UpdateTagAsync(new UpdateTagParams(request));

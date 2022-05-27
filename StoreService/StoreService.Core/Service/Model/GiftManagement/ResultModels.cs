@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 
@@ -15,7 +16,9 @@ public class Gift : LastUpdateModel
     public string Lang { get; set; }
     public string Description { get; set; }
     public GeneralStatusEnum Status { get; set; }
-    public IEnumerable<int> Tags { get; set; }
+    [JsonIgnore]
+    public string TagIds { get; set; }
+    public IEnumerable<GiftTag> Tags { get; set; }
     public int Point { get; set; }
     public bool ShowStock { get; set; }
     public int Stock { get; set; }

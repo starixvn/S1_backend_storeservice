@@ -28,6 +28,10 @@ public class GetListParams : PagerParamModel
 
 public class GetTagsParams
 {
+    public GetTagsParams()
+    {
+    }
+    
     public GetTagsParams(GetTagsRequest req)
     {
         SiteId = req.SiteId;
@@ -134,10 +138,15 @@ public class UpdateCategoryParams
 {
     public UpdateCategoryParams(UpdateCategoryRequest req)
     {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
         CategoryId = req.CategoryId;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
     }
     
+    
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
     public int CategoryId { get; set; }
     public string StrInfos { get; set; }
 }
@@ -160,10 +169,14 @@ public class UpdateTagParams
 {
     public UpdateTagParams(UpdateTagRequest req)
     {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
         TagId = req.TagId;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
     }
     
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
     public int TagId { get; set; }
     public string StrInfos { get; set; }
 }

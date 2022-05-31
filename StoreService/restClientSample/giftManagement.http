@@ -1,5 +1,13 @@
-@url=http://localhost:55688
+# localhost
+# @url=http://localhost:51001
 
+# StoreService Local
+@url=http://52.221.19.140:51001
+
+# 取得兌換商品列表
+GET {{url}}/health HTTP/1.1
+
+###
 # 取得兌換商品列表
 POST {{url}}/api/GiftManagement/GetList HTTP/1.1
 Content-Type: application/json
@@ -42,7 +50,8 @@ Content-Type: application/json
             "name": "test_my",
             "description": "test test test my"
         }
-    ]
+    ],
+    "operator": "System"
 }
 
 ###
@@ -71,7 +80,8 @@ Content-Type: application/json
             "name": "test_my",
             "description": "test test test my"
         }
-    ]
+    ],
+    "operator": "System"
 }
 
 ###
@@ -197,5 +207,6 @@ Content-Type: application/json
     "siteId": 1,
     "currencyId": 2,
     "status": 1,
-    "limit": 1
+    "limit": 1,
+    "operator": "System"
 }

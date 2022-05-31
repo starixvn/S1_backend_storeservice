@@ -1,0 +1,212 @@
+# localhost
+# @url=http://localhost:51001
+
+# StoreService Local
+@url=http://52.221.19.140:51001
+
+# health
+GET {{url}}/health HTTP/1.1
+
+###
+# 取得兌換商品列表
+POST {{url}}/api/PointSetting/GetList HTTP/1.1
+Content-Type: application/json
+
+{
+    "siteId": 1,
+    "currencyId": 2,
+    "status": [1, 0],
+    "categoryIds": [1],
+    "tags": [1],
+    "giftName": "",
+    "pageNumber": 1,
+    "pageSize": 10
+}
+
+###
+# 新增兌換商品
+POST {{url}}/api/PointSetting/Create HTTP/1.1
+Content-Type: application/json
+
+{
+    "siteId": 1,
+    "currencyId": 2,
+    "status": 1,
+    "categoryId": 1,
+    "tags": [1],
+    "point": 130,
+    "priceWorth": 1990,
+    "showStock": 1,
+    "stock": 5,
+    "sort": 1,
+    "infos": [
+        {
+            "lang": "en",
+            "name": "test_en",
+            "description": "test test test"
+        },
+        {
+            "lang": "my",
+            "name": "test_my",
+            "description": "test test test my"
+        }
+    ],
+    "operator": "System"
+}
+
+###
+# 修改兌換商品
+POST {{url}}/api/PointSetting/Update HTTP/1.1
+Content-Type: application/json
+
+{
+    "giftId": 6,
+    "status": 0,
+    "categoryId": 1,
+    "tags": [1],
+    "point": 130,
+    "priceWorth": 1990,
+    "showStock": 0,
+    "stock": 5,
+    "sort": 1,
+    "infos": [
+        {
+            "lang": "en",
+            "name": "test_en",
+            "description": "test test test"
+        },
+        {
+            "lang": "my",
+            "name": "test_my",
+            "description": "test test test my"
+        }
+    ],
+    "operator": "System"
+}
+
+###
+# 取得商品類別
+POST {{url}}/api/PointSetting/GetCategories HTTP/1.1
+Content-Type: application/json
+
+{
+    "siteId": 1,
+    "currencyId": 2,
+    "langCodes": ["en", "my"]
+}
+
+###
+# 新增商品類別
+POST {{url}}/api/PointSetting/CreateCategory HTTP/1.1
+Content-Type: application/json
+
+{
+    "siteId": 1,
+    "currencyId": 2,
+    "infos": [
+        {
+            "lang": "en",
+            "name": "test_c_en"
+        },
+        {
+            "lang": "my",
+            "name": "test_c_my"
+        }
+    ]
+}
+
+###
+# 修改商品類別
+POST {{url}}/api/PointSetting/UpdateCategory HTTP/1.1
+Content-Type: application/json
+
+{
+    "siteId": 1,
+    "currencyId": 2,
+    "categoryId": 6,
+    "infos": [
+        {
+            "lang": "en",
+            "name": "test6_c_en"
+        },
+        {
+            "lang": "my",
+            "name": "test6_c_my"
+        }
+    ]
+}
+
+###
+# 取得商品標籤
+POST {{url}}/api/PointSetting/GetTags HTTP/1.1
+Content-Type: application/json
+
+{
+    "siteId": 1,
+    "currencyId": 2,
+    "langCodes": ["en", "my"]
+}
+
+###
+# 新增商品標籤
+POST {{url}}/api/PointSetting/CreateTag HTTP/1.1
+Content-Type: application/json
+
+{
+    "siteId": 1,
+    "currencyId": 2,
+    "infos": [
+        {
+            "lang": "en",
+            "name": "test_t_en"
+        },
+        {
+            "lang": "my",
+            "name": "test_t_my"
+        }
+    ]
+}
+
+###
+# 修改商品標籤
+POST {{url}}/api/PointSetting/UpdateTag HTTP/1.1
+Content-Type: application/json
+
+{
+    "siteId": 1,
+    "currencyId": 2,
+    "tagId": 3,
+    "infos": [
+        {
+            "lang": "en",
+            "name": "test_t3_en"
+        },
+        {
+            "lang": "my",
+            "name": "test_t3_my"
+        }
+    ]
+}
+
+###
+# 取得兌換限制
+POST {{url}}/api/PointSetting/GetRedemptionLimit HTTP/1.1
+Content-Type: application/json
+
+{
+    "siteId": 1,
+    "currencyId": 2
+}
+
+###
+# 設定兌換限制
+POST {{url}}/api/PointSetting/SetRedemptionLimit HTTP/1.1
+Content-Type: application/json
+
+{
+    "siteId": 1,
+    "currencyId": 2,
+    "status": 1,
+    "limit": 1,
+    "operator": "System"
+}

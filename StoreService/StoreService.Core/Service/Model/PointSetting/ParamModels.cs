@@ -1,0 +1,130 @@
+using Newtonsoft.Json;
+
+namespace StoreService.Core.Service.Model.PointSetting;
+
+public class GetInactivePointExpirySettingParams
+{
+    public GetInactivePointExpirySettingParams(GetInactivePointExpirySettingRequest req)
+    {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
+    }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+}
+
+public class SetInactivePointExpirySettingParams
+{
+    public SetInactivePointExpirySettingParams(SetInactivePointExpirySettingRequest req)
+    {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
+        Days = req.Days;
+        Status = (int) req.Status;
+        Operator = req.Operator;
+    }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public int Days { get; set; }
+    public int Status { get; set; }
+    public string Operator { get; set; }
+}
+
+public class GetTurnoverPointSettingParams
+{
+    public GetTurnoverPointSettingParams(GetTurnoverPointSettingRequest req)
+    {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
+        VipLevel = req.VipLevel;
+    }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public int VipLevel { get; set; }
+}
+
+public class GetTurnoverPointSettingListParams
+{
+    public GetTurnoverPointSettingListParams(GetTurnoverPointSettingListRequest req)
+    {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
+    }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+}
+
+public class SetTurnoverPointSettingParams
+{
+    public SetTurnoverPointSettingParams(SetTurnoverPointSettingRequest req)
+    {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
+        Infos = JsonConvert.SerializeObject(req.Infos);
+        Operator = req.Operator;
+    }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public string Infos { get; set; }
+    public string Operator { get; set; }
+}
+
+public class TurnoverPointSettingParams
+{
+    private DateTimeOffset _startTime { get; set; }
+    private DateTimeOffset _endTime { get; set; }
+    
+    public int TpCategoryId { get; set; }
+    public int VipLevel { get; set; }
+    public decimal Turnover { get; set; }
+    public decimal PointRate { get; set; }
+    public int PromotionStatus { get; set; }
+    public decimal PromotionPointRate { get; set; }
+    
+    public DateTimeOffset PromotionStartTime
+    {
+        get => _startTime;
+        set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
+    public DateTimeOffset PromotionEndTime
+    {
+        get => _endTime;
+        set => _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
+}
+
+public class GetDepositPointSettingParams
+{
+    public GetDepositPointSettingParams(GetDepositPointSettingRequest req)
+    {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
+    }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+}
+
+public class SetDepositPointSettingParams
+{
+    public SetDepositPointSettingParams(SetDepositPointSettingRequest req)
+    {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
+        DepositAmount = req.DepositAmount;
+        PointRate = req.PointRate;
+        PromotionStatus = (int) req.PromotionStatus;
+        PromotionPointRate = req.PromotionPointRate;
+        PromotionStartTime = req.PromotionStartTime.DateTime;
+        PromotionEndTime = req.PromotionEndTime.DateTime;
+        Operator = req.Operator;
+    }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public decimal DepositAmount { get; set; }
+    public decimal PointRate { get; set; }
+    public int PromotionStatus { get; set; }
+    public decimal PromotionPointRate { get; set; }
+    public DateTime PromotionStartTime { get; set; }
+    public DateTime PromotionEndTime { get; set; }
+    public string Operator { get; set; }
+}

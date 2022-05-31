@@ -75,9 +75,8 @@ public class GiftManagementController : ControllerBase
     [HttpPost]
     public async Task<ApiResult> CreateAsync(CreateGiftRequest request)
     {
-        var user = "System";
         var result =
-            await _giftManagementBll.CreateGiftAsync(new CreateGiftParams(request, user));
+            await _giftManagementBll.CreateGiftAsync(new CreateGiftParams(request));
 
         return new ApiResult
         {
@@ -88,9 +87,8 @@ public class GiftManagementController : ControllerBase
     [HttpPost]
     public async Task<ApiResult> UpdateAsync(UpdateGiftRequest request)
     {
-        var user = "System";
         var result =
-            await _giftManagementBll.UpdateGiftAsync(new UpdateGiftParams(request, user));
+            await _giftManagementBll.UpdateGiftAsync(new UpdateGiftParams(request));
 
         return new ApiResult
         {
@@ -149,9 +147,8 @@ public class GiftManagementController : ControllerBase
     [HttpPost]
     public async Task<ApiResult> SetRedemptionLimitAsync(SetRedemptionLimitRequest request)
     {
-        var user = "System";
         var result =
-            await _giftManagementBll.SetRedemptionLimitAsync(new SetRedemptionLimitParams(request, user));
+            await _giftManagementBll.SetRedemptionLimitAsync(new SetRedemptionLimitParams(request));
 
         return new ApiResult
         {

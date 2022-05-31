@@ -60,7 +60,7 @@ public class GetCategoriesParams
 
 public class CreateGiftParams
 {
-    public CreateGiftParams(CreateGiftRequest req, string @operator)
+    public CreateGiftParams(CreateGiftRequest req)
     {
         SiteId = req.SiteId;
         CurrencyId = req.CurrencyId;
@@ -73,7 +73,7 @@ public class CreateGiftParams
         Stock = req.Stock;
         Sort = req.Sort;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
-        Operator = @operator;
+        Operator = req.Operator;
     }
     
     public int SiteId { get; set; }
@@ -92,7 +92,7 @@ public class CreateGiftParams
 
 public class UpdateGiftParams
 {
-    public UpdateGiftParams(UpdateGiftRequest req, string @operator)
+    public UpdateGiftParams(UpdateGiftRequest req)
     {
         GiftId = req.GiftId;
         Status = (int) req.Status;
@@ -104,7 +104,7 @@ public class UpdateGiftParams
         Stock = req.Stock;
         Sort = req.Sort;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
-        Operator = @operator;
+        Operator = req.Operator;
     }
     
     public int GiftId { get; set; }
@@ -196,13 +196,13 @@ public class GetRedemptionLimitParams
 
 public class SetRedemptionLimitParams
 {
-    public SetRedemptionLimitParams(SetRedemptionLimitRequest req, string @operator)
+    public SetRedemptionLimitParams(SetRedemptionLimitRequest req)
     {
         SiteId = req.SiteId;
         CurrencyId = req.CurrencyId;
         Status = (int) req.Status;
         Limit = req.Limit;
-        Operator = @operator;
+        Operator = req.Operator;
     }
     
     public int SiteId { get; set; }

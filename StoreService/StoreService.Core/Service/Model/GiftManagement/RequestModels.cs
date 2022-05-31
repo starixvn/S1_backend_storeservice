@@ -40,6 +40,7 @@ public class CreateGiftRequest
     public int Stock { get; set; }
     public int Sort { get; set; }
     public IEnumerable<LangInfoModel> Infos { get; set; }
+    public string Operator { get; set; }
 }
 
 public class UpdateGiftRequest
@@ -54,6 +55,7 @@ public class UpdateGiftRequest
     public int Stock { get; set; }
     public int Sort { get; set; }
     public IEnumerable<LangInfoModel> Infos { get; set; }
+    public string Operator { get; set; }
 }
 
 public class CreateCategoryRequest
@@ -100,4 +102,5 @@ public class SetRedemptionLimitRequest
     public int CurrencyId { get; set; }
     public GeneralStatusEnum Status { get; set; }
     public int Limit { get; set; }
+    public string Operator { get; set; }
 }

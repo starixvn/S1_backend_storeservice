@@ -98,10 +98,8 @@ public class GetDepositPointSettingParams
     public GetDepositPointSettingParams(GetDepositPointSettingRequest req)
     {
         SiteId = req.SiteId;
-        CurrencyId = req.CurrencyId;
     }
     public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
 }
 
 public class SetDepositPointSettingParams

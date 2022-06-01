@@ -41,7 +41,6 @@ public class SetTurnoverPointSettingRequest
 public class GetDepositPointSettingRequest
 {
     public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
 }
 
 public class SetDepositPointSettingRequest

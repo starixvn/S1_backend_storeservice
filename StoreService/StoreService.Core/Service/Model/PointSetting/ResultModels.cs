@@ -45,6 +45,8 @@ public class DepositPointSetting : LastUpdateModel
     private DateTimeOffset _startTime { get; set; }
     private DateTimeOffset _endTime { get; set; }
     
+    public int CurrencyId { get; set; }
+    public string IsoCode { get; set; }
     public decimal DepositAmount { get; set; }
     public decimal PointRate { get; set; }
     public bool PromotionStatus { get; set; }

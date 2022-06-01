@@ -80,7 +80,6 @@ public class PointSettingService
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
-        para.Add("_CurrencyId", input.CurrencyId);
 
         return _reportDbClient.QueryAsync<DepositPointSetting>("Store_DepositPointSetting_Get", para);
     }

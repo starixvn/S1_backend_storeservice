@@ -18,12 +18,38 @@ public class BaseDataController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ApiResult> GetTpCategoryListAsync()
+    public async Task<ApiResult> GetTpCategoryListAsync(GetTpCategoryListRequest request)
     {
         var result =
-            await _commonBll.GetTpCategoryAsync();
+            await _commonBll.GetTpCategoryListAsync(new GetTpCategoryListParams(request));
 
         return new ApiListResult<TpCategory>
+        {
+            Data = result,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
+    }
+    
+    [HttpPost]
+    public async Task<ApiResult> GetTpGameTypeListAsync(GetTpGameTypeListRequest request)
+    {
+        var result =
+            await _commonBll.GetTpGameTypeListAsync(new GetTpGameTypeListParams(request));
+
+        return new ApiListResult<TpGameType>
+        {
+            Data = result,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
+    }
+    
+    [HttpPost]
+    public async Task<ApiResult> GetVipLevelListAsync(GetVipLevelListRequest request)
+    {
+        var result =
+            await _commonBll.GetVipLevelListAsync(new GetVipLevelListParams(request));
+
+        return new ApiListResult<VipLevel>
         {
             Data = result,
             ErrorCode = (int) ErrorCodeEnum.Success

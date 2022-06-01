@@ -73,4 +73,22 @@ public class PointSettingBLL
         
         return success;
     }
+
+    public Task<IEnumerable<TurnoverPointStatusSetting>> GetTurnoverPointStatusSettingAsync(
+        GetTurnoverPointStatusSettingParams input)
+        => _pointSettingService.GetTurnoverPointStatusSettingAsync(input);
+    
+    public async Task<bool> SetTurnoverPointStatusSettingAsync(
+        SetTurnoverPointStatusSettingParams input)
+    {
+        var result = await _pointSettingService.SetTurnoverPointStatusSettingAsync(input);
+        var success = result > 0;
+        
+        if (!success)
+        {
+            _logger.LogError($"SetTurnoverPointStatusSetting failed, effect rows: {result}");
+        }
+        
+        return success;
+    }
 }

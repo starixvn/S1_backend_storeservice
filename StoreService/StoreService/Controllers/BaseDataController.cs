@@ -1,4 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using StoreService.Core.Service.BLL;
+using StoreService.Core.Service.Model;
+using StoreService.Core.Service.Model.BaseData;
+using StoreService.Core.Service.Model.Enums;
 
 namespace StoreService.Controllers;
 
@@ -6,26 +10,23 @@ namespace StoreService.Controllers;
 [ApiController]
 public class BaseDataController : ControllerBase
 {
-    //private readonly GiftManagementBLL _giftManagementBll;
+    private readonly CommonBLL _commonBll;
     
     public BaseDataController(IServiceProvider provider)
     {
-        //_giftManagementBll = provider.GetRequiredService<GiftManagementBLL>();
+        _commonBll = provider.GetRequiredService<CommonBLL>();
     }
     
-    /*[HttpPost]
-    public async Task<ApiResult> GetTpCategoryListAsync(GetListRequest request)
+    [HttpPost]
+    public async Task<ApiResult> GetTpCategoryListAsync()
     {
         var result =
-            await _giftManagementBll.GetGiftListAsync(new GetListParams(request));
+            await _commonBll.GetTpCategoryAsync();
 
-        return new ApiListResult<Gift>
+        return new ApiListResult<TpCategory>
         {
-            Data = result.Datas,
-            PageNumber = request.PageNumber,
-            TotalPages = result.TotalPages,
-            RowCount = result.RowCount,
+            Data = result,
             ErrorCode = (int) ErrorCodeEnum.Success
         };
-    }*/
+    }
 }

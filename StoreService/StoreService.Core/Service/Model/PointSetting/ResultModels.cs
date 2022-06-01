@@ -5,7 +5,7 @@ namespace StoreService.Core.Service.Model.PointSetting;
 public class InactivePointExpirySetting : LastUpdateModel
 {
     public int Days { get; set; }
-    public bool Status { get; set; }
+    public int Status { get; set; }
 }
 
 public class TurnoverPointSetting : LastUpdateModel
@@ -17,7 +17,7 @@ public class TurnoverPointSetting : LastUpdateModel
     public string TpCategoryName { get; set; }
     public decimal Turnover { get; set; }
     public decimal PointRate { get; set; }
-    public bool PromotionStatus { get; set; }
+    public int PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
     public DateTimeOffset PromotionStartTime
     {
@@ -59,4 +59,11 @@ public class DepositPointSetting : LastUpdateModel
         get => _endTime;
         set => _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
     }
+}
+
+public class TurnoverPointStatusSetting : LastUpdateModel
+{
+    public int TpGameTypeId { get; set; }
+    public string TpGameTypeName { get; set; }
+    public int Status { get; set; }
 }

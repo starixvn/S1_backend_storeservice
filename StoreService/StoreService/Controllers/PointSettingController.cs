@@ -104,4 +104,29 @@ public class PointSettingController
             ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
+    
+    [HttpPost]
+    public async Task<ApiResult> GetTurnoverPointStatusSettingAsync(GetTurnoverPointStatusSettingRequest request)
+    {
+        var result =
+            await _pointSettingBll.GetTurnoverPointStatusSettingAsync(new GetTurnoverPointStatusSettingParams(request));
+
+        return new ApiListResult<TurnoverPointStatusSetting>
+        {
+            Data = result,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
+    }
+    
+    [HttpPost]
+    public async Task<ApiResult> SetTurnoverPointStatusSettingAsync(SetTurnoverPointStatusSettingRequest request)
+    {
+        var result =
+            await _pointSettingBll.SetTurnoverPointStatusSettingAsync(new SetTurnoverPointStatusSettingParams(request));
+
+        return new ApiResult
+        {
+            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+        };
+    }
 }

@@ -60,12 +60,12 @@ public class SetTurnoverPointSettingParams
     {
         SiteId = req.SiteId;
         CurrencyId = req.CurrencyId;
-        Infos = JsonConvert.SerializeObject(req.Infos);
+        StrInfos = JsonConvert.SerializeObject(req.Infos);
         Operator = req.Operator;
     }
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
-    public string Infos { get; set; }
+    public string StrInfos { get; set; }
     public string Operator { get; set; }
 }
 
@@ -122,9 +122,50 @@ public class SetDepositPointSettingParams
     public int CurrencyId { get; set; }
     public decimal DepositAmount { get; set; }
     public decimal PointRate { get; set; }
+    
+    /// <summary>
+    /// 0: Enable, 1: Disabled
+    /// </summary>
     public int PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
     public DateTime PromotionStartTime { get; set; }
     public DateTime PromotionEndTime { get; set; }
     public string Operator { get; set; }
+}
+
+public class GetTurnoverPointStatusSettingParams
+{
+    public GetTurnoverPointStatusSettingParams(GetTurnoverPointStatusSettingRequest req)
+    {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
+        TpCategoryId = req.TpCategoryId;
+    }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public int TpCategoryId { get; set; }
+}
+
+public class SetTurnoverPointStatusSettingParams
+{
+    public SetTurnoverPointStatusSettingParams(SetTurnoverPointStatusSettingRequest req)
+    {
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
+        StrInfos = JsonConvert.SerializeObject(req.Infos);
+        Operator = req.Operator;
+    }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public string StrInfos { get; set; }
+    public string Operator { get; set; }
+}
+
+public class TurnoverPointStatusParams
+{
+    public int TpGameTypeId { get; set; }
+    /// <summary>
+    /// 0: Enable, 1: Disabled
+    /// </summary>
+    public int Status { get; set; }
 }

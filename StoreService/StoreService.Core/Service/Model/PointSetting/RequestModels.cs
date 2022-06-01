@@ -68,3 +68,19 @@ public class SetDepositPointSettingRequest
     }
     public string Operator { get; set; }
 }
+
+public class GetTurnoverPointStatusSettingRequest
+{
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public int TpCategoryId { get; set; }
+}
+
+public class SetTurnoverPointStatusSettingRequest
+{
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public IEnumerable<TurnoverPointStatusParams> Infos { get; set; }
+    public string Operator { get; set; }
+}
+

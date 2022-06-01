@@ -70,7 +70,7 @@ public class PointSettingService
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyId", input.CurrencyId);
-        para.Add("_Infos", input.Infos);
+        para.Add("_Infos", input.StrInfos);
         para.Add("_Operator", input.Operator);
 
         return _mainDbClient.ExecuteAsync("Store_TurnoverPointSetting_Set", para);
@@ -99,5 +99,26 @@ public class PointSettingService
         para.Add("_Operator", input.Operator);
 
         return _mainDbClient.ExecuteAsync("Store_DepositPointSetting_Set", para);
+    }
+    
+    public Task<IEnumerable<TurnoverPointStatusSetting>> GetTurnoverPointStatusSettingAsync(GetTurnoverPointStatusSettingParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyId", input.CurrencyId);
+        para.Add("_TpCategoryId", input.TpCategoryId);
+
+        return _reportDbClient.QueryAsync<TurnoverPointStatusSetting>("Store_TurnoverPointStatusSetting_Get", para);
+    }
+    
+    public Task<int> SetTurnoverPointStatusSettingAsync(SetTurnoverPointStatusSettingParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyId", input.CurrencyId);
+        para.Add("_Infos", input.StrInfos);
+        para.Add("_Operator", input.Operator);
+
+        return _mainDbClient.ExecuteAsync("Store_TurnoverPointStatusSetting_Set", para);
     }
 }

@@ -1,3 +1,5 @@
+using StoreService.Core.Service.Model.Enums;
+
 namespace StoreService.Core.Service.Model;
 
 public interface ISelLang
@@ -38,40 +40,48 @@ public class ApiResult
     public string RawErrorCode { get; set; }
     public string RawMessage { get; set; }
 
-    public ApiResult() : this(9000, "", "", "")
+    public ApiResult()
+        : this((int) ErrorCodeEnum.SystemError, "")
     {
     }
 
-    public ApiResult(ISelLang selLang) : this(9000, "", "", "")
+    public ApiResult(ISelLang selLang)
+        : this((int) ErrorCodeEnum.SystemError, "")
     {
         SelLang = selLang;
     }
-
-    public ApiResult(int ErrorCode, string Message) : this(ErrorCode, Message, "", "")
+    
+    public ApiResult(ErrorCodeEnum errorCode, string message = "")
+        : this((int) errorCode, message)
     {
     }
 
-    public ApiResult(int _ErrorCode, string Message, string RawErrorCode, string RawMessage)
+    public ApiResult(int errorCode, string message, string rawErrorCode = "", string rawMessage = "")
     {
-        ErrorCode = _ErrorCode;
-        this.Message = Message;
-        this.RawErrorCode = RawErrorCode;
-        this.RawMessage = RawMessage;
+        ErrorCode = errorCode;
+        Message = message;
+        RawErrorCode = rawErrorCode;
+        RawMessage = rawMessage;
     }
 }
 
 public class ApiResult<TData> : ApiResult
 {
-    public ApiResult() : this(9000, "", default)
+    public ApiResult() : this((int) ErrorCodeEnum.SystemError, default)
     {
     }
 
-    public ApiResult(ISelLang selLang) : this(9000, "", default)
+    public ApiResult(ISelLang selLang) : this((int) ErrorCodeEnum.SystemError, default)
     {
         SelLang = selLang;
     }
+    
+    public ApiResult(ErrorCodeEnum errorCode, TData data, string message = "")
+        : this((int) errorCode, data, message)
+    {
+    }
 
-    public ApiResult(int ErrorCode, string Message, TData data) : base(ErrorCode, Message)
+    public ApiResult(int errorCode, TData data, string message = "") : base(errorCode, message)
     {
         Data = data;
     }
@@ -81,16 +91,16 @@ public class ApiResult<TData> : ApiResult
 
 public class ApiListResult<TData> : ApiResult
 {
-    public ApiListResult() : this(9000, "")
+    public ApiListResult() : this((int) ErrorCodeEnum.SystemError)
     {
     }
 
-    public ApiListResult(ISelLang selLang) : this(9000, "")
+    public ApiListResult(ISelLang selLang) : this((int) ErrorCodeEnum.SystemError)
     {
         SelLang = selLang;
     }
-
-    public ApiListResult(int ErrorCode, string Message) : base(ErrorCode, Message)
+    
+    public ApiListResult(int errorCode, string message = "") : base(errorCode, message)
     {
     }
 

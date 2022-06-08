@@ -30,11 +30,8 @@ public static class ServiceCollectionExtension
             return services
                 .AddMemoryCache()
                 .AddSingleton<CacheHelper>()
-                //.AddTransient<CourierAdapter>()
                 .AddSingleton<GiftManagementService>()
                 .AddSingleton<GiftManagementBLL>()
-                .AddSingleton<CommonService>()
-                .AddSingleton<CommonBLL>()
                 .AddSingleton<PointSettingService>()
                 .AddSingleton<PointSettingBLL>();
         }

@@ -1,8 +1,8 @@
 # localhost
-@url=http://localhost:51001
+#@url=http://localhost:51001
 
 # StoreService Local
-# @url=http://52.221.19.140:51001
+ @url=http://52.221.19.140:51001
 
 # health
 GET {{url}}/health HTTP/1.1

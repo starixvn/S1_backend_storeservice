@@ -8,7 +8,7 @@ namespace StoreService.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class PointSettingController
+public class PointSettingController : ControllerBase
 {
     private readonly PointSettingBLL _pointSettingBll;
     

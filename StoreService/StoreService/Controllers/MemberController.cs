@@ -51,9 +51,8 @@ public class MemberController : ControllerBase
     [HttpPost]
     public async Task<ApiResult> ManualRewardPointAsync(CreateManualRewardPointInfoRequest request)
     {
-        var user = User.Identity.Name;
         var result =
-            await _memberBll.CreateManualRewardPointInfoAsync(new CreateManualRewardPointInfoParams(request, user));
+            await _memberBll.CreateManualRewardPointInfoAsync(new CreateManualRewardPointInfoParams(request));
 
         return new ApiResult<TransIdModel>
         {
@@ -65,9 +64,8 @@ public class MemberController : ControllerBase
     [HttpPost]
     public async Task<ApiResult> BatchManualRewardPointAsync(CreateManualRewardPointInfoBatchRequest request)
     {
-        var user = User.Identity.Name;
         var result =
-            await _memberBll.CreateManualRewardPointInfoBatchAsync(new CreateManualRewardPointInfoBatchParams(request, user));
+            await _memberBll.CreateManualRewardPointInfoBatchAsync(new CreateManualRewardPointInfoBatchParams(request));
 
         return new ApiResult
         {

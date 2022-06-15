@@ -44,14 +44,14 @@ public class GetMemberRewardPointLogParams : PagerParamModel
 
 public class CreateManualRewardPointInfoParams
 {
-    public CreateManualRewardPointInfoParams(CreateManualRewardPointInfoRequest req, string @operator)
+    public CreateManualRewardPointInfoParams(CreateManualRewardPointInfoRequest req)
     {
         SiteId = req.SiteId;
         UserName = req.UserName;
         Point = req.Point;
         CategoryId = req.CategoryId;
         Memo = req.Memo;
-        Operator = @operator;
+        Operator = req.Operator;
     }
     
     public int SiteId { get; set; }
@@ -64,11 +64,10 @@ public class CreateManualRewardPointInfoParams
 
 public class CreateManualRewardPointInfoBatchParams
 {
-    public CreateManualRewardPointInfoBatchParams(CreateManualRewardPointInfoBatchRequest req, string @operator)
+    public CreateManualRewardPointInfoBatchParams(CreateManualRewardPointInfoBatchRequest req)
     {
         SiteId = req.SiteId;
         Infos = req.Infos;
-        Operator = @operator;
     }
     
     public int SiteId { get; set; }

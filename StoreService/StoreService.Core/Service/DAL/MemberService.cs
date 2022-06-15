@@ -123,94 +123,103 @@ public class MemberService
             conn.Open();
             await using (var trans = conn.BeginTransaction())
             {
-                // STEP1: 批次新增手動變更點數紀錄
-                var para = new DynamicParameters();
-                para.Add("_SiteId", input.SiteId);
-                para.Add("_Infos", JsonConvert.SerializeObject(input.Infos));
-                para.Add("_Prefix", prefix);
-                para.Add("_Operator", input.Operator);
-                
-                var batchManualRewardPointResult =
-                    await conn.QueryAsync<BatchManualRewardPointResult>(
-                        "Store_ManualRewardPointInfoBatch_Ins",
-                        para, transaction:
-                        trans,
-                        commandType: CommandType.StoredProcedure);
-
-                if (batchManualRewardPointResult.Count() < count)
+                try
                 {
-                    trans.Rollback();
-                    await conn.CloseAsync();
-                    return -1;
-                }
+                    // STEP1: 批次新增手動變更點數紀錄
+                    var para = new DynamicParameters();
+                    para.Add("_SiteId", input.SiteId);
+                    para.Add("_Infos", JsonConvert.SerializeObject(input.Infos));
+                    para.Add("_Prefix", prefix);
+                    para.Add("_Operator", input.Operator);
+                    
+                    var batchManualRewardPointResult =
+                        await conn.QueryAsync<BatchManualRewardPointResult>(
+                            "Store_ManualRewardPointInfoBatch_Ins",
+                            para, transaction:
+                            trans,
+                            commandType: CommandType.StoredProcedure);
 
-                // STEP2: 批次變更用戶點數
-                var batchChangeInfo =
-                    input.Infos.Select(x =>
-                        new
-                        {
-                            x.CustId,
-                            x.Point
-                        });
+                    if (batchManualRewardPointResult.Count() < count)
+                    {
+                        trans.Rollback();
+                        await conn.CloseAsync();
+                        return -1;
+                    }
 
-                para = new DynamicParameters();
-                para.Add("_SiteId", input.SiteId);
-                para.Add("_Infos", JsonConvert.SerializeObject(batchChangeInfo));
-                
-                var batchChangeCustRewardPointResult = 
-                    await conn.QueryAsync<BatchChangeCustRewardPointResult>(
-                        "Store_CustRewardPointChangeBatch_Set",
-                        para, transaction:
-                        trans,
-                        commandType: CommandType.StoredProcedure);
-                
-                if (batchChangeCustRewardPointResult.Count() != count)
-                {
-                    trans.Rollback();
-                    await conn.CloseAsync();
-                    return -2;
-                }
-                
-                // STEP3: 批次新增用戶點數歷程
-                var batchLogInfo =
-                    batchManualRewardPointResult
-                        .Join(batchChangeCustRewardPointResult,
-                            x => x.CustId,
-                            y => y.CustId,
-                            (x, y) => new
+                    // STEP2: 批次變更用戶點數
+                    var batchChangeInfo =
+                        input.Infos.Select(x =>
+                            new
                             {
                                 x.CustId,
-                                x.CurrencyId,
-                                input.SiteId,
-                                x.TransId,
-                                ChangePoint = x.Point,
-                                y.BeforePoint,
-                                y.AfterPoint,
-                                x.Memo
+                                x.Point
                             });
-                
-                para = new DynamicParameters();
-                para.Add("_PointType", (int) PointTypeEnum.Manual);
-                para.Add("_SiteId", input.SiteId);
-                para.Add("_Infos", JsonConvert.SerializeObject(batchLogInfo));
-                para.Add("_Operator", input.Operator);
-                
-                var logResult = 
-                    await conn.ExecuteAsync(
-                        "Store_RewardPointLogBatch_Ins",
-                        para, transaction:
-                        trans,
-                        commandType: CommandType.StoredProcedure);
-                
-                if (logResult != count)
+
+                    para = new DynamicParameters();
+                    para.Add("_SiteId", input.SiteId);
+                    para.Add("_Infos", JsonConvert.SerializeObject(batchChangeInfo));
+                    
+                    var batchChangeCustRewardPointResult = 
+                        await conn.QueryAsync<BatchChangeCustRewardPointResult>(
+                            "Store_CustRewardPointChangeBatch_Set",
+                            para, transaction:
+                            trans,
+                            commandType: CommandType.StoredProcedure);
+                    
+                    if (batchChangeCustRewardPointResult.Count() != count)
+                    {
+                        trans.Rollback();
+                        await conn.CloseAsync();
+                        return -2;
+                    }
+                    
+                    // STEP3: 批次新增用戶點數歷程
+                    var batchLogInfo =
+                        batchManualRewardPointResult
+                            .Join(batchChangeCustRewardPointResult,
+                                x => x.CustId,
+                                y => y.CustId,
+                                (x, y) => new
+                                {
+                                    x.CustId,
+                                    x.CurrencyId,
+                                    input.SiteId,
+                                    x.TransId,
+                                    ChangePoint = x.Point,
+                                    y.BeforePoint,
+                                    y.AfterPoint,
+                                    x.Memo
+                                });
+                    
+                    para = new DynamicParameters();
+                    para.Add("_PointType", (int) PointTypeEnum.Manual);
+                    para.Add("_SiteId", input.SiteId);
+                    para.Add("_Infos", JsonConvert.SerializeObject(batchLogInfo));
+                    para.Add("_Operator", input.Operator);
+                    
+                    var logResult = 
+                        await conn.ExecuteAsync(
+                            "Store_RewardPointLogBatch_Ins",
+                            para, transaction:
+                            trans,
+                            commandType: CommandType.StoredProcedure);
+                    
+                    if (logResult != count)
+                    {
+                        trans.Rollback();
+                        await conn.CloseAsync();
+                        return -3;
+                    }
+
+                    result = logResult;
+                    trans.Commit();
+                }
+                catch
                 {
                     trans.Rollback();
                     await conn.CloseAsync();
-                    return -3;
+                    throw;
                 }
-
-                result = logResult;
-                trans.Commit();
             }
 
             await conn.CloseAsync();

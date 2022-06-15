@@ -50,12 +50,14 @@ public class CreateManualRewardPointInfoRequest
     public decimal Point { get; set; }
     public int CategoryId { get; set; }
     public string Memo { get; set; }
+    public string Operator { get; set; }
 }
 
 public class CreateManualRewardPointInfoBatchRequest
 {
     public int SiteId { get; set; }
     public IEnumerable<ManualRewardPointInfo> Infos { get; set; }
+    public string Operator { get; set; }
 }
 
 

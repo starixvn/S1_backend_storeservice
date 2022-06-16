@@ -27,6 +27,11 @@ public class GetCategoriesRequest
     public IEnumerable<string> LangCodes { get; set; }
 }
 
+public class GetGiftRequest
+{
+    public int GiftId { get; set; }
+}
+
 public class CreateGiftRequest
 {
     public int SiteId { get; set; }

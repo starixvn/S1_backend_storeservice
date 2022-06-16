@@ -67,6 +67,14 @@ public class GiftManagementBLL
             i => _giftManagementService.GetCategoriesAsync(input));
     }
     
+    public async Task<IEnumerable<GiftInfo>> GetGiftAsync(GetGiftParams input)
+    {
+        var result = await _giftManagementService.GetGiftAsync(input);
+        
+
+        return result;
+    }
+    
     public async Task<bool> CreateGiftAsync(CreateGiftParams input)
     {
         var resultCode = await _giftManagementService.CreateGiftAsync(input);

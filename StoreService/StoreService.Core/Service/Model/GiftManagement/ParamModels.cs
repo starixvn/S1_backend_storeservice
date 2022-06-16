@@ -58,6 +58,15 @@ public class GetCategoriesParams
     public string StrLangCodes { get; set; }
 }
 
+public class GetGiftParams
+{
+    public GetGiftParams(GetGiftRequest req)
+    {
+        GiftId = req.GiftId;
+    }
+    public int GiftId { get; set; }
+}
+
 public class CreateGiftParams
 {
     public CreateGiftParams(CreateGiftRequest req)

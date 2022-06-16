@@ -73,6 +73,19 @@ public class GiftManagementController : ControllerBase
     }
     
     [HttpPost]
+    public async Task<ApiResult> GetAsync(GetGiftRequest request)
+    {
+        var result =
+            await _giftManagementBll.GetGiftAsync(new GetGiftParams(request));
+
+        return new ApiResult<IEnumerable<GiftInfo>>
+        {
+            Data = result,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
+    }
+    
+    [HttpPost]
     public async Task<ApiResult> CreateAsync(CreateGiftRequest request)
     {
         var result =

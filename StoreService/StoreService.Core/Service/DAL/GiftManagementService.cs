@@ -70,6 +70,15 @@ public class GiftManagementService
 
         return _reportDbClient.QueryAsync<GiftCategory>("Store_GiftCategory_Get", para);
     }
+    
+    public Task<IEnumerable<GiftInfo>> GetGiftAsync(GetGiftParams input)
+    {
+        var para = new DynamicParameters();
+
+        para.Add("_GiftId", input.GiftId);
+
+        return _reportDbClient.QueryAsync<GiftInfo>("Store_GiftInfo_Get", para);
+    }
 
     public async Task<int> CreateGiftAsync(CreateGiftParams input)
     {

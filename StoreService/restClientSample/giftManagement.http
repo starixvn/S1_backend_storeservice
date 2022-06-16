@@ -1,8 +1,8 @@
 # localhost
-# @url=http://localhost:51001
+@url=http://localhost:51001
 
 # StoreService Local
-@url=http://52.221.19.140:51001
+# @url=http://52.221.19.140:51001
 
 # 取得兌換商品列表
 GET {{url}}/health HTTP/1.1
@@ -21,6 +21,15 @@ Content-Type: application/json
     "giftName": "",
     "pageNumber": 1,
     "pageSize": 10
+}
+
+###
+# 取得兌換商品內容
+POST {{url}}/api/GiftManagement/Get HTTP/1.1
+Content-Type: application/json
+
+{
+    "giftId": 6
 }
 
 ###
@@ -43,12 +52,14 @@ Content-Type: application/json
         {
             "lang": "en",
             "name": "test_en",
-            "description": "test test test"
+            "description": "test test test",
+            "pictureUrl": "/foo/2206161en.jpg"
         },
         {
             "lang": "my",
             "name": "test_my",
-            "description": "test test test my"
+            "description": "test test test my",
+            "pictureUrl": "/foo/2206161my.jpg"
         }
     ],
     "operator": "System"
@@ -73,12 +84,14 @@ Content-Type: application/json
         {
             "lang": "en",
             "name": "test_en",
-            "description": "test test test"
+            "description": "test test test",
+            "pictureUrl": "/foo/22061606en.jpg"
         },
         {
             "lang": "my",
             "name": "test_my",
-            "description": "test test test my"
+            "description": "test test test my",
+            "pictureUrl": "/foo/22061606my.jpg"
         }
     ],
     "operator": "System"
@@ -195,7 +208,6 @@ Content-Type: application/json
 
 {
     "siteId": 1,
-    "currencyId": 2
 }
 
 ###
@@ -205,7 +217,6 @@ Content-Type: application/json
 
 {
     "siteId": 1,
-    "currencyId": 2,
     "status": 1,
     "limit": 1,
     "operator": "System"

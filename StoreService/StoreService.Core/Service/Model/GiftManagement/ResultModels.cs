@@ -26,6 +26,22 @@ public class Gift : LastUpdateModel
     public int Sort { get; set; }
 }
 
+public class GiftInfo
+{
+    public int GiftId { get; set; }
+    public string GiftName { get; set; }
+    public int CategoryId { get; set; }
+    public string Lang { get; set; }
+    public string Description { get; set; }
+    public string PictureUrl { get; set; }
+    public GeneralStatusEnum Status { get; set; }
+    public string TagIds { get; set; }
+    public int Point { get; set; }
+    public bool ShowStock { get; set; }
+    public int Stock { get; set; }
+    public int Sort { get; set; }
+}
+
 public class GiftCategory
 {
     public int CategoryId { get; set; }

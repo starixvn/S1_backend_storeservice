@@ -41,8 +41,7 @@ POST {{url}}/api/PointSetting/GetInactivePointExpirySetting HTTP/1.1
 Content-Type: application/json
 
 {
-    "siteId": 1,
-    "currencyId": 2
+    "siteId": 1
 }
 
 ###
@@ -52,7 +51,6 @@ Content-Type: application/json
 
 {
     "siteId": 1,
-    "currencyId": 2,
     "status": 0,
     "days": 45,
     "operator": "System"

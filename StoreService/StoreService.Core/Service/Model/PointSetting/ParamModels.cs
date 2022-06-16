@@ -7,10 +7,8 @@ public class GetInactivePointExpirySettingParams
     public GetInactivePointExpirySettingParams(GetInactivePointExpirySettingRequest req)
     {
         SiteId = req.SiteId;
-        CurrencyId = req.CurrencyId;
     }
     public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
 }
 
 public class SetInactivePointExpirySettingParams
@@ -18,13 +16,11 @@ public class SetInactivePointExpirySettingParams
     public SetInactivePointExpirySettingParams(SetInactivePointExpirySettingRequest req)
     {
         SiteId = req.SiteId;
-        CurrencyId = req.CurrencyId;
         Days = req.Days;
         Status = (int) req.Status;
         Operator = req.Operator;
     }
     public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
     public int Days { get; set; }
     public int Status { get; set; }
     public string Operator { get; set; }

@@ -185,7 +185,6 @@ public class GiftManagementService
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
-        para.Add("_CurrencyId", input.CurrencyId);
 
         var result = 
                 await _mainDbClient.QueryAsync<RedemptionLimit>("Store_RedemptionLimit_Get", para);
@@ -197,7 +196,6 @@ public class GiftManagementService
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
-        para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Limit", input.Limit);
         para.Add("_Status", input.Status);
         para.Add("_Operator", input.Operator);

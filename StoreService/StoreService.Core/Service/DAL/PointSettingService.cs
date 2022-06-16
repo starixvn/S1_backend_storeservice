@@ -26,7 +26,6 @@ public class PointSettingService
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
-        para.Add("_CurrencyId", input.CurrencyId);
 
         var result =
             await _reportDbClient.QueryAsync<InactivePointExpirySetting>("Store_InactivePointExpiry_Get", para);
@@ -38,7 +37,6 @@ public class PointSettingService
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
-        para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Days", input.Days);
         para.Add("_Status", input.Status);
         para.Add("_Operator", input.Operator);

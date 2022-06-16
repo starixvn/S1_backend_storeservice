@@ -187,11 +187,9 @@ public class GetRedemptionLimitParams
     public GetRedemptionLimitParams(GetRedemptionLimitRequest req)
     {
         SiteId = req.SiteId;
-        CurrencyId = req.CurrencyId;
     }
     
     public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
 }
 
 public class SetRedemptionLimitParams
@@ -199,14 +197,12 @@ public class SetRedemptionLimitParams
     public SetRedemptionLimitParams(SetRedemptionLimitRequest req)
     {
         SiteId = req.SiteId;
-        CurrencyId = req.CurrencyId;
         Status = (int) req.Status;
         Limit = req.Limit;
         Operator = req.Operator;
     }
     
     public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
     public int Status { get; set; }
     public int Limit { get; set; }
     public string Operator { get; set; }

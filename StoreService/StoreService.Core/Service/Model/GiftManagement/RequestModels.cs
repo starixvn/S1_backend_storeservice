@@ -92,14 +92,12 @@ public class UpdateTagRequest
 public class GetRedemptionLimitRequest
 {
     public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
 }
 
 
 public class SetRedemptionLimitRequest
 {
     public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
     public GeneralStatusEnum Status { get; set; }
     public int Limit { get; set; }
     public string Operator { get; set; }

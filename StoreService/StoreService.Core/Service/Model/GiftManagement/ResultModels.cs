@@ -15,6 +15,7 @@ public class Gift : LastUpdateModel
     public int CategoryId { get; set; }
     public string Lang { get; set; }
     public string Description { get; set; }
+    public string PictureUrl { get; set; }
     public GeneralStatusEnum Status { get; set; }
     [JsonIgnore]
     public string TagIds { get; set; }

@@ -207,3 +207,10 @@ public class SetRedemptionLimitParams
     public int Limit { get; set; }
     public string Operator { get; set; }
 }
+
+public class CreateGiftInfo : LangNameModel
+{
+    public string Description { get; set; }
+    
+    public string PictureUrl { get; set; }
+}

@@ -170,6 +170,19 @@ public class GiftManagementBLL
         
         return success;
     }
+    
+    public async Task<bool> SetGiftSortAsync(SetSortParams input)
+    {
+        var result = await _giftManagementService.SetGiftSortAsync(input);
+        var success = result > 0;
+
+        if (!success)
+        {
+            _logger.LogError("Set Sort Failed");
+        }
+        
+        return success;
+    }
 
     #region Private Methods
 

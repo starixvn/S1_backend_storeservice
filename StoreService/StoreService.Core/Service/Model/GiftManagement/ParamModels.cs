@@ -16,6 +16,8 @@ public class GetListParams : PagerParamModel
         GiftName = req.GiftName;
         PageSize = req.PageSize;
         StartIndex = req.PageSize.GetStartIndex(req.PageNumber);
+        OrderByField = req.OrderByField;
+        Desc = req.Desc;
     }
     
     public int SiteId { get; set; }
@@ -24,6 +26,8 @@ public class GetListParams : PagerParamModel
     public string StrCategoryIds { get; set; }
     public string StrTags { get; set; }
     public string GiftName { get; set; }
+    public string OrderByField { get; set; }
+    public bool Desc { get; set; }
 }
 
 public class GetTagsParams
@@ -222,4 +226,17 @@ public class CreateGiftInfo : LangNameModel
     public string Description { get; set; }
     
     public string PictureUrl { get; set; }
+}
+
+public class SetSortParams
+{
+    public SetSortParams(SetSortRequest req)
+    {
+        GiftId = req.GiftId;
+        Sort = req.Sort;
+        Operator = req.Operator;
+    }
+    public int GiftId { get; set; }
+    public int Sort { get; set; }
+    public string Operator { get; set; }
 }

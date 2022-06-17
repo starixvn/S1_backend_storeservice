@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using StoreService.Core.Service.Model.Based;
 
 namespace StoreService.Core.Service.Model.PointSetting;
@@ -48,7 +49,8 @@ public class DepositPointSetting : LastUpdateModel
     public int CurrencyId { get; set; }
     public string IsoCode { get; set; }
     public decimal DepositAmount { get; set; }
-    public decimal PointRate { get; set; }
+    [JsonIgnore]
+    public decimal PointRate { get; set; } // 這是無優惠的原始值，為了不讓前端混亂暫時不回傳
     public bool PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
     public DateTimeOffset PromotionStartTime

@@ -11,6 +11,8 @@ public class GetListRequest : PagerRequestModel
     public IEnumerable<int> CategoryIds { get; set; }
     public IEnumerable<int> Tags { get; set; }
     public string GiftName { get; set; }
+    public string OrderByField { get; set; } = "Sort";
+    public bool Desc { get; set; }
 }
 
 public class GetTagsRequest
@@ -105,5 +107,12 @@ public class SetRedemptionLimitRequest
     public int SiteId { get; set; }
     public GeneralStatusEnum Status { get; set; }
     public int Limit { get; set; }
+    public string Operator { get; set; }
+}
+
+public class SetSortRequest
+{
+    public int GiftId { get; set; }
+    public int Sort { get; set; }
     public string Operator { get; set; }
 }

@@ -168,4 +168,16 @@ public class GiftManagementController : ControllerBase
             ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
+    
+    [HttpPost]
+    public async Task<ApiResult> SetSortAsync(SetSortRequest request)
+    {
+        var result =
+            await _giftManagementBll.SetGiftSortAsync(new SetSortParams(request));
+
+        return new ApiResult
+        {
+            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+        };
+    }
 }

@@ -37,8 +37,10 @@ public class GiftManagementService
         para.Add("_CategoryIds", input.StrCategoryIds);
         para.Add("_Tags", input.StrTags);
         para.Add("_GiftName", input.GiftName);
+        para.Add("_OrderByField", input.OrderByField);
+        para.Add("_Desc", input.Desc);
 
-        var list = await _reportDbClient.QueryAsync<Gift>("Store_GiftList_Get", para);
+        var list = await _reportDbClient.QueryAsync<Gift>("Store_GiftList_Get_Test", para);
         var result = new PagerResultModel<Gift>
         {
             Datas = list,
@@ -210,6 +212,18 @@ public class GiftManagementService
         para.Add("_Operator", input.Operator);
 
         var result = _mainDbClient.ExecuteAsync("Store_RedemptionLimit_Set", para);
+
+        return result;
+    }
+    
+    public Task<int> SetGiftSortAsync(SetSortParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.GiftId);
+        para.Add("_Limit", input.Sort);
+        para.Add("_Operator", input.Operator);
+
+        var result = _mainDbClient.ExecuteAsync("Store_GiftSort_Set", para);
 
         return result;
     }

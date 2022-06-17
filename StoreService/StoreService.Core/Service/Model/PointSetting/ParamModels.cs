@@ -105,7 +105,7 @@ public class SetDepositPointSettingParams
         SiteId = req.SiteId;
         CurrencyId = req.CurrencyId;
         DepositAmount = req.DepositAmount;
-        PointRate = req.PointRate;
+        PointRate = 1; //req.PointRate; 暫時不會開放變更，先寫死
         PromotionStatus = (int) req.PromotionStatus;
         PromotionPointRate = req.PromotionPointRate;
         PromotionStartTime = req.PromotionStartTime.DateTime;

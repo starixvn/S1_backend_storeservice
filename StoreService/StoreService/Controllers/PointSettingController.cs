@@ -48,7 +48,7 @@ public class PointSettingController : ControllerBase
         var result =
             await _pointSettingBll.GetTurnoverPointSettingListAsync(new GetTurnoverPointSettingListParams(request));
 
-        return new ApiListResult<SimpleTurnoverPointSetting>
+        return new ApiListResult<TurnoverPointSettingResult>
         {
             Data = result,
             ErrorCode = (int) ErrorCodeEnum.Success

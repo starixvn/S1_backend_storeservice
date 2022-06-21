@@ -56,6 +56,24 @@ public class SimpleTurnoverPointSetting
     }
 }
 
+public class TurnoverPointSettingResult
+{
+    public int VipLevel { get; set; }
+    public string VipLevelName { get; set; }
+    public IEnumerable<TpCategoryTurnoverPointSetting> TpCategoryTurnoverPointSetting { get; set; }
+}
+
+public class TpCategoryTurnoverPointSetting
+{
+    public int TpCategoryId { get; set; }
+    public decimal Turnover { get; set; }
+    public decimal PointRate { get; set; }
+    public int PromotionStatus { get; set; }
+    public decimal PromotionPointRate { get; set; }
+    public DateTimeOffset PromotionStartTime { get; set; }
+    public DateTimeOffset PromotionEndTime { get; set; }
+}
+
 public class DepositPointSetting : LastUpdateModel
 {
     private DateTimeOffset _startTime { get; set; }

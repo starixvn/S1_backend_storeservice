@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StoreService.Core.Service.DAL;
+using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.PointSetting;
 
 namespace StoreService.Core.Service.BLL;
@@ -36,11 +37,40 @@ public class PointSettingBLL
     
     public Task<IEnumerable<TurnoverPointSetting>> GetTurnoverPointSettingAsync(
         GetTurnoverPointSettingParams input)
-        => _pointSettingService.GetTurnoverPointSettingAsync(input); 
-    
-    public Task<IEnumerable<SimpleTurnoverPointSetting>> GetTurnoverPointSettingListAsync(
+        => _pointSettingService.GetTurnoverPointSettingAsync(input);
+
+    public async Task<IEnumerable<TurnoverPointSettingResult>> GetTurnoverPointSettingListAsync(
         GetTurnoverPointSettingListParams input)
-        => _pointSettingService.GetTurnoverPointSettingListAsync(input);
+    {
+        var list = await _pointSettingService.GetTurnoverPointSettingListAsync(input);
+        
+        var vipLevels = list
+            .Select(x => new VipLevel(x.VipLevel, x.VipLevelName))
+            .Distinct(new VipLevelComparer())
+            .OrderBy(x => x.LevelId);
+        
+        var result =
+            vipLevels.Select(x => new TurnoverPointSettingResult
+            {
+                VipLevel = x.LevelId,
+                VipLevelName = x.LevelName,
+                TpCategoryTurnoverPointSetting = list
+                    .Where(y => y.VipLevel == x.LevelId)
+                    .Select(y => new TpCategoryTurnoverPointSetting
+                    {
+                        TpCategoryId = y.TpCategoryId,
+                        Turnover = y.Turnover,
+                        PointRate = y.PointRate,
+                        PromotionStatus = y.PromotionStatus,
+                        PromotionPointRate = y.PromotionPointRate,
+                        PromotionStartTime = y.PromotionStartTime,
+                        PromotionEndTime = y.PromotionEndTime
+                    })
+                    .OrderBy(y => y.TpCategoryId)
+            });
+
+        return result;
+    } 
     
     public async Task<bool> SetTurnoverPointSettingAsync(
         SetTurnoverPointSettingParams input)

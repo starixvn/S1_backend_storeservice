@@ -45,7 +45,6 @@ public class CreateGiftRequest
     public decimal PriceWorth { get; set; }
     public GeneralStatusEnum ShowStock { get; set; }
     public int Stock { get; set; }
-    public int Sort { get; set; }
     public IEnumerable<CreateGiftInfo> Infos { get; set; }
     public string Operator { get; set; }
 }
@@ -60,7 +59,6 @@ public class UpdateGiftRequest
     public decimal PriceWorth { get; set; }
     public GeneralStatusEnum ShowStock { get; set; }
     public int Stock { get; set; }
-    public int Sort { get; set; }
     public IEnumerable<CreateGiftInfo> Infos { get; set; }
     public string Operator { get; set; }
 }
@@ -112,7 +110,6 @@ public class SetRedemptionLimitRequest
 
 public class SetSortRequest
 {
-    public int GiftId { get; set; }
-    public int Sort { get; set; }
+    public IEnumerable<SortItem> Infos { get; set; }
     public string Operator { get; set; }
 }

@@ -84,7 +84,6 @@ public class CreateGiftParams
         PriceWorth = req.PriceWorth;
         ShowStock = (int) req.ShowStock;
         Stock = req.Stock;
-        Sort = req.Sort;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
         Operator = req.Operator;
     }
@@ -98,7 +97,6 @@ public class CreateGiftParams
     public decimal PriceWorth { get; set; }
     public int ShowStock { get; set; }
     public int Stock { get; set; }
-    public int Sort { get; set; }
     public string StrInfos { get; set; }
     public string Operator { get; set; }
 }
@@ -115,7 +113,6 @@ public class UpdateGiftParams
         PriceWorth = req.PriceWorth;
         ShowStock = (int) req.ShowStock;
         Stock = req.Stock;
-        Sort = req.Sort;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
         Operator = req.Operator;
     }
@@ -128,7 +125,6 @@ public class UpdateGiftParams
     public decimal PriceWorth { get; set; }
     public int ShowStock { get; set; }
     public int Stock { get; set; }
-    public int Sort { get; set; }
     public string StrInfos { get; set; }
     public string Operator { get; set; }
 }
@@ -232,11 +228,15 @@ public class SetSortParams
 {
     public SetSortParams(SetSortRequest req)
     {
-        GiftId = req.GiftId;
-        Sort = req.Sort;
+        StrInfos = JsonConvert.SerializeObject(req.Infos);
         Operator = req.Operator;
     }
+    public string StrInfos { get; set; }
+    public string Operator { get; set; }
+}
+
+public class SortItem
+{
     public int GiftId { get; set; }
     public int Sort { get; set; }
-    public string Operator { get; set; }
 }

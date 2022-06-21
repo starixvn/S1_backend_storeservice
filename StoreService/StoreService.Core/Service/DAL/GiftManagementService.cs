@@ -95,7 +95,6 @@ public class GiftManagementService
         para.Add("_PriceWorth", input.PriceWorth);
         para.Add("_ShowStock", input.ShowStock);
         para.Add("_Stock", input.Stock);
-        para.Add("_Sort", input.Sort);
         para.Add("_Infos", input.StrInfos);
         para.Add("_Operator", input.Operator);
         para.Add("_Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
@@ -137,7 +136,6 @@ public class GiftManagementService
         para.Add("_PriceWorth", input.PriceWorth);
         para.Add("_ShowStock", input.ShowStock);
         para.Add("_Stock", input.Stock);
-        para.Add("_Sort", input.Sort);
         para.Add("_Infos", input.StrInfos);
         para.Add("_Operator", input.Operator);
 
@@ -219,8 +217,7 @@ public class GiftManagementService
     public Task<int> SetGiftSortAsync(SetSortParams input)
     {
         var para = new DynamicParameters();
-        para.Add("_SiteId", input.GiftId);
-        para.Add("_Limit", input.Sort);
+        para.Add("_Infos", input.StrInfos);
         para.Add("_Operator", input.Operator);
 
         var result = _mainDbClient.ExecuteAsync("Store_GiftSort_Set", para);

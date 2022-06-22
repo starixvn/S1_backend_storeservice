@@ -23,12 +23,9 @@ public class GiftManagementController : ControllerBase
         var result =
             await _giftManagementBll.GetGiftListAsync(new GetListParams(request));
 
-        return new ApiListResult<Gift>
+        return new ApiResult<IEnumerable<Gift>>
         {
-            Data = result.Datas,
-            PageNumber = request.PageNumber,
-            TotalPages = result.TotalPages,
-            RowCount = result.RowCount,
+            Data = result,
             ErrorCode = (int) ErrorCodeEnum.Success
         };
     }

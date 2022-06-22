@@ -3,7 +3,7 @@ using StoreService.Core.Service.Model.Enums;
 
 namespace StoreService.Core.Service.Model.GiftManagement;
 
-public class GetListRequest : PagerRequestModel
+public class GetListRequest
 {
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }

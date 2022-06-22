@@ -4,7 +4,7 @@ using StoreService.Core.Service.Model.Based;
 
 namespace StoreService.Core.Service.Model.GiftManagement;
 
-public class GetListParams : PagerParamModel
+public class GetListParams
 {
     public GetListParams(GetListRequest req)
     {
@@ -14,8 +14,6 @@ public class GetListParams : PagerParamModel
         StrCategoryIds = JsonConvert.SerializeObject(req.CategoryIds);
         StrTags = JsonConvert.SerializeObject(req.Tags);
         GiftName = req.GiftName;
-        PageSize = req.PageSize;
-        StartIndex = req.PageSize.GetStartIndex(req.PageNumber);
         OrderByField = req.OrderByField;
         Desc = req.Desc;
     }

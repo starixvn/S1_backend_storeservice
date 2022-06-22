@@ -26,11 +26,9 @@ public class GiftManagementService
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
     }
 
-    public async Task<PagerResultModel<Gift>> GetGiftListAsync(GetListParams input)
+    public Task<IEnumerable<Gift>> GetGiftListAsync(GetListParams input)
     {
-        var para = new DynamicParameters()
-            .AddPagerParams(input.PageSize, input.StartIndex);
-
+        var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Status", input.StrStatus);
@@ -39,16 +37,8 @@ public class GiftManagementService
         para.Add("_GiftName", input.GiftName);
         para.Add("_OrderByField", input.OrderByField);
         para.Add("_Desc", input.Desc);
-
-        var list = await _reportDbClient.QueryAsync<Gift>("Store_GiftList_Get_Test", para);
-        var result = new PagerResultModel<Gift>
-        {
-            Datas = list,
-            TotalPages = para.Get<int?>("_TotalPages") ?? 0,
-            RowCount = para.Get<int?>("_RowCount") ?? 0
-        };
-
-        return result;
+        
+        return _reportDbClient.QueryAsync<Gift>("Store_GiftList_Get", para);
     }
 
     public Task<IEnumerable<GiftTag>> GetTagsAsync(GetTagsParams input)

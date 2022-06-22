@@ -23,7 +23,7 @@ public class GiftManagementBLL
         _logger = provider.GetRequiredService<ILogger<GiftManagementBLL>>();
     }
 
-    public async Task<PagerResultModel<Gift>> GetGiftListAsync(GetListParams input)
+    public async Task<IEnumerable<Gift>> GetGiftListAsync(GetListParams input)
     {
         var result = await _giftManagementService.GetGiftListAsync(input);
         var tags = await GetGiftTagsAsync(new GetTagsParams
@@ -33,7 +33,7 @@ public class GiftManagementBLL
             StrLangCodes = "[\"en\"]"
         });
         
-        foreach (var data in result.Datas)
+        foreach (var data in result)
         {
             if (string.IsNullOrEmpty(data.TagIds))
             {

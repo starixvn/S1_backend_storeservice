@@ -68,6 +68,7 @@ public class CreateManualRewardPointInfoBatchParams
     {
         SiteId = req.SiteId;
         Infos = req.Infos;
+        Operator = req.Operator;
     }
     
     public int SiteId { get; set; }

@@ -152,7 +152,8 @@ public class MemberService
                             new
                             {
                                 x.CustId,
-                                x.Point
+                                x.Point,
+                                x.CurrencyId
                             });
 
                     para = new DynamicParameters();

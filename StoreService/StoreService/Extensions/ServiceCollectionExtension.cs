@@ -33,6 +33,8 @@ public static class ServiceCollectionExtension
                 .AddSingleton<GiftManagementService>()
                 .AddSingleton<GiftManagementBLL>()
                 .AddSingleton<PointSettingService>()
-                .AddSingleton<PointSettingBLL>();
+                .AddSingleton<PointSettingBLL>()
+                .AddSingleton<MemberService>()
+                .AddSingleton<MemberBLL>();
         }
 }

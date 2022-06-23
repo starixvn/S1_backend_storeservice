@@ -7,6 +7,8 @@ using StoreService.Core.Service.Model.Member;
 
 namespace StoreService.Controllers;
 
+[Route("api/[controller]/[action]")]
+[ApiController]
 public class MemberController : ControllerBase
 {
     private readonly MemberBLL _memberBll;
@@ -33,7 +35,7 @@ public class MemberController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ApiResult> GetMemberRewardPointLogAsync(GetMemberRewardPointLogRequest request)
+    public async Task<ApiResult> GetRewardPointLogAsync(GetMemberRewardPointLogRequest request)
     {
         var result =
             await _memberBll.GetMemberRewardPointLogAsync(new GetMemberRewardPointLogParams(request));

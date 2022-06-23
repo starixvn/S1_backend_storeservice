@@ -60,4 +60,28 @@ public class CreateManualRewardPointInfoBatchRequest
     public string Operator { get; set; }
 }
 
+public class BatchRewardPointLogInfo
+{
+    public int CustId { get; set; }
+    public int CurrencyId { get; set; }
+    public int SiteId { get; set; }
+    public string TransId { get; set; }
+    public decimal ChangePoint { get; set; }
+    public decimal BeforePoint { get; set; }
+    public decimal AfterPoint { get; set; }
+    public string Memo { get; set; }
+}
 
+public class BatchRewardPointLogInfoComparer : IEqualityComparer<BatchRewardPointLogInfo>
+{
+    public bool Equals(BatchRewardPointLogInfo t1, BatchRewardPointLogInfo t2)
+    {
+        return (t1.TransId == t2.TransId
+                && t1.CustId == t2.CustId);
+    }
+
+    public int GetHashCode(BatchRewardPointLogInfo t)
+    {
+        return t.TransId.GetHashCode();
+    }
+}

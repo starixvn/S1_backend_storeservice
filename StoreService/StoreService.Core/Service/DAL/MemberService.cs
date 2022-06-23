@@ -180,17 +180,18 @@ public class MemberService
                             .Join(batchChangeCustRewardPointResult,
                                 x => x.CustId,
                                 y => y.CustId,
-                                (x, y) => new
+                                (x, y) => new BatchRewardPointLogInfo
                                 {
-                                    x.CustId,
-                                    x.CurrencyId,
-                                    input.SiteId,
-                                    x.TransId,
+                                    CustId = x.CustId,
+                                    CurrencyId = x.CurrencyId,
+                                    SiteId = input.SiteId,
+                                    TransId = x.TransId,
                                     ChangePoint = x.Point,
-                                    y.BeforePoint,
-                                    y.AfterPoint,
-                                    x.Memo
-                                });
+                                    BeforePoint = y.BeforePoint,
+                                    AfterPoint = y.AfterPoint,
+                                    Memo = x.Memo
+                                })
+                            .Distinct(new BatchRewardPointLogInfoComparer());
                     
                     para = new DynamicParameters();
                     para.Add("_PointType", (int) PointTypeEnum.Manual);

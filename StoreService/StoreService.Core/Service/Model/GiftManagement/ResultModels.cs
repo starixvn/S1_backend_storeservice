@@ -21,6 +21,7 @@ public class Gift : LastUpdateModel
     public string TagIds { get; set; }
     public IEnumerable<GiftTag> Tags { get; set; }
     public int Point { get; set; }
+    public decimal PriceWorth { get; set; }
     public bool ShowStock { get; set; }
     public int Stock { get; set; }
     public int Sort { get; set; }
@@ -37,6 +38,7 @@ public class GiftInfo
     public GeneralStatusEnum Status { get; set; }
     public string TagIds { get; set; }
     public int Point { get; set; }
+    public decimal PriceWorth { get; set; }
     public bool ShowStock { get; set; }
     public int Stock { get; set; }
     public int Sort { get; set; }

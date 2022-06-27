@@ -1,5 +1,5 @@
 using StoreService.Core.Service.Model.Based;
-using StoreService.Core.Service.Model.Enums;
+using StoreService.Core.Service.Model.RewardPoint;
 
 namespace StoreService.Core.Service.Model.Member;
 

@@ -260,12 +260,12 @@ public class RewardPointService
                                     ChangePoint = x.Point,
                                     BeforePoint = y.BeforePoint,
                                     AfterPoint = y.AfterPoint,
-                                    Memo = "deposit reward point"
+                                    Memo = "deposit reward point" + x.Memo
                                 })
                             .Distinct(new BatchRewardPointLogInfoComparer());
                     
                     para = new DynamicParameters();
-                    para.Add("_PointType", (int) PointTypeEnum.Manual);
+                    para.Add("_PointType", (int) PointTypeEnum.Deposit);
                     para.Add("_Infos", JsonConvert.SerializeObject(batchLogInfo));
                     para.Add("_Operator", "Sysem");
                     

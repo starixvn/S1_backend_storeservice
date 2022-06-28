@@ -1,4 +1,5 @@
 using StoreService.Core.Service.Model.Based;
+using StoreService.Core.Service.Model.Enums;
 
 namespace StoreService.Core.Service.Model.Member;
 
@@ -29,7 +30,8 @@ public class MemberRewardPointInfo
 
 public class MemberRewardPointLog : LastOperateModel
 {
-    public int PointType { get; set; }
+    public PointTypeEnum PointType { get; set; }
+    public string TypeName => PointType.ToString();
     public string RefTransId { get; set; }
     public decimal ChangePoint { get; set; }
     public decimal BeforePoint { get; set; }

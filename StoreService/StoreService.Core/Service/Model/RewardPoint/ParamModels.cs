@@ -76,4 +76,5 @@ public class DepositRewardPointInfo
     public int CustId { get; set; }
     public decimal Point { get; set; }
     public int SiteId { get; set; }
+    public string Memo { get; set; }
 }

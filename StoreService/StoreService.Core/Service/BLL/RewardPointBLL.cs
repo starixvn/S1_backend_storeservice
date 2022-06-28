@@ -50,6 +50,17 @@ public class RewardPointBLL
 
     public Task<IEnumerable<DepositRewardPointQueue>> GetDepositRewardPointQueueAsync()
         => _rewardPointService.GetDepositRewardPointQueueAsync();
-    
-    
+
+    public async Task<bool> DepositBatchRewardPointAsync(DepositBatchRewardPointParams input)
+    {
+        var result = await _rewardPointService.DepositBatchRewardPointAsync(input);
+        var success = result > 0;
+
+        if (!success)
+        {
+            _logger.LogError($"DepositBatchRewardPoint Failed, Result: ({result})");
+        }
+        
+        return success;
+    }
 }

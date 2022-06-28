@@ -1,8 +1,8 @@
 # localhost
-# @url=http://localhost:51001
+@url=http://localhost:51001
 
 # StoreService Local
-@url=http://52.221.19.140:51001
+# @url=http://52.221.19.140:51001
 
 ###
 # 取得用戶列表(有點數才會有資料)
@@ -60,14 +60,14 @@ Content-Type: application/json
             "custId": 643973,
             "currencyId": 2,
             "categoryId": 0,
-            "point": -10,
+            "point": 10,
             "memo": "test_batch",
         },
         {
             "custId": 643951,
             "currencyId": 15,
             "categoryId": 1,
-            "point": 120,
+            "point": 10,
             "memo": "test_batch",
         }
     ],

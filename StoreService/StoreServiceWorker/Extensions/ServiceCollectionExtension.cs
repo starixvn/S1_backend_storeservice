@@ -5,6 +5,7 @@ using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Enums;
+using StoreServiceWorker.Workers;
 
 namespace StoreServiceWorker.Extensions;
 
@@ -33,5 +34,11 @@ public static class ServiceCollectionExtension
         return services
             .AddSingleton<RewardPointService>()
             .AddSingleton<RewardPointBLL>();
+    }
+    
+    public static IServiceCollection RegisterHostServices(this IServiceCollection services)
+    {
+        return services
+            .AddHostedService<DepositRewardPointWorker>();
     }
 }

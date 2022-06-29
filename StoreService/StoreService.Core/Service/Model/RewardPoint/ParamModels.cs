@@ -78,3 +78,11 @@ public class DepositRewardPointInfo
     public int SiteId { get; set; }
     public string Memo { get; set; }
 }
+
+public class CustRewardPointUseParams
+{
+    public int CustId { get; set; }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public decimal UsePoint { get; set; }
+}

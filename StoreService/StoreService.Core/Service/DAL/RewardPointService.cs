@@ -267,7 +267,7 @@ public class RewardPointService
                     para = new DynamicParameters();
                     para.Add("_PointType", (int) PointTypeEnum.Deposit);
                     para.Add("_Infos", JsonConvert.SerializeObject(batchLogInfo));
-                    para.Add("_Operator", "Sysem");
+                    para.Add("_Operator", "System");
                     
                     var logResult = 
                         await conn.ExecuteAsync(
@@ -298,5 +298,43 @@ public class RewardPointService
         }
 
         return result;
+    }
+
+    public async Task<bool> CustRewardPointUse(CustRewardPointUseParams input ,  string transId , MySqlConnection conn, MySqlTransaction trans)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyId", input.CurrencyId);
+        para.Add("_UsePoint", input.UsePoint);
+        para.Add("_BeforeBalance", dbType: DbType.String, direction: ParameterDirection.Output);
+        para.Add("_AfterBalance", dbType: DbType.String, direction: ParameterDirection.Output);
+
+        var result  = await conn.ExecuteAsync("Store_CustRewardPointUse_Set", para, trans, commandType: CommandType.StoredProcedure);
+                
+        if (result > 0 )
+        {
+            var beforeBalance = para.Get<decimal>("_BeforeBalance") ;
+            var afterBalance = para.Get<decimal>("_AfterBalance") ;
+            
+            var logPara = new DynamicParameters();
+            logPara.Add("_PointType", (int) PointTypeEnum.Redemption);
+            logPara.Add("_CustId", input.CustId);
+            logPara.Add("_CurrencyId", input.CurrencyId);
+            logPara.Add("_SiteId", input.SiteId);
+            logPara.Add("_TransId", transId);
+            logPara.Add("_ChangePoint", input.UsePoint);
+            logPara.Add("_BeforePoint", beforeBalance);
+            logPara.Add("_AfterPoint", afterBalance);
+            logPara.Add("_Memo", "Apply Redemption");
+            logPara.Add("_Operator", "System");
+        
+            var logResult  = await conn.ExecuteAsync("Store_RewardPointLog_Ins", logPara, trans, commandType: CommandType.StoredProcedure);
+            if (logResult > 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

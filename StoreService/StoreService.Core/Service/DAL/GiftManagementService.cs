@@ -8,6 +8,7 @@ using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Core.Service.Model.Frontend;
+using StoreService.Core.Service.Model.RewardPoint;
 using StoreService.Extensions;
 
 namespace StoreService.Core.Service.DAL;
@@ -17,6 +18,8 @@ public class GiftManagementService
     private readonly IConfiguration _configuration;
     private readonly MySqlClient _mainDbClient;
     private readonly MySqlClient _reportDbClient;
+    private readonly RewardPointService _rewardPointService;
+    
     private readonly string _connectionString;
 
     public GiftManagementService(IServiceProvider provider)
@@ -25,6 +28,7 @@ public class GiftManagementService
         _connectionString = _configuration.GetConnectionString("ConnectionString");
         _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
+        _rewardPointService = provider.GetRequiredService<RewardPointService>();
     }
 
     public Task<IEnumerable<Gift>> GetGiftListAsync(GetListParams input)
@@ -192,30 +196,42 @@ public class GiftManagementService
         para.Add("_Prefix", "RS");
         para.Add("_TransId", dbType: DbType.String, direction: ParameterDirection.Output);
 
-        string transId;
-        await using (var conn = new MySqlConnection(_connectionString))
+        await using var conn = new MySqlConnection(_connectionString);
+        conn.Open();
+
+        await using (var trans = conn.BeginTransaction())
         {
-            conn.Open();
+            _ = conn.ExecuteAsync("Store_RedemptionInfo_Set", para, trans, commandType: CommandType.StoredProcedure);
+            var transId = para.Get<string>("_TransId") ?? string.Empty;
 
-            await using (var trans = conn.BeginTransaction())
+            if (!string.IsNullOrEmpty(transId))
             {
-                _ = conn.ExecuteAsync("Store_RedemptionInfo_Set", para, trans, commandType: CommandType.StoredProcedure);
-                transId = para.Get<string>("_TransId") ?? string.Empty;
-
-                if (!string.IsNullOrEmpty(transId))
+                var custRewardPointUseRequest = new CustRewardPointUseParams
+                {
+                    CustId = input.CustId,
+                    CurrencyId = input.CurrencyId,
+                    SiteId = input.SiteId,
+                    UsePoint = input.Point
+                };
+                var pointUseResult = await _rewardPointService.CustRewardPointUse(custRewardPointUseRequest,transId,conn,trans);
+                    
+                if (pointUseResult)
                 {
                     trans.Commit();
+                    return pointUseResult;
                 }
-                else
-                {
-                    trans.Rollback();
-                }
-            }
 
-            await conn.CloseAsync();
+                trans.Rollback();
+            }
+            else
+            {
+                trans.Rollback();
+            }
         }
-        
-        return !string.IsNullOrEmpty(transId);
+
+        await conn.CloseAsync();
+
+        return false;
     }
     
     public async Task<RedemptionLimit> GetRedemptionLimitAsync(GetRedemptionLimitParams input)

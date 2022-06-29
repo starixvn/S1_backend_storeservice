@@ -1,0 +1,28 @@
+﻿using StoreService.Core.Service.Model.Enums;
+using StoreService.Core.Service.Model.GiftManagement;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+
+namespace StoreService.Core.Service.Model.Frontend;
+
+public class GiftListModel
+{
+    public int GiftId { get; set; }
+    public string GiftName { get; set; }
+    public string EnGiftName { get; set; }
+    public int CategoryId { get; set; }
+    public string CategoryName { get; set; }
+    public string GiftDescription { get; set; }
+    public string GiftPictureUrl { get; set; }
+    [JsonIgnore]
+    public string Tags { get; set; }
+    public IEnumerable<GiftTag> TagList { get; set; }
+    public int Point { get; set; }
+    public decimal PriceWorth { get; set; }
+    public bool ShowStock { get; set; }
+    public int Stock { get; set; }
+}

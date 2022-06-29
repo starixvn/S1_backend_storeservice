@@ -7,6 +7,7 @@ using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.GiftManagement;
+using StoreService.Core.Service.Model.Frontend;
 using StoreService.Extensions;
 
 namespace StoreService.Core.Service.DAL;
@@ -37,7 +38,7 @@ public class GiftManagementService
         para.Add("_GiftName", input.GiftName);
         para.Add("_OrderByField", input.OrderByField);
         para.Add("_Desc", input.Desc);
-        
+
         return _reportDbClient.QueryAsync<Gift>("Store_GiftList_Get", para);
     }
 
@@ -62,7 +63,7 @@ public class GiftManagementService
 
         return _reportDbClient.QueryAsync<GiftCategory>("Store_GiftCategory_Get", para);
     }
-    
+
     public Task<IEnumerable<GiftInfo>> GetGiftAsync(GetGiftParams input)
     {
         var para = new DynamicParameters();
@@ -133,7 +134,7 @@ public class GiftManagementService
 
         return true;
     }
-    
+
     public Task<int> CreateCategoryAsync(CreateCategoryParams input)
     {
         var para = new DynamicParameters();
@@ -145,7 +146,7 @@ public class GiftManagementService
 
         return result;
     }
-    
+
     public Task<int> UpdateCategoryAsync(UpdateCategoryParams input)
     {
         var para = new DynamicParameters();
@@ -156,7 +157,7 @@ public class GiftManagementService
 
         return result;
     }
-    
+
     public Task<int> CreateTagAsync(CreateTagParams input)
     {
         var para = new DynamicParameters();
@@ -168,7 +169,7 @@ public class GiftManagementService
 
         return result;
     }
-    
+
     public Task<int> UpdateTagAsync(UpdateTagParams input)
     {
         var para = new DynamicParameters();
@@ -179,18 +180,18 @@ public class GiftManagementService
 
         return result;
     }
-    
+
     public async Task<RedemptionLimit> GetRedemptionLimitAsync(GetRedemptionLimitParams input)
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
 
-        var result = 
+        var result =
                 await _mainDbClient.QueryAsync<RedemptionLimit>("Store_RedemptionLimit_Get", para);
 
         return result.FirstOrDefault();
     }
-    
+
     public Task<int> SetRedemptionLimitAsync(SetRedemptionLimitParams input)
     {
         var para = new DynamicParameters();
@@ -203,7 +204,7 @@ public class GiftManagementService
 
         return result;
     }
-    
+
     public Task<int> SetGiftSortAsync(SetSortParams input)
     {
         var para = new DynamicParameters();
@@ -213,5 +214,19 @@ public class GiftManagementService
         var result = _mainDbClient.ExecuteAsync("Store_GiftSort_Set", para);
 
         return result;
+    }
+
+    public Task<IEnumerable<GiftListModel>> GetGiftListAsync(FrontendGetListParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyId", input.CurrencyId);
+        para.Add("_CategoryIds", input.StrCategoryIds);
+        para.Add("_Tags", input.StrTags);
+        para.Add("_Lang", input.Lang);
+        para.Add("_OrderByField", input.OrderByField);
+        para.Add("_Desc", input.Desc);
+
+        return _reportDbClient.QueryAsync<GiftListModel>("Store_Frontend_GiftList_Get", para);
     }
 }

@@ -188,6 +188,23 @@ public class UpdateTagParams
     public string StrInfos { get; set; }
 }
 
+public class CreateRedemptionParams
+{
+    public CreateRedemptionParams(CreateRedemptionRequest req)
+    {
+        CustId = req.CustId;
+        SiteId = req.SiteId;
+        CurrencyId = req.CurrencyId;
+        GiftId = req.GiftId;
+        Point = req.Point;
+    }
+
+    public int CustId { get; set; }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public int GiftId { get; set; }
+    public int Point { get; set; }
+}
 
 public class GetRedemptionLimitParams
 {
@@ -232,8 +249,7 @@ public class SetSortParams
     public string StrInfos { get; set; }
     public string Operator { get; set; }
 }
-
-public class SortItem
+public abstract class SortItem
 {
     public int GiftId { get; set; }
     public int Sort { get; set; }

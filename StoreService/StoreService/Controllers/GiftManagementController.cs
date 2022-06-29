@@ -177,4 +177,20 @@ public class GiftManagementController : ControllerBase
             ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
+
+    #region Redemption
+
+    [HttpPost]
+    public async Task<ApiResult> CreateRedemptionAsync(CreateRedemptionRequest request)
+    {
+        var result =
+            await _giftManagementBll.CreateRedemptionAsync(new CreateRedemptionParams(request));
+
+        return new ApiResult
+        {
+            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+        };
+    }
+
+    #endregion
 }

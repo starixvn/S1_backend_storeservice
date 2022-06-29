@@ -180,7 +180,44 @@ public class GiftManagementService
 
         return result;
     }
+    
+    public async Task<bool> CreateRedemptionAsync(CreateRedemptionParams input )
+    {
+        var para = new DynamicParameters();
+        para.Add("_GiftId", input.GiftId);
+        para.Add("_CustId", input.CustId);
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyId", input.CurrencyId);
+        para.Add("_Point", input.Point);
+        para.Add("_Prefix", "RS");
+        para.Add("_TransId", dbType: DbType.String, direction: ParameterDirection.Output);
 
+        string transId;
+        await using (var conn = new MySqlConnection(_connectionString))
+        {
+            conn.Open();
+
+            await using (var trans = conn.BeginTransaction())
+            {
+                _ = conn.ExecuteAsync("Store_RedemptionInfo_Set", para, trans, commandType: CommandType.StoredProcedure);
+                transId = para.Get<string>("_TransId") ?? string.Empty;
+
+                if (!string.IsNullOrEmpty(transId))
+                {
+                    trans.Commit();
+                }
+                else
+                {
+                    trans.Rollback();
+                }
+            }
+
+            await conn.CloseAsync();
+        }
+        
+        return !string.IsNullOrEmpty(transId);
+    }
+    
     public async Task<RedemptionLimit> GetRedemptionLimitAsync(GetRedemptionLimitParams input)
     {
         var para = new DynamicParameters();

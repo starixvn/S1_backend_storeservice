@@ -156,6 +156,17 @@ public class GiftManagementBLL
         return success;
     }
 
+    public async Task<bool> CreateRedemptionAsync(CreateRedemptionParams input)
+    {
+        var success = await _giftManagementService.CreateRedemptionAsync(input);
+       
+        if (!success)
+        {
+            _logger.LogError("Create RedemptionInfo Failed");
+        }
+        
+        return success;
+    }
     public Task<RedemptionLimit> GetRedemptionLimitAsync(GetRedemptionLimitParams input)
         => _giftManagementService.GetRedemptionLimitAsync(input);
 

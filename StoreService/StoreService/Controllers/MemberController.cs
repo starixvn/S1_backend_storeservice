@@ -4,6 +4,7 @@ using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Member;
+using StoreService.Core.Service.Model.RewardPoint;
 
 namespace StoreService.Controllers;
 
@@ -12,10 +13,12 @@ namespace StoreService.Controllers;
 public class MemberController : ControllerBase
 {
     private readonly MemberBLL _memberBll;
+    private readonly RewardPointBLL _rewardPointBll;
     
     public MemberController(IServiceProvider provider)
     {
         _memberBll = provider.GetRequiredService<MemberBLL>();
+        _rewardPointBll = provider.GetRequiredService<RewardPointBLL>();
     }
     
     [HttpPost]
@@ -54,7 +57,7 @@ public class MemberController : ControllerBase
     public async Task<ApiResult> ManualRewardPointAsync(CreateManualRewardPointInfoRequest request)
     {
         var result =
-            await _memberBll.CreateManualRewardPointInfoAsync(new CreateManualRewardPointInfoParams(request));
+            await _rewardPointBll.CreateManualRewardPointInfoAsync(new CreateManualRewardPointInfoParams(request));
 
         return new ApiResult<TransIdModel>
         {
@@ -67,7 +70,7 @@ public class MemberController : ControllerBase
     public async Task<ApiResult> BatchManualRewardPointAsync(CreateManualRewardPointInfoBatchRequest request)
     {
         var result =
-            await _memberBll.CreateManualRewardPointInfoBatchAsync(new CreateManualRewardPointInfoBatchParams(request));
+            await _rewardPointBll.CreateManualRewardPointInfoBatchAsync(new CreateManualRewardPointInfoBatchParams(request));
 
         return new ApiResult
         {

@@ -35,6 +35,8 @@ public static class ServiceCollectionExtension
                 .AddSingleton<PointSettingService>()
                 .AddSingleton<PointSettingBLL>()
                 .AddSingleton<MemberService>()
-                .AddSingleton<MemberBLL>();
+                .AddSingleton<MemberBLL>()
+                .AddSingleton<RewardPointService>()
+                .AddSingleton<RewardPointBLL>();
         }
 }

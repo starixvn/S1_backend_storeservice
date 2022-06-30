@@ -310,12 +310,12 @@ public class RewardPointService
         para.Add("_BeforeBalance", dbType: DbType.String, direction: ParameterDirection.Output);
         para.Add("_AfterBalance", dbType: DbType.String, direction: ParameterDirection.Output);
 
-        var result  = await conn.ExecuteAsync("Store_CustRewardPointUse_Set", para, trans, commandType: CommandType.StoredProcedure);
+        var result = await conn.ExecuteAsync("Store_CustRewardPointUse_Set", para, trans, commandType: CommandType.StoredProcedure);
                 
         if (result > 0 )
         {
-            var beforeBalance = para.Get<decimal>("_BeforeBalance") ;
-            var afterBalance = para.Get<decimal>("_AfterBalance") ;
+            var beforeBalance = para.Get<decimal>("_BeforeBalance");
+            var afterBalance = para.Get<decimal>("_AfterBalance");
             
             var logPara = new DynamicParameters();
             logPara.Add("_PointType", (int) PointTypeEnum.Redemption);

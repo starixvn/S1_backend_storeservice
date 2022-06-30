@@ -93,15 +93,6 @@ public class UpdateTagRequest
     public IEnumerable<LangNameModel> Infos { get; set; }
 }
 
-public class CreateRedemptionRequest
-{
-    public int CustId { get; set; }
-    public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
-    public int GiftId { get; set; }
-    public int Point { get; set; }
-}
-
 public class GetRedemptionLimitRequest
 {
     public int SiteId { get; set; }

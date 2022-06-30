@@ -183,7 +183,11 @@ public class RewardPointService
         return result;
     }
     
-    
+    public Task<IEnumerable<DepositPointSetting>> GetAllDepositPointSettingAsync()
+    {
+        return _reportDbClient.QueryAsync<DepositPointSetting>("Store_DepositPointSetting_GetAll");
+    }
+
     public Task<IEnumerable<DepositRewardPointQueue>> GetDepositRewardPointQueueAsync()
     {
         return _reportDbClient.QueryAsync<DepositRewardPointQueue>("Store_DepositRewardPointQueue_Get");

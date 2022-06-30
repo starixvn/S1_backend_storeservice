@@ -47,7 +47,10 @@ public class RewardPointBLL
         
         return success;
     }
-
+    
+    public Task<IEnumerable<DepositPointSetting>> GetAllDepositPointSettingAsync()
+        => _rewardPointService.GetAllDepositPointSettingAsync();
+    
     public Task<IEnumerable<DepositRewardPointQueue>> GetDepositRewardPointQueueAsync()
         => _rewardPointService.GetDepositRewardPointQueueAsync();
 

@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using StoreService.Core.Service.BLL;
+using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.RewardPoint;
 
 namespace StoreServiceWorker.Workers;
@@ -45,8 +46,6 @@ public class DepositRewardPointWorker : BackgroundService
                 return;
             }
 
-            //var groupSetting = settings.GroupBy(x => x.SiteId);
-
             var groupQueue = queue.GroupBy(x => x.CurrencyId);
             foreach (var group in groupQueue)
             {
@@ -56,12 +55,57 @@ public class DepositRewardPointWorker : BackgroundService
                     var depositQueueInfos = new List<DepositRewardPointQueueInfo>();
                     var depositPointInfos = new List<DepositRewardPointInfo>();
                     var groupByCustQueue = group.GroupBy(x => x.CustId);
+                    
                     foreach (var custQueue in groupByCustQueue)
                     {
                         var siteId = custQueue.First().SiteId;
                         var setting = settings.First(x => x.SiteId == siteId && x.CurrencyId == currencyId);
-                        var pointRate = GetPointRate(setting);
-                        var point = Math.Floor(custQueue.Sum(x => x.RemainAmount) / pointRate);
+                        
+                        if (custQueue.Sum(x => x.RemainAmount) / setting.DepositAmount > 0)
+                        {
+                            var updateTime = custQueue.Max(x => x.DepositUpdateTime);
+                            var pointRate = GetPointRate(setting, updateTime);
+                            var mergeAmount = 0m;
+                            var mergeTransIds = new List<string>();
+                            foreach (var q in custQueue.OrderBy(x=>x.TransId))
+                            {
+                                var amount = mergeAmount + q.RemainAmount;
+                                var origPoint = Math.Floor(amount / pointRate);
+                                
+                                if (origPoint > 0)
+                                {
+                                    var memo = mergeTransIds.Any()
+                                        ? $": merged by {string.Join(',', mergeTransIds)}"
+                                        : string.Empty;
+                                    
+                                    // 清空
+                                    mergeAmount = 0;
+                                    mergeTransIds = new List<string>();
+                                
+                                    depositPointInfos.Add(new DepositRewardPointInfo
+                                    {
+                                        Memo = memo,
+                                        Point = origPoint * pointRate,
+                                        CustId = custQueue.Key,
+                                        SiteId = siteId,
+                                        TransId = q.TransId
+                                    });
+                                    
+                                    var remainAmount = q.RemainAmount - (origPoint * setting.DepositAmount);
+                                    if (remainAmount > 0)
+                                    {
+                                        mergeAmount += remainAmount;
+                                        mergeTransIds.Add(q.TransId);
+                                    }
+                                    depositQueueInfos.Add(new DepositRewardPointQueueInfo
+                                    {
+                                        Status = (int) GetStatus(remainAmount),
+                                        RemainAmount = remainAmount > 0 ? remainAmount : 0,
+                                        TransId = q.TransId
+                                    });
+                                }
+                            }
+                        }
                     }
 
                     var input = new DepositBatchRewardPointParams
@@ -102,14 +146,19 @@ public class DepositRewardPointWorker : BackgroundService
         return Task.CompletedTask;
     }
 
-    private decimal GetPointRate(DepositPointSetting setting)
+    private DepositRewardPointQueueStatusEnum GetStatus(decimal remainAmount)
+        => remainAmount > 0
+            ? DepositRewardPointQueueStatusEnum.Running
+            : DepositRewardPointQueueStatusEnum.Finish;
+    
+    
+
+    private decimal GetPointRate(DepositPointSetting setting, DateTimeOffset updateTime)
     {
         if (!setting.PromotionStatus)
             return setting.PointRate;
-
-        var now = DateTimeOffset.Now;
-
-        return now >= setting.PromotionStartTime && now < setting.PromotionEndTime
+        
+        return updateTime >= setting.PromotionStartTime && updateTime < setting.PromotionEndTime
             ? setting.PromotionPointRate
             : setting.PointRate;
     }

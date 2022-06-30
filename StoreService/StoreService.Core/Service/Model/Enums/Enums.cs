@@ -26,3 +26,9 @@ public enum PointTypeEnum
     Manual = 4,
     System = 5
 }
+
+public enum DepositRewardPointQueueStatusEnum
+{
+    Running = 1,
+    Finish = 2
+}

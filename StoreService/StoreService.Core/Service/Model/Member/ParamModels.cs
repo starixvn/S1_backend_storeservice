@@ -11,6 +11,8 @@ public class GetListParams : PagerParamModel
         SiteId = req.SiteId;
         StrCurrencyIds = JsonConvert.SerializeObject(req.CurrencyIds);
         StrVipLevels = JsonConvert.SerializeObject(req.VipLevels);
+        UserName = req.UserName;
+        TpUserName = req.TpUserName;
         PageSize = req.PageSize;
         StartIndex = req.PageSize.GetStartIndex(req.PageNumber);
         StartTime = req.StartTime.DateTime;

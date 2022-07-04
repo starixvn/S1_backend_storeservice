@@ -155,7 +155,6 @@ public class GiftManagementBLL
 
         return success;
     }
-
     public Task<RedemptionLimit> GetRedemptionLimitAsync(GetRedemptionLimitParams input)
         => _giftManagementService.GetRedemptionLimitAsync(input);
 

@@ -8,6 +8,7 @@ using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Core.Service.Model.Frontend;
+using StoreService.Core.Service.Model.RewardPoint;
 using StoreService.Extensions;
 
 namespace StoreService.Core.Service.DAL;
@@ -17,6 +18,8 @@ public class GiftManagementService
     private readonly IConfiguration _configuration;
     private readonly MySqlClient _mainDbClient;
     private readonly MySqlClient _reportDbClient;
+    private readonly RewardPointService _rewardPointService;
+    
     private readonly string _connectionString;
 
     public GiftManagementService(IServiceProvider provider)
@@ -25,6 +28,7 @@ public class GiftManagementService
         _connectionString = _configuration.GetConnectionString("ConnectionString");
         _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
+        _rewardPointService = provider.GetRequiredService<RewardPointService>();
     }
 
     public Task<IEnumerable<Gift>> GetGiftListAsync(GetListParams input)

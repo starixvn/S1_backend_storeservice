@@ -32,6 +32,8 @@ public static class ServiceCollectionExtension
                 .AddSingleton<CacheHelper>()
                 .AddSingleton<GiftManagementService>()
                 .AddSingleton<GiftManagementBLL>()
+                .AddSingleton<RedemptionBLL>()
+                .AddSingleton<RedemptionService>()
                 .AddSingleton<PointSettingService>()
                 .AddSingleton<PointSettingBLL>()
                 .AddSingleton<MemberService>()

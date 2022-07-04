@@ -93,12 +93,10 @@ public class UpdateTagRequest
     public IEnumerable<LangNameModel> Infos { get; set; }
 }
 
-
 public class GetRedemptionLimitRequest
 {
     public int SiteId { get; set; }
 }
-
 
 public class SetRedemptionLimitRequest
 {

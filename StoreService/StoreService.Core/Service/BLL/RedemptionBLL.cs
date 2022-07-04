@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StoreService.Core.Service.DAL;
+using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Redemption;
 
 namespace StoreService.Core.Service.BLL;
@@ -26,5 +27,11 @@ public class RedemptionBLL
         }
         
         return success;
+    }
+    
+    public async Task<PagerResultModel<GetRedemptionListResult>> GetRedemptionListAsync(GetRedemptionListRequest input)
+    {
+        var result = await _redemptionService.GetRedemptionListAsync(input);
+        return result;
     }
 }

@@ -31,5 +31,21 @@ public class RedemptionController : ControllerBase
         };
     }
 
+    [HttpPost]
+    public async Task<ApiResult> GetRedemptionListAsync(GetRedemptionListRequest request)
+    {
+        var result =
+            await _redemptionBll.GetRedemptionListAsync(request);
+        
+        return new ApiListResult<GetRedemptionListResult>
+        {
+            Data = result.Datas,
+            PageNumber = request.PageNumber,
+            TotalPages = result.TotalPages,
+            RowCount = result.RowCount,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
+    }
+    
     #endregion
 }

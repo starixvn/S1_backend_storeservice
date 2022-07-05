@@ -110,4 +110,13 @@ public class RedemptionService
         
         return result;
     }
+    
+    public async Task<GetRedemptionDetail> GetRedemptionDetailAsync(GetRedemptionDetailRequest input )
+    {
+        var para = new DynamicParameters();
+        para.Add("_RedemptionId", input.RedemptionId);
+        var result = await _mainDbClient.QueryFirstAsync<GetRedemptionDetail>("Store_RedemptionInfoById_Get", para);
+        
+        return result;
+    }
 }

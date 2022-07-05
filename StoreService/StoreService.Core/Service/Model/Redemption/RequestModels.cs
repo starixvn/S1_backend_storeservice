@@ -37,14 +37,12 @@ public class GetRedemptionListRequest : PagerRequestModel
     public IEnumerable<int> CurrencyIds { get; set; }
     public IEnumerable<int> VipLevels { get; set; }
     public IEnumerable<int> Statuses { get; set; }
-    
-    //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    //[JsonIgnore]
     public string TransId { get; set; }
-    //[JsonIgnore]
-    //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public string UserName { get; set; }
-    //[JsonIgnore]
-    //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public string SabaId { get; set; }
+}
+
+public class GetRedemptionDetailRequest 
+{
+    public int RedemptionId { get; set; }
 }

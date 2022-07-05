@@ -13,7 +13,8 @@ public class RewardPointBLL
     private readonly string _prefix;
     private readonly RewardPointService _rewardPointService;
     private readonly ILogger<RewardPointBLL> _logger;
-    
+    private readonly string _connectionString;
+
     public RewardPointBLL(IServiceProvider provider)
     {
         _rewardPointService = provider.GetRequiredService<RewardPointService>();
@@ -21,8 +22,9 @@ public class RewardPointBLL
         var env = provider.GetRequiredService<IWebHostEnvironment>();
         _prefix = env.EnvironmentName.GetEnvPrefix("P");
     }
-    
-    public async Task<(bool Success, string TransId)> CreateManualRewardPointInfoAsync(CreateManualRewardPointInfoParams input)
+
+    public async Task<(bool Success, string TransId)> CreateManualRewardPointInfoAsync(
+        CreateManualRewardPointInfoParams input)
     {
         var result = await _rewardPointService.CreateManualRewardPointInfoAsync(input, _prefix);
         var success = result.ResultCode == (int) ErrorCodeEnum.Success;
@@ -31,10 +33,10 @@ public class RewardPointBLL
         {
             _logger.LogError($"Insert ManualRewardPointInfo Failed, Result Code: ({result.ResultCode})");
         }
-        
+
         return (success, result.TransId);
     }
-    
+
     public async Task<bool> CreateManualRewardPointInfoBatchAsync(CreateManualRewardPointInfoBatchParams input)
     {
         var result = await _rewardPointService.CreateManualRewardPointInfoBatchAsync(input, _prefix);
@@ -42,15 +44,15 @@ public class RewardPointBLL
 
         if (!success)
         {
-            _logger.LogError($"Batch ManualRewardPointInfo Failed, Result: ({result})");
+            _logger.LogError($"CreateManualRewardPointInfoBatch Failed, Result: ({result})");
         }
-        
+
         return success;
     }
-    
+
     public Task<IEnumerable<DepositPointSetting>> GetAllDepositPointSettingAsync()
         => _rewardPointService.GetAllDepositPointSettingAsync();
-    
+
     public Task<IEnumerable<DepositRewardPointQueue>> GetDepositRewardPointQueueAsync()
         => _rewardPointService.GetDepositRewardPointQueueAsync();
 
@@ -63,7 +65,7 @@ public class RewardPointBLL
         {
             _logger.LogError($"DepositBatchRewardPoint Failed, Result: ({result})");
         }
-        
+
         return success;
     }
 }

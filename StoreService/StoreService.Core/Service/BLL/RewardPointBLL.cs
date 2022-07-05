@@ -13,7 +13,6 @@ public class RewardPointBLL
     private readonly string _prefix;
     private readonly RewardPointService _rewardPointService;
     private readonly ILogger<RewardPointBLL> _logger;
-    private readonly string _connectionString;
 
     public RewardPointBLL(IServiceProvider provider)
     {

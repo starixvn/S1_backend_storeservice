@@ -34,4 +34,10 @@ public class RedemptionBLL
         var result = await _redemptionService.GetRedemptionListAsync(input);
         return result;
     }
+    
+    public async Task<GetRedemptionDetail> GetRedemptionDetailAsync(GetRedemptionDetailRequest input)
+    {
+        var result = await _redemptionService.GetRedemptionDetailAsync(input);
+        return result;
+    }
 }

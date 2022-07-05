@@ -232,7 +232,7 @@ public class SetSortParams
     public string StrInfos { get; set; }
     public string Operator { get; set; }
 }
-public abstract class SortItem
+public class SortItem
 {
     public int GiftId { get; set; }
     public int Sort { get; set; }

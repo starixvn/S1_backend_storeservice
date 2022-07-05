@@ -221,7 +221,9 @@ public class GiftManagementService
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyId", input.CurrencyId);
+        para.Add("_UseCategoryIds", input.UseCategoryIds);
         para.Add("_CategoryIds", input.StrCategoryIds);
+        para.Add("_UseTags", input.UseTags);
         para.Add("_Tags", input.StrTags);
         para.Add("_Lang", input.Lang);
         para.Add("_OrderByField", input.OrderByField);

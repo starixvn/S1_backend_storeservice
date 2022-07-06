@@ -101,6 +101,7 @@ public class PointSettingService
     public Task<IEnumerable<TurnoverPointStatusSetting>> GetTurnoverPointStatusSettingAsync(GetTurnoverPointStatusSettingParams input)
     {
         var para = new DynamicParameters();
+        para.Add("_IsAll", false);
         para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_TpCategoryId", input.TpCategoryId);

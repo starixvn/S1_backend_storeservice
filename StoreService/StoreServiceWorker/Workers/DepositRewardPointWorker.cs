@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Serilog.Context;
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model.Enums;
+using StoreService.Core.Service.Model.PointSetting;
 using StoreService.Core.Service.Model.RewardPoint;
 
 namespace StoreServiceWorker.Workers;

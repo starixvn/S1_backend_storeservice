@@ -35,12 +35,15 @@ public static class ServiceCollectionExtension
             .AddSingleton<PointSettingService>()
             .AddSingleton<PointSettingBLL>()
             .AddSingleton<RewardPointService>()
-            .AddSingleton<RewardPointBLL>();
+            .AddSingleton<RewardPointBLL>()
+            .AddSingleton<MemberService>()
+            .AddSingleton<MemberBLL>();
     }
     
     public static IServiceCollection RegisterHostServices(this IServiceCollection services)
     {
         return services
-            .AddHostedService<DepositRewardPointWorker>();
+            //.AddHostedService<DepositRewardPointWorker>()
+            .AddHostedService<PointExpiryWorker>();
     }
 }

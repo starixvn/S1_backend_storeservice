@@ -32,3 +32,15 @@ public enum DepositRewardPointQueueStatusEnum
     Running = 1,
     Finish = 2
 }
+
+
+public enum RedemptionEnum
+{
+    Draft = 0,
+    Pending = 1,
+    Approved = 2,
+    Rejected = 3,
+    OnHold = 4
+}
+
+}

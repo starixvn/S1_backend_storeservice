@@ -17,3 +17,12 @@ public class CreateRedemptionParams
     public int GiftId { get; set; }
     public int Point { get; set; }
 }
+
+public class SetRedemptionLogParams
+{
+    public int SiteId { get; set; }
+    public string TransId { get; set; }
+    public int Action { get; set; }
+    public string Comment { get; set; }
+    public string Operator { get; set; }
+}

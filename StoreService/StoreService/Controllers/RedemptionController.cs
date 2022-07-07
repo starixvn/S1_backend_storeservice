@@ -60,5 +60,98 @@ public class RedemptionController : ControllerBase
         };
     }
     
+    [HttpPost]
+    public async Task<ApiResult> SetRedemptionInfoAsync(SetRedemptionInfoRequest request)
+    {
+        var result = new ApiResult();
+        var success = false;
+        
+        var redemptionInfo = await _redemptionBll.GetRedemptionByTransIdAsync(request.TransId);
+        
+        if (redemptionInfo == null)
+        {
+            result.ErrorCode = (int) ErrorCodeEnum.Failed;
+            result.RawMessage = "TransId doesn't exist";
+            return result;
+        }
+        
+        switch (request.Action)
+        {
+            case (int) RedemptionEnum.Draft:
+                if ( redemptionInfo.Status != (int) RedemptionEnum.Draft)
+                {
+                    success = await _redemptionBll.SetRedemptionDraftAsync(request);
+                }
+                else
+                {
+                    result.RawMessage = "Draft Flow Is Invalid";
+                }
+                break;
+            
+            case (int) RedemptionEnum.Pending:
+                if (redemptionInfo.Status is (int) RedemptionEnum.OnHold or (int) RedemptionEnum.Draft
+                    && redemptionInfo.Status != (int) RedemptionEnum.Pending)
+                {
+                    success = await _redemptionBll.SetRedemptionPendingAsync(request);
+                }
+                else
+                {
+                    result.RawMessage = "Pending Flow Is Invalid";
+                }
+                break;
+            
+            case (int) RedemptionEnum.Approved:
+                if (redemptionInfo.Status is (int) RedemptionEnum.Pending or (int) RedemptionEnum.Draft
+                    && redemptionInfo.Status != (int) RedemptionEnum.Approved)
+                {
+                    success = await _redemptionBll.SetRedemptionApprovedAsync(request);
+                }
+                else
+                {
+                    result.RawMessage = "Approved Flow Is Invalid";
+                }
+                break;
+            
+            case (int) RedemptionEnum.Rejected:
+                if (redemptionInfo.Status is (int) RedemptionEnum.Pending or (int) RedemptionEnum.Draft
+                    && redemptionInfo.Status != (int) RedemptionEnum.Rejected)
+                {
+                    success = await _redemptionBll.SetRedemptionRejectedAsync(request);
+                }
+                else
+                {
+                    result.RawMessage = "Rejected Flow Is Invalid";
+                }
+                break;
+            
+            case (int) RedemptionEnum.OnHold:
+                if (redemptionInfo.Status is (int) RedemptionEnum.Pending or (int) RedemptionEnum.Draft 
+                    && redemptionInfo.Status != (int) RedemptionEnum.OnHold)
+                {
+                    success = await _redemptionBll.SetRedemptionOnHoldAsync(request);
+                }
+                else
+                {
+                    result.RawMessage = "OnHold Flow Is Invalid";
+                }
+                break;
+            
+            default:
+                result.RawMessage = "Request Action Is Invalid";
+                break;
+        }
+
+        if (success)
+        {
+            result.ErrorCode = (int) ErrorCodeEnum.Success;
+        }
+        else
+        {
+            result.ErrorCode = (int) ErrorCodeEnum.Failed;
+        }
+        
+        return result;
+    }
+    
     #endregion
 }

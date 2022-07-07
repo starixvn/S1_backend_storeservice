@@ -26,3 +26,12 @@ public enum PointTypeEnum
     Manual = 4,
     System = 5
 }
+
+public enum RedemptionEnum
+{
+    Draft = 0,
+    Pending = 1,
+    Approved = 2,
+    Rejected = 3,
+    OnHold = 4
+}

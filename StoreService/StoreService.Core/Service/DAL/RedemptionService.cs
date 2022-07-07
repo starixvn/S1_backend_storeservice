@@ -17,7 +17,6 @@ public class RedemptionService
     private readonly MySqlClient _mainDbClient;
     private readonly MySqlClient _reportDbClient;
     private readonly RewardPointService _rewardPointService;
-    
     private readonly string _connectionString;
 
     public RedemptionService(IServiceProvider provider)
@@ -100,7 +99,7 @@ public class RedemptionService
         para.Add("TotalPages", dbType: DbType.Int32, direction: ParameterDirection.Output);
         para.Add("RowCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
         
-        var list = await _mainDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionList_Get", para);
+        var list = await _reportDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionList_Get", para);
         var result = new PagerResultModel<GetRedemptionListResult>
         {
             Datas = list,
@@ -115,8 +114,96 @@ public class RedemptionService
     {
         var para = new DynamicParameters();
         para.Add("_RedemptionId", input.RedemptionId);
-        var result = await _mainDbClient.QueryFirstAsync<GetRedemptionDetail>("Store_RedemptionInfoById_Get", para);
+        var result = await _reportDbClient.QueryFirstAsync<GetRedemptionDetail>("Store_RedemptionInfoById_Get", para);
         
         return result;
     }
+    
+    public async Task<GetRedemptionByTransIdResult> GetRedemptionByTransIdAsync(string transId )
+    {
+        var para = new DynamicParameters();
+        para.Add("_TransId", transId);
+        var result = await _reportDbClient.QueryFirstAsync<GetRedemptionByTransIdResult>("Store_RedemptionByTransId_Get", para);
+        
+        return result;
+    }
+    
+    public async Task<bool> SetRedemptionInfoAsync(SetRedemptionInfoRequest input )
+    {
+        var success = false;
+        await using var conn = new MySqlConnection(_connectionString);
+        conn.Open();
+
+        await using (var trans = conn.BeginTransaction())
+        {
+            try
+            {
+                var para = new DynamicParameters();
+                para.Add("_TransId", input.TransId);
+                para.Add("_Status", input.Action);
+                para.Add("_ActualCost", input.ActualCost);
+                para.Add("_ReceiptUrls", input.ReceiptUrls);
+                para.Add("_Operator", input.Operator);
+                var setResult = conn.ExecuteAsync("Store_RedemptionInfo_Set", para, trans, commandType: CommandType.StoredProcedure);
+            
+                if (setResult.Result > 0)
+                {
+                    var logRequest = new SetRedemptionLogParams
+                    {
+                        SiteId = input.SiteId,
+                        TransId = input.TransId,
+                        Action = input.Action,
+                        Comment = input.Comment,
+                        Operator = input.Operator
+                    };
+                
+                    var logResult = SetRedemptionLog(logRequest,conn,trans);
+                    
+                    if (logResult > 0)
+                    {
+                        trans.Commit();
+                        success = true;
+                    
+                    }
+                    else
+                    {
+                        trans.Rollback();
+                    }
+                }
+                else
+                {
+                    trans.Rollback();
+                }
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                await conn.CloseAsync();
+                throw;
+            }
+            
+        }
+        await conn.CloseAsync();
+        
+        return success ;
+    }
+
+
+    #region private
+
+    private int SetRedemptionLog(SetRedemptionLogParams input ,MySqlConnection conn, MySqlTransaction trans)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_TransId", input.TransId);
+        para.Add("_Action", input.Action);
+        para.Add("_Comment", input.Comment);
+        para.Add("_Operator", input.Operator);
+        var setResult = conn.Execute("Store_RedemptionLog_Ins", para, trans, commandType: CommandType.StoredProcedure);
+
+        return setResult;
+    }
+
+    #endregion
+    
 }

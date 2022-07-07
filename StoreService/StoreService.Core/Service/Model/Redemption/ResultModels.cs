@@ -19,6 +19,20 @@ public class GetRedemptionListResult
     public string Operator { get; set; }
 }
 
+public class GetRedemptionByTransIdResult
+{
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public int RedemptionId { get; set; }
+    public int CustId { get; set; }
+    public string TransId { get; set; }
+    public int Status { get; set; }
+    public DateTime CreateTime { get; set; }
+    public DateTime UpdateTime { get; set; }
+    public int Point { get; set; }
+    public string Operator { get; set; }
+}
+
 public class GetRedemptionDetail
 {
     public int SiteId { get; set; }

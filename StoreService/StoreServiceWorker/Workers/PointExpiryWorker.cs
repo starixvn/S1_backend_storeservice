@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,6 +19,7 @@ public class PointExpiryWorker : BackgroundService
     private readonly MemberBLL _memberBll;
     private readonly ILogger<PointExpiryWorker> _logger;
     private readonly IEnumerable<SupportSetting> _supportSetting;
+    private readonly IWebHostEnvironment _env;
     private Timer _timer;
 
     public PointExpiryWorker(IServiceProvider provider)
@@ -28,6 +30,7 @@ public class PointExpiryWorker : BackgroundService
         _rewardPointbll = provider.GetRequiredService<RewardPointBLL>();
         _memberBll = provider.GetRequiredService<MemberBLL>();
         _logger = provider.GetRequiredService<ILogger<PointExpiryWorker>>();
+        _env = provider.GetRequiredService<IWebHostEnvironment>();
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -78,7 +81,7 @@ public class PointExpiryWorker : BackgroundService
                     }
                 }
                 
-                // STEP2: 點數歸零膏
+                // STEP3: 點數歸零膏
                 var success = await _rewardPointbll.SetPointExpiryAsync(inactiveMemberList);
 
                 if (!success)
@@ -92,7 +95,12 @@ public class PointExpiryWorker : BackgroundService
             }
             finally
             {
-                _timer.Change(TimeSpan.FromDays(1), TimeSpan.Zero);
+                var envName = _env.EnvironmentName;
+                var ts = envName is "Development" or "Local"
+                    ? TimeSpan.FromMinutes(10)
+                    : TimeSpan.FromDays(1);
+                
+                _timer.Change(ts, TimeSpan.Zero);
             }
         }
     }

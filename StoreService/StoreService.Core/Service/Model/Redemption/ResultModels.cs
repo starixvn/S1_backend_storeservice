@@ -57,3 +57,11 @@ public class GetRedemptionDetail
     public string AccountName { get; set; }
 }
 
+public class GetRedemptionLog
+{
+    public int Action { get; set; }
+    public string Comment { get; set; }
+    public string Operator { get; set; }
+    public DateTime CreateTime { get; set; }
+}
+

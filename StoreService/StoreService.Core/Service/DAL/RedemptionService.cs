@@ -61,7 +61,7 @@ public class RedemptionService
                 if (pointUseResult)
                 {
                     trans.Commit();
-                    return pointUseResult;
+                    return true;
                 }
 
                 trans.Rollback();

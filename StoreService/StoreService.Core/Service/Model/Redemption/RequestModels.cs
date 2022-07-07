@@ -33,7 +33,7 @@ public class GetRedemptionListRequest : PagerRequestModel
                 _endTime = new DateTimeOffset(value.Value.DateTime, TimeSpan.Zero);
         }
     }
-    public IEnumerable<int> SiteIds { get; set; }
+    public int SiteId { get; set; }
     public IEnumerable<int> CurrencyIds { get; set; }
     public IEnumerable<int> VipLevels { get; set; }
     public IEnumerable<int> Statuses { get; set; }

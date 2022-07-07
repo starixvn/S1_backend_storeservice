@@ -79,10 +79,24 @@ public class RedemptionService
     
     public async Task<PagerResultModel<GetRedemptionListResult>> GetRedemptionListAsync(GetRedemptionListRequest input )
     {
-        var selectSite = JsonConvert.SerializeObject(input.SiteIds);
+        var siteList = new List<int>{input.SiteId};
+        var selectSite = JsonConvert.SerializeObject(siteList);
         var selectCurrencyId = JsonConvert.SerializeObject(input.CurrencyIds);
         var selectVipLevels = JsonConvert.SerializeObject(input.VipLevels);
         var selectStatuses = JsonConvert.SerializeObject(input.Statuses);
+        if (string.IsNullOrEmpty(input.TransId))
+        {
+            input.TransId = null;
+        }
+        if (string.IsNullOrEmpty(input.UserName))
+        {
+            input.UserName = null;
+        }
+        if (string.IsNullOrEmpty(input.SabaId))
+        {
+            input.SabaId = null;
+        }
+        
         
         var para = new DynamicParameters();
         para.Add("_SelectSite", selectSite);

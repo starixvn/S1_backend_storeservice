@@ -2,6 +2,7 @@
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
+using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Core.Service.Model.Redemption;
 
 namespace StoreService.Controllers;
@@ -11,10 +12,12 @@ namespace StoreService.Controllers;
 public class RedemptionController : ControllerBase
 {
     private readonly RedemptionBLL _redemptionBll;
+    private readonly GiftManagementBLL _giftManagementBll;
     
     public RedemptionController(IServiceProvider provider)
     {
         _redemptionBll = provider.GetRequiredService<RedemptionBLL>();
+        _giftManagementBll = provider.GetRequiredService<GiftManagementBLL>();
     }
     
     #region Redemption
@@ -22,13 +25,25 @@ public class RedemptionController : ControllerBase
     [HttpPost]
     public async Task<ApiResult> CreateRedemptionAsync(CreateRedemptionRequest request)
     {
-        var result =
-            await _redemptionBll.CreateRedemptionAsync(new CreateRedemptionParams(request));
+        var result = new ApiResult();
+        var redemptionLimit = _giftManagementBll.GetRedemptionLimitAsync(new GetRedemptionLimitParams(new GetRedemptionLimitRequest(){SiteId = request.SiteId}));
 
-        return new ApiResult
+        if (redemptionLimit.Result.Status == (int) GeneralStatusEnum.Disabled)
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
-        };
+            result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitIsClose;
+        }
+        
+        if ( redemptionLimit.Result.Limit <= 0)
+        {
+            result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitOverLimit;
+        }
+        else
+        {
+            var success = await _redemptionBll.CreateRedemptionAsync(new CreateRedemptionParams(request));
+            result.ErrorCode = (int) (success ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed);
+        }
+
+        return result;
     }
 
     [HttpPost]

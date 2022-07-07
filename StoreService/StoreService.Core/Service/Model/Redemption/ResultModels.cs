@@ -16,6 +16,7 @@ public class GetRedemptionListResult
     public string ItemName { get; set; }
     public int Point { get; set; }
     public decimal ActualCost { get; set; }
+    public string ReceiptUrls { get; set; }
     public string Operator { get; set; }
 }
 

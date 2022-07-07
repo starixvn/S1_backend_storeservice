@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,12 +15,14 @@ public class DepositRewardPointWorker : BackgroundService
 {
     private readonly RewardPointBLL _rewardPointbll;
     private readonly ILogger<DepositRewardPointWorker> _logger;
+    private readonly IWebHostEnvironment _env;
     private Timer _timer;
 
     public DepositRewardPointWorker(IServiceProvider provider)
     {
         _rewardPointbll = provider.GetRequiredService<RewardPointBLL>();
         _logger = provider.GetRequiredService<ILogger<DepositRewardPointWorker>>();
+        _env = provider.GetRequiredService<IWebHostEnvironment>();
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -63,7 +66,12 @@ public class DepositRewardPointWorker : BackgroundService
             }
             finally
             {
-                _timer.Change(TimeSpan.FromMinutes(5), TimeSpan.Zero);
+                var envName = _env.EnvironmentName;
+                var ts = envName is "Development" or "Local"
+                    ? TimeSpan.FromMinutes(1)
+                    : TimeSpan.FromMinutes(5);
+                
+                _timer.Change(ts, TimeSpan.Zero);
             }
         }
     }

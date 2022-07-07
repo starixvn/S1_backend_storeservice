@@ -87,7 +87,7 @@ public class PointExpiryWorker : BackgroundService
             {
                 var envName = _env.EnvironmentName;
                 var ts = envName is "Development" or "Local"
-                    ? TimeSpan.FromMinutes(10)
+                    ? TimeSpan.FromMinutes(5)
                     : TimeSpan.FromHours(6);
 
                 _timer.Change(ts, TimeSpan.Zero);

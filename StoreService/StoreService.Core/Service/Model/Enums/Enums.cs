@@ -43,4 +43,3 @@ public enum RedemptionEnum
     OnHold = 4
 }
 
-}

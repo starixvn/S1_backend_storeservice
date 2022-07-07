@@ -57,7 +57,7 @@ public class RedemptionService
                     SiteId = input.SiteId,
                     UsePoint = input.Point
                 };
-                var pointUseResult = await _rewardPointService.CustRewardPointUse(custRewardPointUseRequest,transId,conn,trans);
+                var pointUseResult = await _rewardPointService.CustRewardPointUseAsync(custRewardPointUseRequest,transId,conn,trans);
                     
                 if (pointUseResult)
                 {

@@ -22,15 +22,12 @@ public class PointSettingService
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
     }
 
-    public async Task<InactivePointExpirySetting> GetInactivePointExpirySettingAsync(GetInactivePointExpirySettingParams input)
+    public Task<IEnumerable<InactivePointExpirySetting>> GetInactivePointExpirySettingAsync(GetInactivePointExpirySettingParams input)
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
 
-        var result =
-            await _reportDbClient.QueryAsync<InactivePointExpirySetting>("Store_InactivePointExpiry_Get", para);
-        
-        return result.FirstOrDefault();
+        return _reportDbClient.QueryAsync<InactivePointExpirySetting>("Store_InactivePointExpiry_Get", para);
     }
     
     public Task<int> SetInactivePointExpirySettingAsync(SetInactivePointExpirySettingParams input)

@@ -3,7 +3,7 @@ namespace StoreService.Core.Service.Model.Redemption;
 public class GetRedemptionListResult
 {
     public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
+    public string IsoCode { get; set; }
     public int RedemptionId { get; set; }
     public string TransId { get; set; }
     public int Status { get; set; }

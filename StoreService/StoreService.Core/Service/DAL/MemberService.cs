@@ -75,7 +75,6 @@ public class MemberService
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
-        para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Days", input.Days);
 
         return _reportDbClient.QueryAsync<CustomerInfo>("Store_InactiveCustList_Get", para);;

@@ -47,6 +47,5 @@ public class GetMemberRewardPointLogParams : PagerParamModel
 public class GetInactiveMemberListParams
 {
     public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
     public int Days { get; set; }
 }

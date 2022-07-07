@@ -18,14 +18,12 @@ public class PointExpiryWorker : BackgroundService
     private readonly RewardPointBLL _rewardPointbll;
     private readonly MemberBLL _memberBll;
     private readonly ILogger<PointExpiryWorker> _logger;
-    private readonly IEnumerable<SupportSetting> _supportSetting;
     private readonly IWebHostEnvironment _env;
     private Timer _timer;
 
     public PointExpiryWorker(IServiceProvider provider)
     {
         var configuration = provider.GetRequiredService<IConfiguration>();
-        _supportSetting = configuration.GetSection("SupportSetting").Get<IEnumerable<SupportSetting>>();
         _pointSettingbll = provider.GetRequiredService<PointSettingBLL>();
         _rewardPointbll = provider.GetRequiredService<RewardPointBLL>();
         _memberBll = provider.GetRequiredService<MemberBLL>();
@@ -57,30 +55,22 @@ public class PointExpiryWorker : BackgroundService
 
                 var enableSettings =
                     settings.Where(x => x.Status == (int) GeneralStatusEnum.Enabled);
-                
+
                 // STEP2: 取得非活躍用戶
                 var inactiveMemberList = new List<CustomerInfo>();
-                
+
                 foreach (var setting in enableSettings)
                 {
-                    var supportCurrencyIds =
-                        _supportSetting.First(x => x.SiteId == setting.SiteId).CurrencyIds;
+                    var inactiveList = await _memberBll.GetInactiveMemberListAsync(
+                        new GetInactiveMemberListParams
+                        {
+                            SiteId = setting.SiteId,
+                            Days = setting.Days
+                        });
 
-                    foreach (var currencyId in supportCurrencyIds)
-                    {
-                        
-                        var inactiveList = await _memberBll.GetInactiveMemberListAsync(
-                            new GetInactiveMemberListParams
-                            {
-                                SiteId = setting.SiteId,
-                                CurrencyId = currencyId,
-                                Days = setting.Days
-                            });
-                        
-                        inactiveMemberList.AddRange(inactiveList);
-                    }
+                    inactiveMemberList.AddRange(inactiveList);
                 }
-                
+
                 // STEP3: 點數歸零膏
                 var success = await _rewardPointbll.SetPointExpiryAsync(inactiveMemberList);
 
@@ -98,8 +88,8 @@ public class PointExpiryWorker : BackgroundService
                 var envName = _env.EnvironmentName;
                 var ts = envName is "Development" or "Local"
                     ? TimeSpan.FromMinutes(10)
-                    : TimeSpan.FromDays(1);
-                
+                    : TimeSpan.FromHours(6);
+
                 _timer.Change(ts, TimeSpan.Zero);
             }
         }

@@ -35,6 +35,12 @@ public class RedemptionBLL
         return result;
     }
     
+    public async Task<IEnumerable<GetRedemptionListResult>> ExportRedemptionListAsync(ExportRedemptionListRequest input)
+    {
+        var result = await _redemptionService.ExportRedemptionListAsync(input);
+        return result;
+    }
+    
     public async Task<GetRedemptionDetail> GetRedemptionDetailAsync(GetRedemptionDetailRequest input)
     {
         var result = await _redemptionService.GetRedemptionDetailAsync(input);
@@ -74,6 +80,12 @@ public class RedemptionBLL
     public async Task<bool> SetRedemptionOnHoldAsync(SetRedemptionInfoRequest input)
     {
         var result = await _redemptionService.SetRedemptionInfoAsync(input);
+        return result;
+    }
+    
+    public async Task<IEnumerable<GetRedemptionLog>> GetRedemptionLogAsync(GetRedemptionLogRequest input)
+    {
+        var result = await _redemptionService.GetRedemptionLogAsync(input);
         return result;
     }
 }

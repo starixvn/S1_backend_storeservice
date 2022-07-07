@@ -47,6 +47,18 @@ public class RedemptionController : ControllerBase
         };
     }
     
+    public async Task<ApiResult> ExportRedemptionListAsync(ExportRedemptionListRequest request)
+    {
+        var result =
+            await _redemptionBll.ExportRedemptionListAsync(request);
+        
+        return new ApiResult<IEnumerable<GetRedemptionListResult>>
+        {
+            Data = result,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
+    }
+    
     [HttpPost]
     public async Task<ApiResult> GetRedemptionDetailAsync(GetRedemptionDetailRequest request)
     {
@@ -151,6 +163,19 @@ public class RedemptionController : ControllerBase
         }
         
         return result;
+    }
+    
+    [HttpPost]
+    public async Task<ApiResult> GetRedemptionLogAsync(GetRedemptionLogRequest request)
+    {
+        var result =
+            await _redemptionBll.GetRedemptionLogAsync(request);
+        
+        return new ApiResult<IEnumerable<GetRedemptionLog>>
+        {
+            Data = result,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
     }
     
     #endregion

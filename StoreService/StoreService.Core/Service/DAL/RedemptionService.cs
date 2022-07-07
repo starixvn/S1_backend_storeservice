@@ -124,11 +124,57 @@ public class RedemptionService
         return result;
     }
     
+    public async Task<IEnumerable<GetRedemptionListResult>> ExportRedemptionListAsync(ExportRedemptionListRequest input )
+    {
+        var siteList = new List<int>{input.SiteId};
+        var selectSite = JsonConvert.SerializeObject(siteList);
+        var selectCurrencyId = JsonConvert.SerializeObject(input.CurrencyIds);
+        var selectVipLevels = JsonConvert.SerializeObject(input.VipLevels);
+        var selectStatuses = JsonConvert.SerializeObject(input.Statuses);
+        if (string.IsNullOrEmpty(input.TransId))
+        {
+            input.TransId = null;
+        }
+        if (string.IsNullOrEmpty(input.UserName))
+        {
+            input.UserName = null;
+        }
+        if (string.IsNullOrEmpty(input.SabaId))
+        {
+            input.SabaId = null;
+        }
+        
+        var para = new DynamicParameters();
+        para.Add("_SelectSite", selectSite);
+        para.Add("_SelectCurrencyId", selectCurrencyId);
+        para.Add("_VipLevels", selectVipLevels);
+        para.Add("_Status", selectStatuses);
+        para.Add("_StartDate", input.StartTime?.DateTime);
+        para.Add("_EndDate", input.EndTime?.DateTime);
+        para.Add("_TransId", input.TransId);
+        para.Add("_UserName", input.UserName);
+        para.Add("_SabaId", input.SabaId);
+        para.Add("RowCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
+        
+        var results = await _reportDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionListExport_Get", para);
+
+        return results;
+    }
+    
     public async Task<GetRedemptionDetail> GetRedemptionDetailAsync(GetRedemptionDetailRequest input )
     {
         var para = new DynamicParameters();
         para.Add("_RedemptionId", input.RedemptionId);
         var result = await _reportDbClient.QueryFirstAsync<GetRedemptionDetail>("Store_RedemptionInfoById_Get", para);
+        
+        return result;
+    }
+    
+    public async Task<IEnumerable<GetRedemptionLog>> GetRedemptionLogAsync(GetRedemptionLogRequest input )
+    {
+        var para = new DynamicParameters();
+        para.Add("_TransId", input.TransId);
+        var result = await _reportDbClient.QueryAsync<GetRedemptionLog>("Store_RedemptionLog_Get", para);
         
         return result;
     }

@@ -28,6 +28,12 @@ public class RedemptionBLL
         
         return success;
     }
+   
+    public async Task<int> CheckCustRedemptionLimitAsync(int siteId, int currencyId , int custId )
+    {
+        var result = await _redemptionService.CheckCustRedemptionLimitAsync(siteId,currencyId,custId);
+        return result;
+    }
     
     public async Task<PagerResultModel<GetRedemptionListResult>> GetRedemptionListAsync(GetRedemptionListRequest input)
     {

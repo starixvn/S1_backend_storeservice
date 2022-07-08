@@ -1,22 +1,25 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StoreService.Core.Service.BLL;
+using System.Diagnostics;
 
 namespace StoreServiceWorker.Workers
 {
     public class TurnoverRewardPointWorker : BackgroundService
     {
-        private readonly RewardPointService _rewardPointService;
+        private readonly TurnoverWorkerBLL _turnoverWorkerBLL;
         private readonly ILogger<TurnoverRewardPointWorker> _logger;
         private Timer _timer;
 
         public TurnoverRewardPointWorker(IServiceProvider provider)
         {
-            _rewardPointService = provider.GetRequiredService<RewardPointService>();
+            _turnoverWorkerBLL = provider.GetRequiredService<TurnoverWorkerBLL>();
             _logger = provider.GetRequiredService<ILogger<TurnoverRewardPointWorker>>();
         }
 
@@ -29,30 +32,67 @@ namespace StoreServiceWorker.Workers
 
         private async void DoTaskAsync(object state)
         {
+            var isError = false;
             try
             {
-                var queue = await _rewardPointService.GetDepositRewardPointQueueAsync();
+                _logger.LogInformation("TurnoverWorker Wroker：Verify Task Start.");
 
-                if (!queue.Any())
+                var doTaskList = await _turnoverWorkerBLL.VerifyTaskAsync();
+
+                _logger.LogInformation($"TurnoverWorker Wroker：Verify Task End. Count = {doTaskList.Count()}");
+
+                foreach (var task in doTaskList)
                 {
-                    _logger.LogInformation("No data.");
-                    return;
-                }
+                    _logger.LogInformation($"TurnoverWorker Wroker：Do Task Start. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+                    var sw = Stopwatch.StartNew();
+                    int pageSize = 1000, pageNumber = 1;
+                    var isRemain = true;
 
-                var groupQueue = queue.GroupBy(x => x.CurrencyId);
-                foreach (var group in groupQueue)
-                {
-                    //var depositInfos = group.Select(x => x.)
-                }
+                    var pointSetting = await _turnoverWorkerBLL.GetSettingAsync(task.SiteId, task.CurrencyId, task.TimeZone);
 
+                    while (isRemain)
+                    {
+                        var custList = await _turnoverWorkerBLL.GetCustListAsync(task.SiteId, task.CurrencyId, task.TimeZone, pageNumber, pageSize);
+
+                        foreach (var custData in custList)
+                        {
+                            var turnoverData = await _turnoverWorkerBLL.GetCustTurnoverAsync(custData.CustId, task.TimeZone);
+
+                            var remainData = await _turnoverWorkerBLL.GetCustRemainListAsync(custData.CustId);
+
+                            var caculateData = _turnoverWorkerBLL.CaculatePoint(custData, turnoverData, remainData, pointSetting);
+
+                            if (!await _turnoverWorkerBLL.RewardPointAsync(task.SiteId, task.CurrencyId, custData.CustId, caculateData))
+                            {
+                                _logger.LogError($"TurnoverWorker Wroker：Update Task SettledTime Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+                                throw new Exception();
+                            }
+                        }
+
+                    }
+
+                    if (await _turnoverWorkerBLL.UpdateTaskSettledTImeASync(task.SiteId, task.CurrencyId))
+                    {
+                        _logger.LogError($"TurnoverWorker Wroker：Update Task SettledTime Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+                        throw new Exception();
+                    }
+
+                    _logger.LogInformation($"TurnoverWorker Wroker：Do Task End. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.\n"
+                    + $"Finish Time (m:s.ms): {Math.Round(sw.Elapsed.TotalMinutes)}:{Math.Round(sw.Elapsed.TotalMinutes)}.{Math.Round(sw.Elapsed.TotalMilliseconds)}.");
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "");
+                isError = true;
+                //_logger.LogError(ex, MethodExtension.GetCurrentMethod());
             }
             finally
             {
-                _timer.Change(TimeSpan.FromMinutes(5), TimeSpan.Zero);
+                var dueTimeSpan = isError ? TimeSpan.FromMinutes(10) : TimeSpan.FromMinutes(30);
+
+                _logger.LogInformation($"Store TurnoverWorker Task End. isError={isError}.\n" +
+                  $"Next Task Will Start At {DateTime.Now.Add(dueTimeSpan).ToString("yyyy-MM-ddTHH:mm:ss")}");
+                _timer.Change(dueTimeSpan, TimeSpan.Zero);
             }
         }
 

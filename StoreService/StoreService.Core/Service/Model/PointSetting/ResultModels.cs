@@ -104,3 +104,18 @@ public class TurnoverPointStatusSetting : LastUpdateModel
     public string TpGameTypeName { get; set; }
     public int Status { get; set; }
 }
+
+public class TurnoverSettingForWorkerUse
+{
+    public int TpCategoryId { get; set; }
+    public int VipLevel { get; set; }
+    public int TpGameTypeId { get; set; }
+    public decimal Turnover { get; set; }
+    public decimal PointRate { get; set; }
+    public bool PromotionStatus { get; set; }
+    public decimal PromotionPointRate { get; set; }
+    public string CaculateDate { get; set; }
+    public DateTimeOffset CurrencyTimezonePromotionStartTime { get; set; }
+    public DateTimeOffset CurrencyTimezonePromotionEndTime { get; set; }
+    public bool IsInPromotionPeriod { get; set; }
+}

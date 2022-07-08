@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Enums;
-using StoreService.Core.Service.Model.TurnoverPeriod;
+using StoreService.Core.Service.Model.TurnoverWorker;
 using System;
 using System.Collections.Generic;
 using System.Linq;

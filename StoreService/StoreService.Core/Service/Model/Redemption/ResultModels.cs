@@ -28,6 +28,7 @@ public class GetRedemptionByTransIdResult
     public int CustId { get; set; }
     public string TransId { get; set; }
     public int Status { get; set; }
+    public decimal ActualCost { get; set; }
     public DateTime CreateTime { get; set; }
     public DateTime UpdateTime { get; set; }
     public int Point { get; set; }

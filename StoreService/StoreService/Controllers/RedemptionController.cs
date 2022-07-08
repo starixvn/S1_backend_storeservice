@@ -102,18 +102,16 @@ public class RedemptionController : ControllerBase
             result.RawMessage = "TransId doesn't exist";
             return result;
         }
+
+        if (redemptionInfo.Status is (int) RedemptionEnum.Approved or (int) RedemptionEnum.Rejected)
+        {
+            request.ActualCost = redemptionInfo.ActualCost;
+        }
         
         switch (request.Action)
         {
             case (int) RedemptionEnum.Draft:
-                if ( redemptionInfo.Status != (int) RedemptionEnum.Draft)
-                {
-                    success = await _redemptionBll.SetRedemptionDraftAsync(request);
-                }
-                else
-                {
-                    result.RawMessage = "Draft Flow Is Invalid";
-                }
+                success = await _redemptionBll.SetRedemptionDraftAsync(request);
                 break;
             
             case (int) RedemptionEnum.Pending:

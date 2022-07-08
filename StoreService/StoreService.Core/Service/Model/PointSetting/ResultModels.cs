@@ -5,6 +5,8 @@ namespace StoreService.Core.Service.Model.PointSetting;
 
 public class InactivePointExpirySetting : LastUpdateModel
 {
+    [JsonIgnore]
+    public int SiteId { get; set; }
     public int Days { get; set; }
     public int Status { get; set; }
 }
@@ -79,6 +81,8 @@ public class DepositPointSetting : LastUpdateModel
     private DateTimeOffset _startTime { get; set; }
     private DateTimeOffset _endTime { get; set; }
     
+    [JsonIgnore]
+    public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public string IsoCode { get; set; }
     public decimal DepositAmount { get; set; }

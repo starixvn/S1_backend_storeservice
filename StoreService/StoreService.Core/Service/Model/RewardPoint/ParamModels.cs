@@ -98,3 +98,25 @@ public class CustRewardPointChangeParams
     public string TransId { get; set; }
     public string Memo { get; set; }
 }
+
+public class CustRewardPointChangeInfo
+{
+    public int CustId { get; set; }
+    public int CurrencyId { get; set; }
+    public int SiteId { get; set; }
+    public decimal Point { get; set; }
+}
+
+public class TransInfo
+{
+    public TransInfo(){}
+
+    public TransInfo(string transId, decimal amount)
+    {
+        TransId = transId;
+        Amount = amount;
+    }
+    public string TransId { get; set; }
+    public decimal Amount { get; set; }
+}
+

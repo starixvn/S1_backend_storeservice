@@ -43,3 +43,9 @@ public class GetMemberRewardPointLogParams : PagerParamModel
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
 }
+
+public class GetInactiveMemberListParams
+{
+    public int SiteId { get; set; }
+    public int Days { get; set; }
+}

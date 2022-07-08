@@ -42,6 +42,7 @@ public class GetRedemptionDetail
     public decimal PointBalance { get; set; }
     public int RedemptionId { get; set; }
     public string TransId { get; set; }
+    public string ItemId { get; set; }
     public string ItemName { get; set; }
     public int RedeemPoint { get; set; }
     public decimal PriceWorth { get; set; }

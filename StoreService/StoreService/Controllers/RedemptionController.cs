@@ -26,23 +26,24 @@ public class RedemptionController : ControllerBase
     public async Task<ApiResult> CreateRedemptionAsync(CreateRedemptionRequest request)
     {
         var result = new ApiResult();
-        var redemptionLimit = _giftManagementBll.GetRedemptionLimitAsync(new GetRedemptionLimitParams(new GetRedemptionLimitRequest(){SiteId = request.SiteId}));
-
-        if (redemptionLimit.Result.Status == (int) GeneralStatusEnum.Disabled)
+        var redemptionLimit = _redemptionBll.CheckCustRedemptionLimitAsync(request.SiteId , request.CurrencyId , request.CustId);
+        
+        switch (redemptionLimit.Result)
         {
-            result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitIsClose;
+            case (int) ErrorCodeEnum.RedemptionLimitIsClose:
+                result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitIsClose;
+                break;
+            case (int) ErrorCodeEnum.RedemptionLimitOverLimit:
+                result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitOverLimit;
+                break;
+            case (int) GeneralStatusEnum.Enabled:
+            {
+                var success = await _redemptionBll.CreateRedemptionAsync(new CreateRedemptionParams(request));
+                result.ErrorCode = (int) (success ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed);
+                break;
+            }
         }
         
-        if ( redemptionLimit.Result.Limit <= 0)
-        {
-            result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitOverLimit;
-        }
-        else
-        {
-            var success = await _redemptionBll.CreateRedemptionAsync(new CreateRedemptionParams(request));
-            result.ErrorCode = (int) (success ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed);
-        }
-
         return result;
     }
 

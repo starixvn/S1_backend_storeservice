@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Model.Based;
+using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Redemption;
 
 namespace StoreService.Core.Service.BLL;
@@ -59,33 +60,33 @@ public class RedemptionBLL
         return result;
     }
     
-    public async Task<bool> SetRedemptionPendingAsync(SetRedemptionInfoRequest input)
+    public async Task<bool> SetRedemptionPendingAsync(SetRedemptionInfoRequest input , GetRedemptionByTransIdResult info)
     {
-        var result = await _redemptionService.SetRedemptionInfoAsync(input);
+        var result = await _redemptionService.SetRedemptionInfoAsync(input,info);
         return result;
     }
     
-    public async Task<bool> SetRedemptionDraftAsync(SetRedemptionInfoRequest input)
+    public async Task<bool> SetRedemptionDraftAsync(SetRedemptionInfoRequest input, GetRedemptionByTransIdResult info)
     {
-        var result = await _redemptionService.SetRedemptionInfoAsync(input);
+        var result = await _redemptionService.SetRedemptionInfoAsync(input,info);
         return result;
     }
     
-    public async Task<bool> SetRedemptionApprovedAsync(SetRedemptionInfoRequest input)
+    public async Task<bool> SetRedemptionApprovedAsync(SetRedemptionInfoRequest input, GetRedemptionByTransIdResult info)
     {
-        var result = await _redemptionService.SetRedemptionInfoAsync(input);
+        var result = await _redemptionService.SetRedemptionInfoAsync(input,info);
         return result;
     }
     
-    public async Task<bool> SetRedemptionRejectedAsync(SetRedemptionInfoRequest input)
+    public async Task<bool> SetRedemptionRejectedAsync(SetRedemptionInfoRequest input, GetRedemptionByTransIdResult info)
     {
-        var result = await _redemptionService.SetRedemptionInfoAsync(input);
+        var result = await _redemptionService.SetRedemptionInfoAsync(input,info);
         return result;
     }
     
-    public async Task<bool> SetRedemptionOnHoldAsync(SetRedemptionInfoRequest input)
+    public async Task<bool> SetRedemptionOnHoldAsync(SetRedemptionInfoRequest input, GetRedemptionByTransIdResult info)
     {
-        var result = await _redemptionService.SetRedemptionInfoAsync(input);
+        var result = await _redemptionService.SetRedemptionInfoAsync(input,info);
         return result;
     }
     

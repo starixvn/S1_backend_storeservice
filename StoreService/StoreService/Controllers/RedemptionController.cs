@@ -111,14 +111,14 @@ public class RedemptionController : ControllerBase
         switch (request.Action)
         {
             case (int) RedemptionEnum.Draft:
-                success = await _redemptionBll.SetRedemptionDraftAsync(request);
+                success = await _redemptionBll.SetRedemptionDraftAsync(request,redemptionInfo);
                 break;
             
             case (int) RedemptionEnum.Pending:
                 if (redemptionInfo.Status is (int) RedemptionEnum.OnHold or (int) RedemptionEnum.Draft
                     && redemptionInfo.Status != (int) RedemptionEnum.Pending)
                 {
-                    success = await _redemptionBll.SetRedemptionPendingAsync(request);
+                    success = await _redemptionBll.SetRedemptionPendingAsync(request,redemptionInfo);
                 }
                 else
                 {
@@ -130,7 +130,7 @@ public class RedemptionController : ControllerBase
                 if (redemptionInfo.Status is (int) RedemptionEnum.Pending or (int) RedemptionEnum.Draft
                     && redemptionInfo.Status != (int) RedemptionEnum.Approved)
                 {
-                    success = await _redemptionBll.SetRedemptionApprovedAsync(request);
+                    success = await _redemptionBll.SetRedemptionApprovedAsync(request,redemptionInfo);
                 }
                 else
                 {
@@ -142,7 +142,7 @@ public class RedemptionController : ControllerBase
                 if (redemptionInfo.Status is (int) RedemptionEnum.Pending or (int) RedemptionEnum.Draft
                     && redemptionInfo.Status != (int) RedemptionEnum.Rejected)
                 {
-                    success = await _redemptionBll.SetRedemptionRejectedAsync(request);
+                    success = await _redemptionBll.SetRedemptionRejectedAsync(request,redemptionInfo);
                 }
                 else
                 {
@@ -154,7 +154,7 @@ public class RedemptionController : ControllerBase
                 if (redemptionInfo.Status is (int) RedemptionEnum.Pending or (int) RedemptionEnum.Draft 
                     && redemptionInfo.Status != (int) RedemptionEnum.OnHold)
                 {
-                    success = await _redemptionBll.SetRedemptionOnHoldAsync(request);
+                    success = await _redemptionBll.SetRedemptionOnHoldAsync(request,redemptionInfo);
                 }
                 else
                 {

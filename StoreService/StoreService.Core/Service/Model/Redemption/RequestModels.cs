@@ -85,7 +85,7 @@ public class SetRedemptionInfoRequest
     public int Action { get; set; }
     public string Comment { get; set; }
     public decimal? ActualCost { get; set; }
-    public string ReceiptUrls { get; set; } = "";
+    public IEnumerable<string> ReceiptUrls { get; set; } 
     public string Operator { get; set; }
 }
 

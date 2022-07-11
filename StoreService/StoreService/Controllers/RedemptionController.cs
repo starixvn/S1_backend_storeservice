@@ -30,18 +30,20 @@ public class RedemptionController : ControllerBase
         
         switch (redemptionLimit.Result)
         {
-            case (int) ErrorCodeEnum.RedemptionLimitIsClose:
-                result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitIsClose;
-                break;
             case (int) ErrorCodeEnum.RedemptionLimitOverLimit:
                 result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitOverLimit;
                 break;
+            
             case (int) GeneralStatusEnum.Enabled:
             {
                 var success = await _redemptionBll.CreateRedemptionAsync(new CreateRedemptionParams(request));
                 result.ErrorCode = (int) (success ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed);
                 break;
             }
+            
+            default:
+                result.ErrorCode = (int)  ErrorCodeEnum.Failed;
+                break;
         }
         
         return result;

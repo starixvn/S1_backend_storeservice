@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace StoreService.Core.Service.Model.Redemption;
 
 public class GetRedemptionListResult
@@ -48,7 +50,10 @@ public class GetRedemptionDetail
     public decimal PriceWorth { get; set; }
     public decimal ActualCost { get; set; }
     public int Status { get; set; }
-    public string ReceiptUrls { get; set; }
+    [JsonIgnore] 
+    private string ReceiptUrlString { get; set; }
+    public IEnumerable<string> ReceiptUrls
+        => JsonConvert.DeserializeObject<IEnumerable<string>>(ReceiptUrlString ?? "[]");
     public string AreaCode { get; set; }
     public string PhoneNo { get; set; }
     public string City { get; set; }

@@ -53,27 +53,17 @@ namespace StoreServiceWorker.Workers
                     while (isRemain)
                     {
                         var custList = await _turnoverWorkerBLL.GetCustListAsync(task.SiteId, task.CurrencyId, task.TimeZone, pageNumber, pageSize);
+                        isRemain = custList.Count() >= pageSize;
 
-                        foreach (var custData in custList)
+                        if (!await _turnoverWorkerBLL.CaculatePointAsync(task, custList, pointSetting))
                         {
-                            var turnoverData = await _turnoverWorkerBLL.GetCustTurnoverAsync(custData.CustId, task.TimeZone);
-
-                            var remainData = await _turnoverWorkerBLL.GetCustRemainListAsync(custData.CustId);
-
-                            var caculateData = _turnoverWorkerBLL.CaculatePoint(custData, turnoverData, remainData, pointSetting);
-
-                            if (!await _turnoverWorkerBLL.RewardPointAsync(task.SiteId, task.CurrencyId, custData.CustId, caculateData))
-                            {
-                                _logger.LogError($"TurnoverWorker Wroker：Update Task SettledTime Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
-                                throw new Exception();
-                            }
+                            throw new Exception();
                         }
-
                     }
 
-                    if (await _turnoverWorkerBLL.UpdateTaskSettledTImeASync(task.SiteId, task.CurrencyId))
+                    if (!await _turnoverWorkerBLL.UpdateTaskSettledTImeASync(task.SiteId, task.CurrencyId))
                     {
-                        _logger.LogError($"TurnoverWorker Wroker：Update Task SettledTime Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+                        _logger.LogError($"TurnoverWorker Wroker：Update Task SettleTime Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
                         throw new Exception();
                     }
 
@@ -91,7 +81,7 @@ namespace StoreServiceWorker.Workers
                 var dueTimeSpan = isError ? TimeSpan.FromMinutes(10) : TimeSpan.FromMinutes(30);
 
                 _logger.LogInformation($"Store TurnoverWorker Task End. isError={isError}.\n" +
-                  $"Next Task Will Start At {DateTime.Now.Add(dueTimeSpan).ToString("yyyy-MM-ddTHH:mm:ss")}");
+                  $"Next Task Will Start At {DateTime.Now.Add(dueTimeSpan).AddHours(8).ToString("yyyy-MM-ddTHH:mm:ss")}");
                 _timer.Change(dueTimeSpan, TimeSpan.Zero);
             }
         }

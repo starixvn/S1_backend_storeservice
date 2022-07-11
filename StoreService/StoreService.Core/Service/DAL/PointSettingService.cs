@@ -116,13 +116,4 @@ public class PointSettingService
         return _mainDbClient.ExecuteAsync("Store_TurnoverPointStatusSetting_Set", para);
     }
 
-    public Task<IEnumerable<TurnoverSettingForWorkerUse>> GetTurnoverSettingAsync(int siteId,int currencyId,string timezone)
-    {
-        var para = new DynamicParameters();
-        para.Add("_SiteId", siteId);
-        para.Add("_CurrencyId", currencyId);
-        para.Add("_CurrencyTimeZone", timezone);
-
-        return _reportDbClient.QueryAsync<TurnoverSettingForWorkerUse>("Service_StoreTurnoverSetting_Get", para);
-    }
 }

@@ -13,10 +13,25 @@ public class TurnoverPeriodForWorkerUse //: TurnoverPeriod
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public int RedeemHours { get; set; }
-    public DateTime LastSettledTime { get; set; }
+    public DateTime LastSettleTime { get; set; }
     public string TimeZone { get; set; }
     public DateTime CurrencyNowTime { get; set; }
     public DateTime CurrencyLastSettledTime { get; set; }
+}
+
+public class TurnoverSettingForWorkerUse
+{
+    public int TpCategoryId { get; set; }
+    public int VipLevel { get; set; }
+    public int TpGameTypeId { get; set; }
+    public decimal Turnover { get; set; }
+    public decimal PointRate { get; set; }
+    public bool PromotionStatus { get; set; }
+    public decimal PromotionPointRate { get; set; }
+    public string CaculateDate { get; set; }
+    public DateTimeOffset CurrencyTimezonePromotionStartTime { get; set; }
+    public DateTimeOffset CurrencyTimezonePromotionEndTime { get; set; }
+    public bool IsInPromotionPeriod { get; set; }
 }
 
 public class TurnoverCustListModel
@@ -32,7 +47,6 @@ public class CustTurnoverBaseModel
     public int CustId { get; set; }
     public int CurrencyId { get; set; }
     public DateTime SettledDate { get; set; }
-    public int VipLevel { get; set; }
     public int CategoryId { get; set; }
     public int GameType { get; set; }
     public decimal ValidBet { get; set; }
@@ -50,8 +64,12 @@ public class CustAddPointModel
     public string SettledDate { get; set; }
     public int CategoryId { get; set; }
     public bool IsUsePromotionRate { get; set; }
+    public decimal RateTurnover { get; set; }
     public decimal Rate { get; set; }
-    public decimal UsedTurnover { get; set; }
-    public decimal UnUseTurnOver { get; set; }
     public decimal AddPoint { get; set; }
+    public decimal UsedTurnover { get; set; }
+    public decimal UnUseTurnover { get; set; }
+    public decimal UsedRemain { get; set; }
+    public decimal UnUseRemain { get; set; }
+    public decimal ChangeRemain { get; set; }
 }

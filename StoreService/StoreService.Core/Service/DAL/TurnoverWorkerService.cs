@@ -24,6 +24,16 @@ public class TurnoverWorkerService
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
     }
 
+    public Task<IEnumerable<TurnoverSettingForWorkerUse>> GetTurnoverSettingAsync(int siteId, int currencyId, string timezone)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", siteId);
+        para.Add("_CurrencyId", currencyId);
+        para.Add("_CurrencyTimeZone", timezone);
+
+        return _reportDbClient.QueryAsync<TurnoverSettingForWorkerUse>("Service_StoreTurnoverSetting_Get", para);
+    }
+
     public async Task<IEnumerable<TurnoverCustListModel>> GetCustListAsync(int siteId, int currencyId, string timezone, int strartIndex, int pageSize)
     {
         var para = new DynamicParameters(new { _SiteId = siteId, _CurrencyId = currencyId, _CurrencyTimeZone = timezone, _StartIndex = strartIndex, _PageSize = pageSize });
@@ -42,25 +52,40 @@ public class TurnoverWorkerService
         return await _reportDbClient.QueryAsync<CustRemainRecordModel>("Store_TurnOverRewardPointRemainRecord_Get", para);
     }
 
-    public async Task<bool> RemainRecordUpdateAsync(int custId, int categoryId, decimal remainAmount, MySqlConnection conn, MySqlTransaction trans)
+    public async Task<bool> RemainRecordUpdateAsync(int custId, int categoryId, decimal remainAmount, string workerDate, MySqlConnection conn, MySqlTransaction trans)
     {
         var para = new DynamicParameters();
         para.Add("_CustId", custId);
-        para.Add("_CurrencyId", categoryId);
-        para.Add("_ChangPoint", remainAmount);
-        //para.Add("_BeforeRemainAmount", dbType: DbType.String, direction: ParameterDirection.Output);
-        //para.Add("_AfterRemainAmount", dbType: DbType.String, direction: ParameterDirection.Output);
-        //para.Add("_Result", dbType: DbType.String, direction: ParameterDirection.Output);
+        para.Add("_CategoryId", categoryId);
+        para.Add("_RemainAmount", remainAmount);
+        para.Add("_BeforeRemain", dbType: DbType.String, direction: ParameterDirection.Output);
+        para.Add("_AfterRemain", dbType: DbType.String, direction: ParameterDirection.Output);
+        para.Add("_Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-        //await conn.ExecuteAsync("Store_TurnOverRewardPointRemainRecord_Set", para, trans, commandType: CommandType.StoredProcedure);
+        await conn.ExecuteAsync("Store_TurnOverRewardPointRemainRecord_Set", para, trans, commandType: CommandType.StoredProcedure);
 
-        //var result = para.Get<decimal>("_Result");
-        //var beforeBalance = para.Get<decimal>("_BeforeRemainAmount");
-        //var afterBalance = para.Get<decimal>("_AfterRemainAmount");
-        if (await conn.ExecuteAsync("Store_TurnOverRewardPointRemainRecord_Set", para, trans, commandType: CommandType.StoredProcedure) > 0)
+        var result = para.Get<int?>("_Result") ?? -9;
+        var beforeRemain = para.Get<decimal>("_BeforeRemain");
+        var afterRemain = para.Get<decimal>("_AfterRemain");
+
+        if (result == 0)
         {
-            return true;
+            var logPara = new DynamicParameters();
+            logPara.Add("_CustId", custId);
+            logPara.Add("_CategoryId", categoryId);
+            logPara.Add("_WorkerDate", workerDate);
+            logPara.Add("_ChangeRemain", remainAmount);
+            logPara.Add("_BeforeRemain", beforeRemain);
+            logPara.Add("_AfterRemain", afterRemain);
+
+            var logResult = await conn.ExecuteAsync("Store_TurnOverRemainRecordLog_Ins", logPara, trans, commandType: CommandType.StoredProcedure);
+
+            if (logResult > 0)
+            {
+                return true;
+            }
         }
+
         return false;
     }
 }

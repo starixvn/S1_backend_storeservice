@@ -387,15 +387,15 @@ public class RewardPointService
         para.Add("_ChangPoint", input.ChangePoint);
         para.Add("_BeforeBalance", dbType: DbType.String, direction: ParameterDirection.Output);
         para.Add("_AfterBalance", dbType: DbType.String, direction: ParameterDirection.Output);
-        para.Add("_Result", dbType: DbType.String, direction: ParameterDirection.Output);
+        para.Add("_Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
         await conn.ExecuteAsync("Store_CustRewardPointChange_Set", para, trans, commandType: CommandType.StoredProcedure);
 
-        var result = para.Get<decimal>("_Result");
+        var result = para.Get<int?>("_Result") ?? -9;
         var beforeBalance = para.Get<decimal>("_BeforeBalance");
         var afterBalance = para.Get<decimal>("_AfterBalance");
 
-        if (result > 0)
+        if (result == 0)
         {
             var logPara = new DynamicParameters();
             logPara.Add("_PointType", (int)PointTypeEnum.Turnover);

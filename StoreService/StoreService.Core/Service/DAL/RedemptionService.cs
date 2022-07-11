@@ -201,7 +201,7 @@ public class RedemptionService
         return result.FirstOrDefault();
     }
     
-    public async Task<bool> SetRedemptionInfoAsync(SetRedemptionInfoRequest input )
+    public async Task<bool> SetRedemptionInfoAsync(SetRedemptionInfoRequest input ,GetRedemptionByTransIdResult info)
     {
         var success = false;
         await using var conn = new MySqlConnection(_connectionString);
@@ -211,11 +211,14 @@ public class RedemptionService
         {
             try
             {
+                var action = input.Action == (int) RedemptionEnum.Draft ? info.Status : input.Action;
+                var receiptUrls = input.ReceiptUrls.Any() ? JsonConvert.SerializeObject(input.ReceiptUrls) : "";
+                
                 var para = new DynamicParameters();
                 para.Add("_TransId", input.TransId);
-                para.Add("_Status", input.Action);
+                para.Add("_Status", action);
                 para.Add("_ActualCost", input.ActualCost);
-                para.Add("_ReceiptUrls", input.ReceiptUrls);
+                para.Add("_ReceiptUrls", receiptUrls);
                 para.Add("_Operator", input.Operator);
                 var setResult = conn.ExecuteAsync("Store_RedemptionInfo_Set", para, trans, commandType: CommandType.StoredProcedure);
             

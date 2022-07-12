@@ -13,25 +13,17 @@ public class CreateRedemptionRequest
 
 public class GetRedemptionListRequest : PagerRequestModel
 {
-    private DateTimeOffset? _startTime;
-    private DateTimeOffset? _endTime;
-    public DateTimeOffset? StartTime 
+    private DateTimeOffset _startTime;
+    private DateTimeOffset _endTime;
+    public DateTimeOffset StartTime 
     {
         get => _startTime;
-        set
-        {
-            if (value != null) 
-                _startTime = new DateTimeOffset(value.Value.DateTime, TimeSpan.Zero);
-        }
+        set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
     }
-    public DateTimeOffset? EndTime 
+    public DateTimeOffset EndTime 
     {
         get => _endTime;
-        set
-        {
-            if (value != null) 
-                _endTime = new DateTimeOffset(value.Value.DateTime, TimeSpan.Zero);
-        }
+        set =>  _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
     }
     public int SiteId { get; set; }
     public IEnumerable<int> CurrencyIds { get; set; }
@@ -44,25 +36,17 @@ public class GetRedemptionListRequest : PagerRequestModel
 
 public class ExportRedemptionListRequest
 {
-    private DateTimeOffset? _startTime;
-    private DateTimeOffset? _endTime;
-    public DateTimeOffset? StartTime 
+    private DateTimeOffset _startTime;
+    private DateTimeOffset _endTime;
+    public DateTimeOffset StartTime 
     {
         get => _startTime;
-        set
-        {
-            if (value != null) 
-                _startTime = new DateTimeOffset(value.Value.DateTime, TimeSpan.Zero);
-        }
+        set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
     }
-    public DateTimeOffset? EndTime 
+    public DateTimeOffset EndTime 
     {
         get => _endTime;
-        set
-        {
-            if (value != null) 
-                _endTime = new DateTimeOffset(value.Value.DateTime, TimeSpan.Zero);
-        }
+        set =>  _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
     }
     public int SiteId { get; set; }
     public IEnumerable<int> CurrencyIds { get; set; }

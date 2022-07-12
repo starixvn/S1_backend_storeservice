@@ -53,7 +53,7 @@ public class RedemptionController : ControllerBase
     public async Task<ApiResult> GetRedemptionListAsync(GetRedemptionListRequest request)
     {
         var result =
-            await _redemptionBll.GetRedemptionListAsync(request);
+            await _redemptionBll.GetRedemptionListAsync(new GetRedemptionListParams(request));
         
         return new ApiListResult<GetRedemptionListResult>
         {
@@ -68,7 +68,7 @@ public class RedemptionController : ControllerBase
     public async Task<ApiResult> ExportRedemptionListAsync(ExportRedemptionListRequest request)
     {
         var result =
-            await _redemptionBll.ExportRedemptionListAsync(request);
+            await _redemptionBll.ExportRedemptionListAsync(new ExportRedemptionListParams(request));
         
         return new ApiResult<IEnumerable<GetRedemptionListResult>>
         {

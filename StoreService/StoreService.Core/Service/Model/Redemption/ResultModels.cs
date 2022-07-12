@@ -1,16 +1,29 @@
 using Newtonsoft.Json;
+using StoreService.Core.Service.Model.Enums;
 
 namespace StoreService.Core.Service.Model.Redemption;
 
 public class GetRedemptionListResult
 {
+    private DateTimeOffset _createTime { get; set; }
+    private DateTimeOffset _updateTime { get; set; }
+    
     public int SiteId { get; set; }
     public string IsoCode { get; set; }
     public int RedemptionId { get; set; }
     public string TransId { get; set; }
-    public int Status { get; set; }
-    public DateTime CreateTime { get; set; }
-    public DateTime UpdateTime { get; set; }
+    public RedemptionEnum Status { get; set; }
+    public string StatusName => Status.ToString();
+    public DateTimeOffset CreateTime
+    {
+        get => _createTime;
+        set => _createTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
+    public DateTimeOffset UpdateTime
+    {
+        get => _updateTime;
+        set => _updateTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
     public string UserName { get; set; }
     public string SabaId { get; set; }
     public int VipLevel { get; set; }
@@ -21,8 +34,34 @@ public class GetRedemptionListResult
     public string Operator { get; set; }
 }
 
+public class GetRedemptionReportResult
+{
+    public IEnumerable<GetRedemptionOverviewResult> Overview { get; set; }
+    public RedemptionReportResult List { get; set; }
+}
+
+public class RedemptionReportResult
+{
+    public IEnumerable<GetRedemptionListResult> Datas { get; set; }
+    public int TotalPages { get; set; }
+    public int PageNumber { get; set; }
+    public int RowCount { get; set; }
+}
+
+public class GetRedemptionOverviewResult
+{
+    public int CurrencyId { get; set; }
+    public string IsoCode { get; set; }
+    public decimal TotalPoint { get; set; }
+    public decimal TotalCost { get; set; }
+    public int TotalRecord { get; set; }
+}
+
 public class GetRedemptionByTransIdResult
 {
+    private DateTimeOffset _createTime { get; set; }
+    private DateTimeOffset _updateTime { get; set; }
+    
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public int RedemptionId { get; set; }
@@ -30,8 +69,17 @@ public class GetRedemptionByTransIdResult
     public string TransId { get; set; }
     public int Status { get; set; }
     public decimal ActualCost { get; set; }
-    public DateTime CreateTime { get; set; }
-    public DateTime UpdateTime { get; set; }
+    
+    public DateTimeOffset CreateTime
+    {
+        get => _createTime;
+        set => _createTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
+    public DateTimeOffset UpdateTime
+    {
+        get => _updateTime;
+        set => _updateTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
     public int Point { get; set; }
     public string Operator { get; set; }
 }
@@ -67,9 +115,15 @@ public class GetRedemptionDetail
 
 public class GetRedemptionLog
 {
+    private DateTimeOffset _createTime { get; set; }
+    
     public int Action { get; set; }
     public string Comment { get; set; }
     public string Operator { get; set; }
-    public DateTime CreateTime { get; set; }
+    public DateTimeOffset CreateTime
+    {
+        get => _createTime;
+        set => _createTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
 }
 

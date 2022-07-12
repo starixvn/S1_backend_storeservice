@@ -8,8 +8,8 @@ namespace StoreService.Core.Service.BLL;
 
 public class PointSettingBLL
 {
-    private PointSettingService _pointSettingService;
-    private ILogger<PointSettingBLL> _logger;
+    private readonly PointSettingService _pointSettingService;
+    private readonly ILogger<PointSettingBLL> _logger;
     
     public PointSettingBLL(IServiceProvider provider)
     {
@@ -17,9 +17,13 @@ public class PointSettingBLL
         _logger = provider.GetRequiredService<ILogger<PointSettingBLL>>();
     }
 
-    public Task<InactivePointExpirySetting> GetInactivePointExpirySettingAsync(
+    public async Task<InactivePointExpirySetting> GetInactivePointExpirySettingAsync(
         GetInactivePointExpirySettingParams input)
-        => _pointSettingService.GetInactivePointExpirySettingAsync(input);
+        => (await _pointSettingService.GetInactivePointExpirySettingAsync(input)).FirstOrDefault();
+    
+    public Task<IEnumerable<InactivePointExpirySetting>> GetAllInactivePointExpirySettingsAsync()
+        => _pointSettingService.GetInactivePointExpirySettingAsync(
+            new GetInactivePointExpirySettingParams(-1)); // SiteId -1: all 
 
     public async Task<bool> SetInactivePointExpirySettingAsync(
         SetInactivePointExpirySettingParams input)

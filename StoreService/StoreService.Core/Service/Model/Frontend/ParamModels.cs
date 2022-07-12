@@ -15,8 +15,10 @@ public class FrontendGetListParams
     {
         SiteId = req.SiteId;
         CurrencyId = req.CurrencyId;
-        StrCategoryIds = JsonConvert.SerializeObject(req.CategoryIds);
-        StrTags = JsonConvert.SerializeObject(req.Tags);
+        UseCategoryIds = req.CategoryIds != null;
+        StrCategoryIds = req.CategoryIds == null ? "[]" : JsonConvert.SerializeObject(req.CategoryIds);
+        UseTags = req.Tags != null;
+        StrTags = req.Tags == null ? "[]" : JsonConvert.SerializeObject(req.Tags);
         Lang = req.Lang;
         OrderByField = string.IsNullOrWhiteSpace(req.OrderByField) ? "Sort" : req.OrderByField;
         Desc = req.Desc;
@@ -24,7 +26,9 @@ public class FrontendGetListParams
 
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
+    public bool UseCategoryIds { get; set; }
     public string StrCategoryIds { get; set; }
+    public bool UseTags { get; set; }
     public string StrTags { get; set; }
     public string Lang { get; set; }
     public string OrderByField { get; set; }

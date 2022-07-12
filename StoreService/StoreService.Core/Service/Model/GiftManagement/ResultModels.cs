@@ -36,7 +36,11 @@ public class GiftInfo
     public string Description { get; set; }
     public string PictureUrl { get; set; }
     public GeneralStatusEnum Status { get; set; }
-    public string TagIds { get; set; }
+    [JsonIgnore]
+    public string Tags { get; set; }
+    public IEnumerable<int> TagIds
+        => JsonConvert.DeserializeObject<IEnumerable<int>>(Tags ?? "[]");
+    
     public int Point { get; set; }
     public decimal PriceWorth { get; set; }
     public bool ShowStock { get; set; }

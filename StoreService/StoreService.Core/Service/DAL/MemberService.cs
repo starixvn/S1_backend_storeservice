@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StoreService.Core.Service.Library;
+using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Member;
@@ -68,5 +69,14 @@ public class MemberService
         };
 
         return result;
+    }
+    
+    public Task<IEnumerable<CustomerInfo>> GetInactiveMemberListAsync(GetInactiveMemberListParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_Days", input.Days);
+
+        return _reportDbClient.QueryAsync<CustomerInfo>("Store_InactiveCustList_Get", para);;
     }
 }

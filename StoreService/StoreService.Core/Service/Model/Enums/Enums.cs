@@ -27,6 +27,13 @@ public enum PointTypeEnum
     System = 5
 }
 
+public enum DepositRewardPointQueueStatusEnum
+{
+    Running = 1,
+    Finish = 2
+}
+
+
 public enum RedemptionEnum
 {
     Draft = 0,
@@ -35,3 +42,4 @@ public enum RedemptionEnum
     Rejected = 3,
     OnHold = 4
 }
+

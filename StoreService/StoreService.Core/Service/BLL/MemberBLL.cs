@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StoreService.Core.Service.DAL;
+using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Member;
 
@@ -22,4 +23,7 @@ public class MemberBLL
     
     public Task<PagerResultModel<MemberRewardPointLog>> GetMemberRewardPointLogAsync(GetMemberRewardPointLogParams input)
         => _memberService.GetMemberRewardPointLogAsync(input);
+    
+    public Task<IEnumerable<CustomerInfo>> GetInactiveMemberListAsync(GetInactiveMemberListParams input)
+        => _memberService.GetInactiveMemberListAsync(input);
 }

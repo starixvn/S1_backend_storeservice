@@ -8,6 +8,10 @@ public class GetInactivePointExpirySettingParams
     {
         SiteId = req.SiteId;
     }
+    public GetInactivePointExpirySettingParams(int siteId)
+    {
+        SiteId = siteId;
+    }
     public int SiteId { get; set; }
 }
 
@@ -91,6 +95,9 @@ public class TurnoverPointSettingParams
 
 public class GetDepositPointSettingParams
 {
+    public GetDepositPointSettingParams()
+    {
+    }
     public GetDepositPointSettingParams(GetDepositPointSettingRequest req)
     {
         SiteId = req.SiteId;

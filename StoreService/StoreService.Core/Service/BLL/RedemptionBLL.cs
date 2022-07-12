@@ -36,15 +36,49 @@ public class RedemptionBLL
         return result;
     }
     
-    public async Task<PagerResultModel<GetRedemptionListResult>> GetRedemptionListAsync(GetRedemptionListRequest input)
+    public async Task<PagerResultModel<GetRedemptionListResult>> GetRedemptionListAsync(GetRedemptionListParams input)
     {
         var result = await _redemptionService.GetRedemptionListAsync(input);
         return result;
     }
     
-    public async Task<IEnumerable<GetRedemptionListResult>> ExportRedemptionListAsync(ExportRedemptionListRequest input)
+    public async Task<GetRedemptionReportResult> GetRedemptionReportAsync(GetRedemptionListParams input)
+    {
+        var list = await _redemptionService.GetRedemptionListAsync(input);
+        var overview = await _redemptionService.GetRedemptionOverviewAsync(input);
+        var result = new GetRedemptionReportResult
+        {
+            List = new RedemptionReportResult
+            {
+                Datas = list.Datas,
+                PageNumber = input.PageNumber,
+                RowCount = list.RowCount,
+                TotalPages = list.TotalPages
+            },
+            Overview = overview
+        };
+        
+        return result;
+    }
+    
+    public async Task<IEnumerable<GetRedemptionListResult>> ExportRedemptionListAsync(ExportRedemptionListParams input)
     {
         var result = await _redemptionService.ExportRedemptionListAsync(input);
+        return result;
+    }
+    
+    public async Task<ExportRedemptionReportResult> ExportRedemptionReportAsync(ExportRedemptionListParams input)
+    {
+        var list = await _redemptionService.ExportRedemptionListAsync(input);
+        var overview =
+            await _redemptionService.GetRedemptionOverviewAsync(new GetRedemptionListParams(input));
+        
+        var result = new ExportRedemptionReportResult
+        {
+            List = list,
+            Overview = overview
+        };
+        
         return result;
     }
     

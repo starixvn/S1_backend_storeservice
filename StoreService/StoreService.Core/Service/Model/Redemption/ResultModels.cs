@@ -40,6 +40,12 @@ public class GetRedemptionReportResult
     public RedemptionReportResult List { get; set; }
 }
 
+public class ExportRedemptionReportResult
+{
+    public IEnumerable<GetRedemptionOverviewResult> Overview { get; set; }
+    public IEnumerable<GetRedemptionListResult> List { get; set; }
+}
+
 public class RedemptionReportResult
 {
     public IEnumerable<GetRedemptionListResult> Datas { get; set; }

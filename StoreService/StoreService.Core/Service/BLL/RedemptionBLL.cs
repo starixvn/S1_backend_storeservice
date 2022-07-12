@@ -61,9 +61,24 @@ public class RedemptionBLL
         return result;
     }
     
-    public async Task<IEnumerable<GetRedemptionListResult>> ExportRedemptionListAsync(ExportRedemptionListRequest input)
+    public async Task<IEnumerable<GetRedemptionListResult>> ExportRedemptionListAsync(ExportRedemptionListParams input)
     {
         var result = await _redemptionService.ExportRedemptionListAsync(input);
+        return result;
+    }
+    
+    public async Task<ExportRedemptionReportResult> ExportRedemptionReportAsync(ExportRedemptionListParams input)
+    {
+        var list = await _redemptionService.ExportRedemptionListAsync(input);
+        var overview =
+            await _redemptionService.GetRedemptionOverviewAsync(new GetRedemptionListParams(input));
+        
+        var result = new ExportRedemptionReportResult
+        {
+            List = list,
+            Overview = overview
+        };
+        
         return result;
     }
     

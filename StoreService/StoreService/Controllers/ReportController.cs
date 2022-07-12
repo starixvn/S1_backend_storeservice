@@ -30,4 +30,17 @@ public class ReportController : ControllerBase
             ErrorCode = (int) ErrorCodeEnum.Success
         };
     }
+    
+    [HttpPost]
+    public async Task<ApiResult> ExportRedemptionReportAsync(ExportRedemptionReportRequest request)
+    {
+        var result =
+            await _redemptionBll.ExportRedemptionReportAsync(new ExportRedemptionListParams(request));
+        
+        return new ApiResult<ExportRedemptionReportResult>
+        {
+            Data = result,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
+    }
 }

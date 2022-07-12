@@ -68,7 +68,7 @@ public class RedemptionController : ControllerBase
     public async Task<ApiResult> ExportRedemptionListAsync(ExportRedemptionListRequest request)
     {
         var result =
-            await _redemptionBll.ExportRedemptionListAsync(request);
+            await _redemptionBll.ExportRedemptionListAsync(new ExportRedemptionListParams(request));
         
         return new ApiResult<IEnumerable<GetRedemptionListResult>>
         {

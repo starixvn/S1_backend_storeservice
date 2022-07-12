@@ -40,6 +40,20 @@ public class GetRedemptionListParams: PagerParamModel
         EndTime = req.EndTime.DateTime;
         PageNumber = req.PageNumber;
     }
+    
+    public GetRedemptionListParams(ExportRedemptionListParams input)
+    {
+        SiteId = input.SiteId;
+        StrCurrencyIds = input.StrCurrencyIds;
+        StrVipLevels = input.StrVipLevels;
+        StrStatuses = "[2]"; // 2: Approved
+        TransId = string.Empty;
+        UserName = input.UserName;
+        TpUserName = input.TpUserName;
+        GiftName = input.GiftName;
+        StartTime = input.StartTime;
+        EndTime = input.EndTime;
+    }
    
     public int SiteId { get; set; }
     public string StrCurrencyIds { get; set; }
@@ -52,6 +66,48 @@ public class GetRedemptionListParams: PagerParamModel
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public int PageNumber { get; set; }
+}
+
+public class ExportRedemptionListParams
+{
+    public ExportRedemptionListParams(ExportRedemptionListRequest req)
+    {
+        SiteId = req.SiteId;
+        StrCurrencyIds = JsonConvert.SerializeObject(req.CurrencyIds);
+        StrVipLevels = JsonConvert.SerializeObject(req.VipLevels);
+        StrStatuses = JsonConvert.SerializeObject(req.Statuses);
+        TransId = req.TransId ?? string.Empty;
+        UserName = req.UserName ?? string.Empty;
+        TpUserName = req.SabaId ?? string.Empty;
+        GiftName = string.Empty;
+        StartTime = req.StartTime.DateTime;
+        EndTime = req.EndTime.DateTime;
+    }
+    
+    public ExportRedemptionListParams(ExportRedemptionReportRequest req)
+    {
+        SiteId = req.SiteId;
+        StrCurrencyIds = JsonConvert.SerializeObject(req.CurrencyIds);
+        StrVipLevels = JsonConvert.SerializeObject(req.VipLevels);
+        StrStatuses = "[2]"; // 2: Approved
+        TransId = string.Empty;
+        UserName = req.UserName ?? string.Empty;
+        TpUserName = req.TpUserName ?? string.Empty;
+        GiftName = req.GiftName ?? string.Empty;
+        StartTime = req.StartTime.DateTime;
+        EndTime = req.EndTime.DateTime;
+    }
+   
+    public int SiteId { get; set; }
+    public string StrCurrencyIds { get; set; }
+    public string StrVipLevels { get; set; }
+    public string StrStatuses { get; set; }
+    public string TransId { get; set; }
+    public string UserName { get; set; }
+    public string TpUserName { get; set; }
+    public string GiftName { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
 }
 
 public class CreateRedemptionParams

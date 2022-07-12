@@ -102,7 +102,6 @@ public class RedemptionService
         para.Add("_EndDate", input.EndTime);
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
-        para.Add("_GiftName", input.GiftName);
         para.Add("_TpUserName", input.TpUserName);
         
         var list = await _reportDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionList_Get", para);
@@ -122,9 +121,10 @@ public class RedemptionService
         para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyIds", input.StrCurrencyIds);
         para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_Status", input.StrStatuses);
+        para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
         para.Add("_TpUserName", input.TpUserName);
-        para.Add("_GiftName", input.GiftName);
         para.Add("_StartTime", input.StartTime);
         para.Add("_EndTime", input.EndTime);
 
@@ -142,7 +142,6 @@ public class RedemptionService
         para.Add("_EndDate", input.EndTime);
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
-        para.Add("_GiftName", input.GiftName);
         para.Add("_TpUserName", input.TpUserName);
         
         var results = await _reportDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionListExport_Get", para);

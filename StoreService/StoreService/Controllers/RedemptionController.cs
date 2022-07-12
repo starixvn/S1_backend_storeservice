@@ -2,7 +2,6 @@
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
-using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Core.Service.Model.Redemption;
 
 namespace StoreService.Controllers;
@@ -55,12 +54,9 @@ public class RedemptionController : ControllerBase
         var result =
             await _redemptionBll.GetRedemptionListAsync(new GetRedemptionListParams(request));
         
-        return new ApiListResult<GetRedemptionListResult>
+        return new ApiResult<RedemptionListResult>
         {
-            Data = result.Datas,
-            PageNumber = request.PageNumber,
-            TotalPages = result.TotalPages,
-            RowCount = result.RowCount,
+            Data = result,
             ErrorCode = (int) ErrorCodeEnum.Success
         };
     }
@@ -70,7 +66,7 @@ public class RedemptionController : ControllerBase
         var result =
             await _redemptionBll.ExportRedemptionListAsync(new ExportRedemptionListParams(request));
         
-        return new ApiResult<IEnumerable<GetRedemptionListResult>>
+        return new ApiResult<ExportRedemptionListResult>
         {
             Data = result,
             ErrorCode = (int) ErrorCodeEnum.Success

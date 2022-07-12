@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;
-using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Frontend;
 using StoreService.Core.Service.Model.GiftManagement;

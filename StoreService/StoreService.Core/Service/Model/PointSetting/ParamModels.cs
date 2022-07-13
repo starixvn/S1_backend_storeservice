@@ -71,8 +71,8 @@ public class SetTurnoverPointSettingParams
 
 public class TurnoverPointSettingParams
 {
-    private DateTimeOffset _startTime { get; set; }
-    private DateTimeOffset _endTime { get; set; }
+    private DateTimeOffset? _startTime { get; set; }
+    private DateTimeOffset? _endTime { get; set; }
 
     public int TpCategoryId { get; set; }
     public int VipLevel { get; set; }
@@ -123,8 +123,8 @@ public class SetDepositPointSettingParams
         PointRate = 1; //req.PointRate; 暫時不會開放變更，先寫死
         PromotionStatus = (int)req.PromotionStatus;
         PromotionPointRate = req.PromotionPointRate;
-        PromotionStartTime = req.PromotionStartTime.DateTime;
-        PromotionEndTime = req.PromotionEndTime.DateTime;
+        PromotionStartTime = req.PromotionStartTime != new DateTimeOffset() ? req.PromotionStartTime?.DateTime : null;
+        PromotionEndTime = req.PromotionEndTime != new DateTimeOffset() ? req.PromotionEndTime?.DateTime : null;
         Operator = req.Operator;
     }
     public int SiteId { get; set; }
@@ -137,8 +137,8 @@ public class SetDepositPointSettingParams
     /// </summary>
     public int PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
-    public DateTime PromotionStartTime { get; set; }
-    public DateTime PromotionEndTime { get; set; }
+    public DateTime? PromotionStartTime { get; set; }
+    public DateTime? PromotionEndTime { get; set; }
     public string Operator { get; set; }
 }
 

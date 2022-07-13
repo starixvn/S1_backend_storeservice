@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using StoreService.Core.Service.Model.Based;
+using StoreService.Core.Service.Model.Enums;
 
 namespace StoreService.Core.Service.Model.PointSetting;
 
@@ -85,7 +86,7 @@ public class DepositPointSetting : LastUpdateModel
     public string IsoCode { get; set; }
     public decimal DepositAmount { get; set; }
     public decimal PointRate { get; set; }
-    public bool PromotionStatus { get; set; }
+    public GeneralStatusEnum PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
     public DateTimeOffset PromotionStartTime
     {

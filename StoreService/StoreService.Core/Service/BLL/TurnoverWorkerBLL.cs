@@ -81,8 +81,9 @@ public class TurnoverWorkerBLL
         foreach (var level in LevelList)
         {
             var settings = pointSetting.Where(x => x.VipLevel == level);
+            var levelCustList = custList.Where(x => x.VipLevel == level);
 
-            foreach (var custData in custList)
+            foreach (var custData in levelCustList)
             {
                 var turnoverData = await GetCustTurnoverAsync(custData.CustId, task.TimeZone);
 

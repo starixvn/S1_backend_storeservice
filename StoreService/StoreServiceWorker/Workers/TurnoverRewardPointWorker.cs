@@ -74,7 +74,7 @@ namespace StoreServiceWorker.Workers
             catch (Exception ex)
             {
                 isError = true;
-                //_logger.LogError(ex, MethodExtension.GetCurrentMethod());
+                _logger.LogError(ex, "TurnoverWorker Exception");
             }
             finally
             {

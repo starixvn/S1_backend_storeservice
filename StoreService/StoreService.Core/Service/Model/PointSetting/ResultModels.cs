@@ -5,7 +5,6 @@ namespace StoreService.Core.Service.Model.PointSetting;
 
 public class InactivePointExpirySetting : LastUpdateModel
 {
-    [JsonIgnore]
     public int SiteId { get; set; }
     public int Days { get; set; }
     public int Status { get; set; }
@@ -81,13 +80,11 @@ public class DepositPointSetting : LastUpdateModel
     private DateTimeOffset _startTime { get; set; }
     private DateTimeOffset _endTime { get; set; }
     
-    [JsonIgnore]
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public string IsoCode { get; set; }
     public decimal DepositAmount { get; set; }
-    [JsonIgnore]
-    public decimal PointRate { get; set; } // 這是無優惠的原始值，為了不讓前端混亂暫時不回傳
+    public decimal PointRate { get; set; }
     public bool PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
     public DateTimeOffset PromotionStartTime
@@ -104,6 +101,8 @@ public class DepositPointSetting : LastUpdateModel
 
 public class TurnoverPointStatusSetting : LastUpdateModel
 {
+    public int TpCategoryId { get; set; }
+    public string TpCategoryName { get; set; }
     public int TpGameTypeId { get; set; }
     public string TpGameTypeName { get; set; }
     public int Status { get; set; }

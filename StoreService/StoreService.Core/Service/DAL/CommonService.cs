@@ -8,8 +8,6 @@ namespace StoreService.Core.Service.DAL;
 public class CommonService
 {
     private readonly MySqlClient _reportDbClient;
-    
-    private readonly string _connectionString;
 
     public CommonService(IServiceProvider provider)
     {

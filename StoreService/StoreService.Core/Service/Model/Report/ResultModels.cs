@@ -21,6 +21,7 @@ public class GetDepositPointReportResult
     private DateTimeOffset _createTime { get; set; }
     public int Id { get; set; }
     public int SiteId { get; set; }
+    public string SiteName { get; set; }
     public string IsoCode { get; set; }
     public string UserName { get; set; }
     public string SabaId { get; set; }
@@ -48,7 +49,7 @@ public class GetDepositPointOverviewResult
 
 #endregion
 
-#region DepositPoint
+#region AdjustmentPoint
 
 public class AdjustmentPointReportResult
 {
@@ -67,6 +68,7 @@ public class GetAdjustmentPointReportResult
     private DateTimeOffset _createTime { get; set; }
     public int Id { get; set; }
     public int SiteId { get; set; }
+    public string SiteName { get; set; }
     public string IsoCode { get; set; }
     public string UserName { get; set; }
     public string SabaId { get; set; }

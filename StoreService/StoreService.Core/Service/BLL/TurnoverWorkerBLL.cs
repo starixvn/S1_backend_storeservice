@@ -76,6 +76,11 @@ public class TurnoverWorkerBLL
         IEnumerable<TurnoverCustListModel> custList,
         IEnumerable<TurnoverSettingForWorkerUse> pointSetting)
     {
+        if (!pointSetting.Any())
+        {
+            _logger.LogWarning($"TurnoverWorker Wroker：Not Exist Turnover Setting. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+            return true;
+        }
         var settleDate = pointSetting.First().CaculateDate.ToString("yyyyMMdd");
         var LevelList = custList.Select(x => x.VipLevel).Distinct();
         foreach (var level in LevelList)

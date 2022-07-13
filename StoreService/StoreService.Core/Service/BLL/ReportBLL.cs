@@ -18,10 +18,37 @@ public class ReportBLL
         _logger = provider.GetRequiredService<ILogger<RedemptionBLL>>();
     }
     
-    public async Task<PagerResultModel<GetDepositPointReportResult>> GetDepositPointReportAsync(GetDepositPointReportParams input)
+    public async Task<DepositPointReportResult> GetDepositPointReportAsync(GetDepositPointReportParams input)
     {
         var list = await _reportService.GetDepositPointReportAsync(input);
+        var overview = await _reportService.GetDepositPointOverviewAsync(input);
 
-        return list;
+        var result = new DepositPointReportResult
+        {
+            List = new PagerResponseModel<GetDepositPointReportResult>
+            {
+                Datas = list.Datas,
+                PageNumber = input.PageNumber,
+                RowCount = list.RowCount,
+                TotalPages = list.TotalPages
+            },
+            Overview = overview
+        };
+        
+        return result;
+    }
+    
+    public async Task<ExportDepositPointReportResult> ExportDepositPointReportAsync(ExportDepositPointReportParams input)
+    {
+        var list = await _reportService.ExportDepositPointReportAsync(input);
+        var overview = await _reportService.GetDepositPointOverviewAsync(new GetDepositPointReportParams(input));
+
+        var result = new ExportDepositPointReportResult
+        {
+            List = list,
+            Overview = overview
+        };
+        
+        return result;
     }
 }

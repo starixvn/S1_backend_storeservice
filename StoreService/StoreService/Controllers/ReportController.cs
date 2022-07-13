@@ -24,9 +24,23 @@ public class ReportController : ControllerBase
         var result =
             await _reportBLL.GetDepositPointReportAsync(new GetDepositPointReportParams(request));
         
-        return new ApiResult<IEnumerable<GetDepositPointReportResult>>
+        
+        return new ApiResult<DepositPointReportResult>
         {
-            Data = result.Datas,
+            Data = result,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
+    }
+    
+    [HttpPost]
+    public async Task<ApiResult> ExportDepositPointReportAsync(ExportDepositPointReportRequest request)
+    {
+        var result =
+            await _reportBLL.ExportDepositPointReportAsync(new ExportDepositPointReportParams(request));
+        
+        return new ApiResult<ExportDepositPointReportResult>
+        {
+            Data = result,
             ErrorCode = (int) ErrorCodeEnum.Success
         };
     }

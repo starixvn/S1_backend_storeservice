@@ -33,12 +33,16 @@ public static class ServiceCollectionExtension
                 .AddSingleton<GiftManagementService>()
                 .AddSingleton<GiftManagementBLL>()
                 .AddSingleton<RedemptionBLL>()
+                .AddSingleton<ReportBLL>()
                 .AddSingleton<RedemptionService>()
+                .AddSingleton<ReportService>()
                 .AddSingleton<PointSettingService>()
                 .AddSingleton<PointSettingBLL>()
                 .AddSingleton<MemberService>()
                 .AddSingleton<MemberBLL>()
                 .AddSingleton<RewardPointService>()
-                .AddSingleton<RewardPointBLL>();
+                .AddSingleton<RewardPointBLL>()
+                .AddSingleton<CommonService>()
+                .AddSingleton<CommonBLL>();
         }
 }

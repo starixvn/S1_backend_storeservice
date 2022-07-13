@@ -9,6 +9,7 @@ using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Redemption;
 using StoreService.Core.Service.Model.RewardPoint;
+using StoreService.Extensions;
 
 namespace StoreService.Core.Service.DAL;
 
@@ -90,84 +91,58 @@ public class RedemptionService
         return result;
     }
     
-    public async Task<PagerResultModel<GetRedemptionListResult>> GetRedemptionListAsync(GetRedemptionListRequest input )
+    public async Task<PagerResultModel<GetRedemptionListResult>> GetRedemptionListAsync(GetRedemptionListParams input)
     {
-        var siteList = new List<int>{input.SiteId};
-        var selectSite = JsonConvert.SerializeObject(siteList);
-        var selectCurrencyId = JsonConvert.SerializeObject(input.CurrencyIds);
-        var selectVipLevels = JsonConvert.SerializeObject(input.VipLevels);
-        var selectStatuses = JsonConvert.SerializeObject(input.Statuses);
-        if (string.IsNullOrEmpty(input.TransId))
-        {
-            input.TransId = null;
-        }
-        if (string.IsNullOrEmpty(input.UserName))
-        {
-            input.UserName = null;
-        }
-        if (string.IsNullOrEmpty(input.SabaId))
-        {
-            input.SabaId = null;
-        }
-        
-        
-        var para = new DynamicParameters();
-        para.Add("_SelectSite", selectSite);
-        para.Add("_SelectCurrencyId", selectCurrencyId);
-        para.Add("_VipLevels", selectVipLevels);
-        para.Add("_Status", selectStatuses);
-        para.Add("_StartDate", input.StartTime?.DateTime);
-        para.Add("_EndDate", input.EndTime?.DateTime);
+        var para = new DynamicParameters().AddPagerParams(input.PageSize, input.StartIndex);
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_Status", input.StrStatuses);
+        para.Add("_StartDate", input.StartTime);
+        para.Add("_EndDate", input.EndTime);
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
-        para.Add("_SabaId", input.SabaId);
-        para.Add("_StartIndex", (input.PageNumber - 1) * input.PageSize);
-        para.Add("_PageSize", input.PageSize);
-        para.Add("TotalPages", dbType: DbType.Int32, direction: ParameterDirection.Output);
-        para.Add("RowCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
+        para.Add("_TpUserName", input.TpUserName);
         
         var list = await _reportDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionList_Get", para);
         var result = new PagerResultModel<GetRedemptionListResult>
         {
             Datas = list,
-            TotalPages = para.Get<int?>("TotalPages") ?? 0,
-            RowCount = para.Get<int?>("RowCount") ?? 0
+            TotalPages = para.Get<int?>("_TotalPages") ?? 0,
+            RowCount = para.Get<int?>("_RowCount") ?? 0
         };
         
         return result;
     }
     
-    public async Task<IEnumerable<GetRedemptionListResult>> ExportRedemptionListAsync(ExportRedemptionListRequest input )
+    public Task<IEnumerable<GetRedemptionOverviewResult>> GetRedemptionOverviewAsync(GetRedemptionListParams input)
     {
-        var siteList = new List<int>{input.SiteId};
-        var selectSite = JsonConvert.SerializeObject(siteList);
-        var selectCurrencyId = JsonConvert.SerializeObject(input.CurrencyIds);
-        var selectVipLevels = JsonConvert.SerializeObject(input.VipLevels);
-        var selectStatuses = JsonConvert.SerializeObject(input.Statuses);
-        if (string.IsNullOrEmpty(input.TransId))
-        {
-            input.TransId = null;
-        }
-        if (string.IsNullOrEmpty(input.UserName))
-        {
-            input.UserName = null;
-        }
-        if (string.IsNullOrEmpty(input.SabaId))
-        {
-            input.SabaId = null;
-        }
-        
         var para = new DynamicParameters();
-        para.Add("_SelectSite", selectSite);
-        para.Add("_SelectCurrencyId", selectCurrencyId);
-        para.Add("_VipLevels", selectVipLevels);
-        para.Add("_Status", selectStatuses);
-        para.Add("_StartDate", input.StartTime?.DateTime);
-        para.Add("_EndDate", input.EndTime?.DateTime);
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_Status", input.StrStatuses);
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
-        para.Add("_SabaId", input.SabaId);
-        para.Add("RowCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
+        para.Add("_TpUserName", input.TpUserName);
+        para.Add("_StartTime", input.StartTime);
+        para.Add("_EndTime", input.EndTime);
+
+        return _reportDbClient.QueryAsync<GetRedemptionOverviewResult>("Store_RedemptionOverview_Get", para);
+    }
+    
+    public async Task<IEnumerable<GetRedemptionListResult>> ExportRedemptionListAsync(ExportRedemptionListParams input )
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_Status", input.StrStatuses);
+        para.Add("_StartDate", input.StartTime);
+        para.Add("_EndDate", input.EndTime);
+        para.Add("_TransId", input.TransId);
+        para.Add("_UserName", input.UserName);
+        para.Add("_TpUserName", input.TpUserName);
         
         var results = await _reportDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionListExport_Get", para);
 
@@ -201,7 +176,7 @@ public class RedemptionService
         return result.FirstOrDefault();
     }
     
-    public async Task<bool> SetRedemptionInfoAsync(SetRedemptionInfoRequest input )
+    public async Task<bool> SetRedemptionInfoAsync(SetRedemptionInfoRequest input ,GetRedemptionByTransIdResult info)
     {
         var success = false;
         await using var conn = new MySqlConnection(_connectionString);
@@ -211,11 +186,14 @@ public class RedemptionService
         {
             try
             {
+                var action = input.Action == (int) RedemptionEnum.Draft ? info.Status : input.Action;
+                var receiptUrls = input.ReceiptUrls.Any() ? JsonConvert.SerializeObject(input.ReceiptUrls) : "";
+                
                 var para = new DynamicParameters();
                 para.Add("_TransId", input.TransId);
-                para.Add("_Status", input.Action);
+                para.Add("_Status", action);
                 para.Add("_ActualCost", input.ActualCost);
-                para.Add("_ReceiptUrls", input.ReceiptUrls);
+                para.Add("_ReceiptUrls", receiptUrls);
                 para.Add("_Operator", input.Operator);
                 var setResult = conn.ExecuteAsync("Store_RedemptionInfo_Set", para, trans, commandType: CommandType.StoredProcedure);
             

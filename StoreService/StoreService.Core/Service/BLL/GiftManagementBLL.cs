@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;
-using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Frontend;
 using StoreService.Core.Service.Model.GiftManagement;
@@ -52,7 +51,7 @@ public class GiftManagementBLL
 
     public async Task<IEnumerable<GiftTag>> GetGiftTagsAsync(GetTagsParams input)
     {
-        var key = GetGiftTagCacheKey(input.SiteId, input.CurrencyId);
+        var key = $"GiftTags_{input.SiteId}_{input.CurrencyId}_{input.StrLangCodes}";
 
         return await _cacheHelper.TryGetOrCreate(key,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)),
@@ -61,7 +60,7 @@ public class GiftManagementBLL
 
     public async Task<IEnumerable<GiftCategory>> GetGiftCategoriesAsync(GetCategoriesParams input)
     {
-        var key = GetGiftCategoryCacheKey(input.SiteId, input.CurrencyId);
+        var key = $"GiftCategories_{input.SiteId}_{input.CurrencyId}_{input.StrLangCodes}";
 
         return await _cacheHelper.TryGetOrCreate(key,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)),
@@ -101,10 +100,7 @@ public class GiftManagementBLL
         {
             _logger.LogError("Insert Gift Category Failed");
         }
-
-        var key = GetGiftCategoryCacheKey(input.SiteId, input.CurrencyId);
-        _cacheHelper.Remove(key);
-
+        
         return success;
     }
 
@@ -117,10 +113,7 @@ public class GiftManagementBLL
         {
             _logger.LogError("Update Gift Category Failed");
         }
-
-        var key = GetGiftCategoryCacheKey(input.SiteId, input.CurrencyId);
-        _cacheHelper.Remove(key);
-
+        
         return success;
     }
 
@@ -134,9 +127,6 @@ public class GiftManagementBLL
             _logger.LogError("Insert Gift Tag Failed");
         }
 
-        var key = GetGiftTagCacheKey(input.SiteId, input.CurrencyId);
-        _cacheHelper.Remove(key);
-
         return success;
     }
 
@@ -149,9 +139,6 @@ public class GiftManagementBLL
         {
             _logger.LogError("Update Gift Tag Failed");
         }
-
-        var key = GetGiftTagCacheKey(input.SiteId, input.CurrencyId);
-        _cacheHelper.Remove(key);
 
         return success;
     }
@@ -209,13 +196,4 @@ public class GiftManagementBLL
 
         return result;
     }
-
-    #region Private Methods
-
-    private string GetGiftTagCacheKey(int siteId, int currencyId)
-        => $"GiftTags_{siteId}_{currencyId}";
-    private string GetGiftCategoryCacheKey(int siteId, int currencyId)
-        => $"GiftCategories_{siteId}_{currencyId}";
-
-    #endregion
 }

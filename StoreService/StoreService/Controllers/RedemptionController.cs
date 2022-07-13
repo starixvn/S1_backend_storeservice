@@ -2,7 +2,6 @@
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
-using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Core.Service.Model.Redemption;
 
 namespace StoreService.Controllers;
@@ -30,18 +29,20 @@ public class RedemptionController : ControllerBase
         
         switch (redemptionLimit.Result)
         {
-            case (int) ErrorCodeEnum.RedemptionLimitIsClose:
-                result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitIsClose;
-                break;
             case (int) ErrorCodeEnum.RedemptionLimitOverLimit:
                 result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitOverLimit;
                 break;
+            
             case (int) GeneralStatusEnum.Enabled:
             {
                 var success = await _redemptionBll.CreateRedemptionAsync(new CreateRedemptionParams(request));
                 result.ErrorCode = (int) (success ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed);
                 break;
             }
+            
+            default:
+                result.ErrorCode = (int)  ErrorCodeEnum.Failed;
+                break;
         }
         
         return result;
@@ -51,14 +52,11 @@ public class RedemptionController : ControllerBase
     public async Task<ApiResult> GetRedemptionListAsync(GetRedemptionListRequest request)
     {
         var result =
-            await _redemptionBll.GetRedemptionListAsync(request);
+            await _redemptionBll.GetRedemptionListAsync(new GetRedemptionListParams(request));
         
-        return new ApiListResult<GetRedemptionListResult>
+        return new ApiResult<RedemptionListResult>
         {
-            Data = result.Datas,
-            PageNumber = request.PageNumber,
-            TotalPages = result.TotalPages,
-            RowCount = result.RowCount,
+            Data = result,
             ErrorCode = (int) ErrorCodeEnum.Success
         };
     }
@@ -66,9 +64,9 @@ public class RedemptionController : ControllerBase
     public async Task<ApiResult> ExportRedemptionListAsync(ExportRedemptionListRequest request)
     {
         var result =
-            await _redemptionBll.ExportRedemptionListAsync(request);
+            await _redemptionBll.ExportRedemptionListAsync(new ExportRedemptionListParams(request));
         
-        return new ApiResult<IEnumerable<GetRedemptionListResult>>
+        return new ApiResult<ExportRedemptionListResult>
         {
             Data = result,
             ErrorCode = (int) ErrorCodeEnum.Success
@@ -111,14 +109,14 @@ public class RedemptionController : ControllerBase
         switch (request.Action)
         {
             case (int) RedemptionEnum.Draft:
-                success = await _redemptionBll.SetRedemptionDraftAsync(request);
+                success = await _redemptionBll.SetRedemptionDraftAsync(request,redemptionInfo);
                 break;
             
             case (int) RedemptionEnum.Pending:
                 if (redemptionInfo.Status is (int) RedemptionEnum.OnHold or (int) RedemptionEnum.Draft
                     && redemptionInfo.Status != (int) RedemptionEnum.Pending)
                 {
-                    success = await _redemptionBll.SetRedemptionPendingAsync(request);
+                    success = await _redemptionBll.SetRedemptionPendingAsync(request,redemptionInfo);
                 }
                 else
                 {
@@ -130,7 +128,7 @@ public class RedemptionController : ControllerBase
                 if (redemptionInfo.Status is (int) RedemptionEnum.Pending or (int) RedemptionEnum.Draft
                     && redemptionInfo.Status != (int) RedemptionEnum.Approved)
                 {
-                    success = await _redemptionBll.SetRedemptionApprovedAsync(request);
+                    success = await _redemptionBll.SetRedemptionApprovedAsync(request,redemptionInfo);
                 }
                 else
                 {
@@ -142,7 +140,7 @@ public class RedemptionController : ControllerBase
                 if (redemptionInfo.Status is (int) RedemptionEnum.Pending or (int) RedemptionEnum.Draft
                     && redemptionInfo.Status != (int) RedemptionEnum.Rejected)
                 {
-                    success = await _redemptionBll.SetRedemptionRejectedAsync(request);
+                    success = await _redemptionBll.SetRedemptionRejectedAsync(request,redemptionInfo);
                 }
                 else
                 {
@@ -154,7 +152,7 @@ public class RedemptionController : ControllerBase
                 if (redemptionInfo.Status is (int) RedemptionEnum.Pending or (int) RedemptionEnum.Draft 
                     && redemptionInfo.Status != (int) RedemptionEnum.OnHold)
                 {
-                    success = await _redemptionBll.SetRedemptionOnHoldAsync(request);
+                    success = await _redemptionBll.SetRedemptionOnHoldAsync(request,redemptionInfo);
                 }
                 else
                 {

@@ -1,4 +1,19 @@
-﻿namespace StoreService.Core.Service.Model.Report;
+﻿using StoreService.Core.Service.Model.Based;
+
+namespace StoreService.Core.Service.Model.Report;
+
+
+public class DepositPointReportResult
+{
+    public IEnumerable<GetDepositPointOverviewResult> Overview { get; set; }
+    public PagerResponseModel<GetDepositPointReportResult> List { get; set; }
+}
+
+public class ExportDepositPointReportResult
+{
+    public IEnumerable<GetDepositPointOverviewResult> Overview { get; set; }
+    public IEnumerable<GetDepositPointReportResult> List { get; set; }
+}
 
 public class GetDepositPointReportResult
 {
@@ -20,4 +35,12 @@ public class GetDepositPointReportResult
         get => _createTime;
         set => _createTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
     }
+}
+
+public class GetDepositPointOverviewResult
+{
+    public int CurrencyId { get; set; }
+    public string IsoCode { get; set; }
+    public decimal TotalPointEarned { get; set; }
+    public int TotalRecord { get; set; }
 }

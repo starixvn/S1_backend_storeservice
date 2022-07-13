@@ -46,4 +46,35 @@ public class ReportService
         
         return result;
     }
+    
+    public async Task<IEnumerable<GetDepositPointReportResult>> ExportDepositPointReportAsync(ExportDepositPointReportParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_StartDate", input.StartTime);
+        para.Add("_EndDate", input.EndTime);
+        para.Add("_TransId", input.TransId);
+        para.Add("_UserName", input.UserName);
+        para.Add("_TpUserName", input.TpUserName);
+        
+        var list = await _reportDbClient.QueryAsync<GetDepositPointReportResult>("Store_DepositPointReportExport_Get", para);
+        return list;
+    }
+    
+    public Task<IEnumerable<GetDepositPointOverviewResult>> GetDepositPointOverviewAsync(GetDepositPointReportParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_TransId", input.TransId);
+        para.Add("_UserName", input.UserName);
+        para.Add("_TpUserName", input.TpUserName);
+        para.Add("_StartTime", input.StartTime);
+        para.Add("_EndTime", input.EndTime);
+
+        return _reportDbClient.QueryAsync<GetDepositPointOverviewResult>("Store_DepositPointOverview_Get", para);
+    }
 }

@@ -21,6 +21,18 @@ public class GetDepositPointReportParams: PagerParamModel
         PageNumber = req.PageNumber;
     }
     
+    public GetDepositPointReportParams(ExportDepositPointReportParams input)
+    {
+        SiteId = input.SiteId;
+        StrCurrencyIds = input.StrCurrencyIds;
+        StrVipLevels = input.StrVipLevels;
+        TransId = input.TransId;
+        UserName = input.UserName;
+        TpUserName = input.TpUserName;
+        StartTime = input.StartTime;
+        EndTime = input.EndTime;
+    }
+    
     public int SiteId { get; set; }
     public string StrCurrencyIds { get; set; }
     public string StrVipLevels { get; set; }
@@ -31,3 +43,30 @@ public class GetDepositPointReportParams: PagerParamModel
     public DateTime EndTime { get; set; }
     public int PageNumber { get; set; }
 }
+
+
+
+public class ExportDepositPointReportParams
+{
+    public ExportDepositPointReportParams(ExportDepositPointReportRequest req)
+    {
+        SiteId = req.SiteId;
+        StrCurrencyIds = JsonConvert.SerializeObject(req.CurrencyIds);
+        StrVipLevels = JsonConvert.SerializeObject(req.VipLevels);
+        TransId = req.TransId ?? string.Empty;
+        UserName = req.UserName ?? string.Empty;
+        TpUserName = req.SabaId ?? string.Empty;
+        StartTime = req.StartTime.DateTime;
+        EndTime = req.EndTime.DateTime;
+    }
+    
+    public int SiteId { get; set; }
+    public string StrCurrencyIds { get; set; }
+    public string StrVipLevels { get; set; }
+    public string TransId { get; set; }
+    public string UserName { get; set; }
+    public string TpUserName { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
+}
+

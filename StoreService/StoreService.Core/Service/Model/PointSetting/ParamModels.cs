@@ -81,15 +81,23 @@ public class TurnoverPointSettingParams
     public int PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
 
-    public DateTimeOffset PromotionStartTime
+    public DateTimeOffset? PromotionStartTime
     {
         get => _startTime;
-        set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set
+        {
+            if (value != null)
+                _startTime = new DateTimeOffset(value.Value.ToUniversalTime().DateTime, TimeSpan.Zero);
+        }
     }
-    public DateTimeOffset PromotionEndTime
+    public DateTimeOffset? PromotionEndTime
     {
         get => _endTime;
-        set => _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set
+        {
+            if (value != null)
+                _endTime = new DateTimeOffset(value.Value.ToUniversalTime().DateTime, TimeSpan.Zero);
+        }
     }
 }
 

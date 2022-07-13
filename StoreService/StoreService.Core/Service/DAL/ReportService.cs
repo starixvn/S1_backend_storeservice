@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
-using StoreService.Core.Service.Model.Redemption;
 using StoreService.Core.Service.Model.Report;
 using StoreService.Extensions;
 
@@ -23,8 +22,10 @@ public class ReportService
         _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
     }
-    
-    public async Task<PagerResultModel<GetDepositPointReportResult>> GetDepositPointReportAsync(GetDepositPointReportParams input)
+
+    #region DepositPoint
+
+     public async Task<PagerResultModel<GetDepositPointReportResult>> GetDepositPointReportAsync(GetDepositPointReportParams input)
     {
         var para = new DynamicParameters().AddPagerParams(input.PageSize, input.StartIndex);
         para.Add("_SiteId", input.SiteId);
@@ -77,4 +78,69 @@ public class ReportService
 
         return _reportDbClient.QueryAsync<GetDepositPointOverviewResult>("Store_DepositPointOverview_Get", para);
     }
+
+    #endregion
+    
+    #region Adjustment
+
+     public async Task<PagerResultModel<GetAdjustmentPointReportResult>> GetAdjustmentPointReportAsync(GetAdjustmentPointReportParams input)
+    {
+        var para = new DynamicParameters().AddPagerParams(input.PageSize, input.StartIndex);
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_CategoryIds", input.StrCategoryIds);
+        para.Add("_StartDate", input.StartTime);
+        para.Add("_EndDate", input.EndTime);
+        para.Add("_TransId", input.TransId);
+        para.Add("_UserName", input.UserName);
+        para.Add("_TpUserName", input.TpUserName);
+        
+        var list = await _reportDbClient.QueryAsync<GetAdjustmentPointReportResult>("Store_AdjustmentPointReport_Get", para);
+        var result = new PagerResultModel<GetAdjustmentPointReportResult>
+        {
+            Datas = list,
+            TotalPages = para.Get<int?>("_TotalPages") ?? 0,
+            RowCount = para.Get<int?>("_RowCount") ?? 0
+        };
+        
+        return result;
+    }
+    
+    public async Task<IEnumerable<GetAdjustmentPointReportResult>> ExportAdjustmentPointReportAsync(ExportAdjustmentPointReportParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_CategoryIds", input.StrCategoryIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_StartDate", input.StartTime);
+        para.Add("_EndDate", input.EndTime);
+        para.Add("_TransId", input.TransId);
+        para.Add("_UserName", input.UserName);
+        para.Add("_TpUserName", input.TpUserName);
+        
+        var list = await _reportDbClient.QueryAsync<GetAdjustmentPointReportResult>("Store_AdjustmentPointReportExport_Get", para);
+        return list;
+    }
+    
+    public Task<IEnumerable<GetAdjustmentPointOverviewResult>> GetAdjustmentPointOverviewAsync(GetAdjustmentPointReportParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_CategoryIds", input.StrCategoryIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_TransId", input.TransId);
+        para.Add("_UserName", input.UserName);
+        para.Add("_TpUserName", input.TpUserName);
+        para.Add("_StartTime", input.StartTime);
+        para.Add("_EndTime", input.EndTime);
+
+        return _reportDbClient.QueryAsync<GetAdjustmentPointOverviewResult>("Store_AdjustmentPointOverview_Get", para);
+    }
+
+    #endregion
+    
+   
 }

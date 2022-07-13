@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Model.Based;
-using StoreService.Core.Service.Model.Redemption;
 using StoreService.Core.Service.Model.Report;
 
 namespace StoreService.Core.Service.BLL;
@@ -17,7 +16,9 @@ public class ReportBLL
         _reportService = provider.GetRequiredService<ReportService>();
         _logger = provider.GetRequiredService<ILogger<RedemptionBLL>>();
     }
-    
+
+    #region DepositPoint
+
     public async Task<DepositPointReportResult> GetDepositPointReportAsync(GetDepositPointReportParams input)
     {
         var list = await _reportService.GetDepositPointReportAsync(input);
@@ -51,4 +52,45 @@ public class ReportBLL
         
         return result;
     }
+
+    #endregion
+    
+    #region DepositPoint
+
+    public async Task<AdjustmentPointReportResult> GetAdjustmentPointReportAsync(GetAdjustmentPointReportParams input)
+    {
+        var list = await _reportService.GetAdjustmentPointReportAsync(input);
+        var overview = await _reportService.GetAdjustmentPointOverviewAsync(input);
+
+        var result = new AdjustmentPointReportResult
+        {
+            List = new PagerResponseModel<GetAdjustmentPointReportResult>
+            {
+                Datas = list.Datas,
+                PageNumber = input.PageNumber,
+                RowCount = list.RowCount,
+                TotalPages = list.TotalPages
+            },
+            Overview = overview
+        };
+        
+        return result;
+    }
+    
+    public async Task<ExportAdjustmentPointReportResult> ExportAdjustmentPointReportAsync(ExportAdjustmentPointReportParams input)
+    {
+        var list = await _reportService.ExportAdjustmentPointReportAsync(input);
+        var overview = await _reportService.GetAdjustmentPointOverviewAsync(new GetAdjustmentPointReportParams(input));
+
+        var result = new ExportAdjustmentPointReportResult
+        {
+            List = list,
+            Overview = overview
+        };
+        
+        return result;
+    }
+
+    #endregion
+    
 }

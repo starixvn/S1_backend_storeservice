@@ -115,4 +115,5 @@ public class PointSettingService
 
         return _mainDbClient.ExecuteAsync("Store_TurnoverPointStatusSetting_Set", para);
     }
+
 }

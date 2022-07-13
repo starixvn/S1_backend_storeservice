@@ -15,7 +15,7 @@ public static class ServiceCollectionExtension
     {
         var provider = services.BuildServiceProvider();
         var logger = provider.GetRequiredService<ILogger<MySqlClient>>();
-            
+
         return services
             .AddSingleton(param =>
                 new MySqlClient(configuration.GetConnectionString("ConnectionString"), logger)
@@ -32,18 +32,23 @@ public static class ServiceCollectionExtension
     public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
     {
         return services
-            .AddSingleton<PointSettingService>()
             .AddSingleton<PointSettingBLL>()
-            .AddSingleton<RewardPointService>()
             .AddSingleton<RewardPointBLL>()
+            .AddSingleton<MemberBLL>()
+            .AddSingleton<TurnoverWorkerBLL>()
+
+            .AddSingleton<PointSettingService>()
+            .AddSingleton<RewardPointService>()
             .AddSingleton<MemberService>()
-            .AddSingleton<MemberBLL>();
+            .AddSingleton<TurnoverPeriodService>()
+            .AddSingleton<TurnoverWorkerService>();
     }
-    
+
     public static IServiceCollection RegisterHostServices(this IServiceCollection services)
     {
         return services
             .AddHostedService<DepositRewardPointWorker>()
-            .AddHostedService<PointExpiryWorker>();
+            .AddHostedService<PointExpiryWorker>()
+            .AddHostedService<TurnoverRewardPointWorker>();
     }
 }

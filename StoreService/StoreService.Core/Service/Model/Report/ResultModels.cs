@@ -2,6 +2,7 @@
 
 namespace StoreService.Core.Service.Model.Report;
 
+#region DepositPoint
 
 public class DepositPointReportResult
 {
@@ -44,3 +45,51 @@ public class GetDepositPointOverviewResult
     public decimal TotalPointEarned { get; set; }
     public int TotalRecord { get; set; }
 }
+
+#endregion
+
+#region DepositPoint
+
+public class AdjustmentPointReportResult
+{
+    public IEnumerable<GetAdjustmentPointOverviewResult> Overview { get; set; }
+    public PagerResponseModel<GetAdjustmentPointReportResult> List { get; set; }
+}
+
+public class ExportAdjustmentPointReportResult
+{
+    public IEnumerable<GetAdjustmentPointOverviewResult> Overview { get; set; }
+    public IEnumerable<GetAdjustmentPointReportResult> List { get; set; }
+}
+
+public class GetAdjustmentPointReportResult
+{
+    private DateTimeOffset _createTime { get; set; }
+    public int Id { get; set; }
+    public int SiteId { get; set; }
+    public string IsoCode { get; set; }
+    public string UserName { get; set; }
+    public string SabaId { get; set; }
+    public int VipLevel { get; set; }
+    public string VipLevelName { get; set; }
+    public string TransId { get; set; }
+    public int CategoryId { get; set; }
+    public decimal PointEarned { get; set; }
+    public string Memo { get; set; }
+    public string Operator { get; set; }
+    public DateTimeOffset CreateTime
+    {
+        get => _createTime;
+        set => _createTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
+}
+
+public class GetAdjustmentPointOverviewResult
+{
+    public int CurrencyId { get; set; }
+    public string IsoCode { get; set; }
+    public decimal TotalPointEarned { get; set; }
+    public int TotalRecord { get; set; }
+}
+
+#endregion

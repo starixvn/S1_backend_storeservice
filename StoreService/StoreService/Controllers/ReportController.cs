@@ -4,7 +4,6 @@ using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Report;
 
-
 namespace StoreService.Controllers;
 
 [Route("api/[controller]/[action]")]
@@ -17,7 +16,9 @@ public class ReportController : ControllerBase
     {
         _reportBLL = provider.GetRequiredService<ReportBLL>();
     }
-    
+
+    #region DepositPoint
+
     [HttpPost]
     public async Task<ApiResult> GetDepositPointReportAsync(GetDepositPointReportRequest request)
     {
@@ -44,4 +45,37 @@ public class ReportController : ControllerBase
             ErrorCode = (int) ErrorCodeEnum.Success
         };
     }
+
+    #endregion
+
+    #region AdjustmentPoint
+
+    [HttpPost]
+    public async Task<ApiResult> GetAdjustmentPointReportAsync(GetAdjustmentPointReportRequest request)
+    {
+        var result =
+            await _reportBLL.GetAdjustmentPointReportAsync(new GetAdjustmentPointReportParams(request));
+        
+        
+        return new ApiResult<AdjustmentPointReportResult>
+        {
+            Data = result,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
+    }
+    
+    [HttpPost]
+    public async Task<ApiResult> ExportAdjustmentPointReportAsync(ExportAdjustmentPointReportRequest request)
+    {
+        var result =
+            await _reportBLL.ExportAdjustmentPointReportAsync(new ExportAdjustmentPointReportParams(request));
+        
+        return new ApiResult<ExportAdjustmentPointReportResult>
+        {
+            Data = result,
+            ErrorCode = (int) ErrorCodeEnum.Success
+        };
+    }
+
+    #endregion
 }

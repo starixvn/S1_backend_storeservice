@@ -28,7 +28,7 @@ public class TurnoverSettingForWorkerUse
     public decimal PointRate { get; set; }
     public bool PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
-    public string CaculateDate { get; set; }
+    public DateTime CaculateDate { get; set; }
     public DateTimeOffset CurrencyTimezonePromotionStartTime { get; set; }
     public DateTimeOffset CurrencyTimezonePromotionEndTime { get; set; }
     public bool IsInPromotionPeriod { get; set; }

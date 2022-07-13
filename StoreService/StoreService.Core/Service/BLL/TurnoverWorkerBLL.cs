@@ -76,8 +76,8 @@ public class TurnoverWorkerBLL
         IEnumerable<TurnoverCustListModel> custList,
         IEnumerable<TurnoverSettingForWorkerUse> pointSetting)
     {
+        var settleDate = pointSetting.First().CaculateDate.ToString("yyyyMMdd");
         var LevelList = custList.Select(x => x.VipLevel).Distinct();
-
         foreach (var level in LevelList)
         {
             var settings = pointSetting.Where(x => x.VipLevel == level);
@@ -89,9 +89,9 @@ public class TurnoverWorkerBLL
 
                 var remainData = await GetCustRemainListAsync(custData.CustId);
 
-                var caculateData = Caculate(custData, turnoverData, remainData, settings);
+                var caculateData = Caculate(turnoverData, remainData, settings);
 
-                if (!await RewardPointAsync(task.SiteId, task.CurrencyId, custData.CustId, caculateData))
+                if (caculateData.Count > 0 && !await RewardPointAsync(task.SiteId, task.CurrencyId, custData.CustId, settleDate, caculateData))
                 {
                     _logger.LogError($"TurnoverWorker Wroker：Cust Reward Point Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId} CustId:{custData.CustId}.");
                     return false;
@@ -102,8 +102,7 @@ public class TurnoverWorkerBLL
     }
 
 
-    public List<CustAddPointModel> Caculate(TurnoverCustListModel custData,
-        IEnumerable<CustTurnoverBaseModel> turnoverData,
+    public List<CustAddPointModel> Caculate(IEnumerable<CustTurnoverBaseModel> turnoverData,
         IEnumerable<CustRemainRecordModel> remainData,
         IEnumerable<TurnoverSettingForWorkerUse> settingLists)
     {
@@ -120,6 +119,11 @@ public class TurnoverWorkerBLL
         foreach (var data in validTurnoverData)
         {
             var setting = CheckRate(settingLists.FirstOrDefault(x => x.TpCategoryId == data.CategoryId));
+            if (setting.Turnover <= 0 || setting.Rate <= 0)
+            {
+                _logger.LogWarning($"TurnoverWorker Wroker：Turnover Point Setting Invaild. TpCategoryId:{data.CategoryId}.");
+                return result;
+            }
             var remainAmount = remainData.FirstOrDefault(x => x.CategoryId == data.CategoryId)?.RemainAmount ?? 0;
             var caculateResult = Caculate(data.ValidBet, remainAmount, setting.Turnover, setting.Rate);
             result.Add(new CustAddPointModel()
@@ -154,10 +158,10 @@ public class TurnoverWorkerBLL
     private Task<IEnumerable<CustRemainRecordModel>> GetCustRemainListAsync(int custId)
     => _turnoverWorkerService.GetRemainListAsync(custId);
 
-    private async Task<bool> RewardPointAsync(int siteId, int currencyId, int custId, List<CustAddPointModel> addPointData)
+    private async Task<bool> RewardPointAsync(int siteId, int currencyId, int custId, string settleDate,
+        List<CustAddPointModel> addPointData)
     {
         var memo = GenMemo(addPointData);
-        var settleDate = addPointData.First().SettledDate;
 
         await using var conn = _mainDbClient.GetMySqlConnection();
         conn.Open();

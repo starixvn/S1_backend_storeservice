@@ -89,7 +89,7 @@ public class ReportService
         para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyIds", input.StrCurrencyIds);
         para.Add("_VipLevels", input.StrVipLevels);
-        para.Add("_CategoryIds", input.StrCategoryIds);
+        para.Add("_CategoryIds", input.StrAdjustTypes);
         para.Add("_StartDate", input.StartTime);
         para.Add("_EndDate", input.EndTime);
         para.Add("_TransId", input.TransId);
@@ -112,7 +112,7 @@ public class ReportService
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyIds", input.StrCurrencyIds);
-        para.Add("_CategoryIds", input.StrCategoryIds);
+        para.Add("_CategoryIds", input.StrAdjustTypes);
         para.Add("_VipLevels", input.StrVipLevels);
         para.Add("_StartDate", input.StartTime);
         para.Add("_EndDate", input.EndTime);
@@ -129,7 +129,7 @@ public class ReportService
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyIds", input.StrCurrencyIds);
-        para.Add("_CategoryIds", input.StrCategoryIds);
+        para.Add("_CategoryIds", input.StrAdjustTypes);
         para.Add("_VipLevels", input.StrVipLevels);
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);

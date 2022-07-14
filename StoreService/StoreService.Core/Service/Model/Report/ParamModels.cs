@@ -83,7 +83,7 @@ public class GetAdjustmentPointReportParams: PagerParamModel
         SiteId = req.SiteId;
         StrCurrencyIds = JsonConvert.SerializeObject(req.CurrencyIds);
         StrVipLevels = JsonConvert.SerializeObject(req.VipLevels);
-        StrCategoryIds = JsonConvert.SerializeObject(req.CategoryIds);
+        StrAdjustTypes = JsonConvert.SerializeObject(req.AdjustTypes);
         TransId = req.TransId ?? string.Empty;
         UserName = req.UserName ?? string.Empty;
         TpUserName = req.SabaId ?? string.Empty;
@@ -99,7 +99,7 @@ public class GetAdjustmentPointReportParams: PagerParamModel
         SiteId = input.SiteId;
         StrCurrencyIds = input.StrCurrencyIds;
         StrVipLevels = input.StrVipLevels;
-        StrCategoryIds = input.StrCategoryIds;
+        StrAdjustTypes = input.StrAdjustTypes;
         TransId = input.TransId;
         UserName = input.UserName;
         TpUserName = input.TpUserName;
@@ -109,7 +109,7 @@ public class GetAdjustmentPointReportParams: PagerParamModel
     
     public int SiteId { get; set; }
     public string StrCurrencyIds { get; set; }
-    public string StrCategoryIds { get; set; }
+    public string StrAdjustTypes { get; set; }
     public string StrVipLevels { get; set; }
     public string TransId { get; set; }
     public string UserName { get; set; }
@@ -128,7 +128,7 @@ public class ExportAdjustmentPointReportParams
         SiteId = req.SiteId;
         StrCurrencyIds = JsonConvert.SerializeObject(req.CurrencyIds);
         StrVipLevels = JsonConvert.SerializeObject(req.VipLevels);
-        StrCategoryIds = JsonConvert.SerializeObject(req.CategoryIds);
+        StrAdjustTypes = JsonConvert.SerializeObject(req.AdjustTypes);
         TransId = req.TransId ?? string.Empty;
         UserName = req.UserName ?? string.Empty;
         TpUserName = req.SabaId ?? string.Empty;
@@ -139,7 +139,7 @@ public class ExportAdjustmentPointReportParams
     public int SiteId { get; set; }
     public string StrCurrencyIds { get; set; }
     public string StrVipLevels { get; set; }
-    public string StrCategoryIds { get; set; }
+    public string StrAdjustTypes { get; set; }
     public string TransId { get; set; }
     public string UserName { get; set; }
     public string TpUserName { get; set; }

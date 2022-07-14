@@ -75,7 +75,7 @@ public class GetAdjustmentPointReportResult
     public int VipLevel { get; set; }
     public string VipLevelName { get; set; }
     public string TransId { get; set; }
-    public int CategoryId { get; set; }
+    public int AdjustType { get; set; }
     public decimal PointEarned { get; set; }
     public string Memo { get; set; }
     public string Operator { get; set; }

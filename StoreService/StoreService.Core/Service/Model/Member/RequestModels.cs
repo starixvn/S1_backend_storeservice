@@ -16,12 +16,12 @@ public class GetListRequest : PagerRequestModel
     public DateTimeOffset StartTime
     {
         get => _startTime;
-        set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set => _startTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
     }
     public DateTimeOffset EndTime
     {
         get => _endTime;
-        set => _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set => _endTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
     }
 }
 
@@ -34,12 +34,12 @@ public class GetMemberRewardPointLogRequest : PagerRequestModel
     public DateTimeOffset StartTime
     {
         get => _startTime;
-        set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set => _startTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
     }
     public DateTimeOffset EndTime
     {
         get => _endTime;
-        set => _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set => _endTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
     }
 }
 

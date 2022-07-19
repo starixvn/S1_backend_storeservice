@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;
+using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.PointSetting;
 using StoreService.Core.Service.Model.RewardPoint;
@@ -21,18 +22,18 @@ public class TurnoverWorkerBLL
 {
 
     private readonly TurnoverPeriodService _turnoverPeriodService;
-    private readonly PointSettingService _pointSettingService;
     private readonly TurnoverWorkerService _turnoverWorkerService;
     private readonly RewardPointService _rewardPointService;
+    private readonly CommonService _commonService;
     private readonly ILogger<TurnoverWorkerBLL> _logger;
     private readonly MySqlClient _mainDbClient;
 
     public TurnoverWorkerBLL(IServiceProvider provider)
     {
         _turnoverPeriodService = provider.GetRequiredService<TurnoverPeriodService>();
-        _pointSettingService = provider.GetRequiredService<PointSettingService>();
         _turnoverWorkerService = provider.GetRequiredService<TurnoverWorkerService>();
         _rewardPointService = provider.GetRequiredService<RewardPointService>();
+        _commonService = provider.GetRequiredService<CommonService>();
         _logger = provider.GetRequiredService<ILogger<TurnoverWorkerBLL>>();
         _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
     }
@@ -78,11 +79,12 @@ public class TurnoverWorkerBLL
     {
         if (!pointSetting.Any())
         {
-            _logger.LogWarning($"TurnoverWorker Wroker：Not Exist Turnover Setting. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+            _logger.LogWarning($"TurnoverWorker：Not Exist Turnover Setting. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
             return true;
         }
-        var settleDate = pointSetting.First().CaculateDate.ToString("yyyyMMdd");
+        var settleDate = custList.First().CaculateDate;
         var LevelList = custList.Select(x => x.VipLevel).Distinct();
+        var tpCategoryInfoList = await GetTpCategoryInfoAsync();
         foreach (var level in LevelList)
         {
             var settings = pointSetting.Where(x => x.VipLevel == level);
@@ -96,9 +98,9 @@ public class TurnoverWorkerBLL
 
                 var caculateData = Caculate(turnoverData, remainData, settings);
 
-                if (caculateData.Count > 0 && !await RewardPointAsync(task.SiteId, task.CurrencyId, custData.CustId, settleDate, caculateData))
+                if (caculateData.Count > 0 && !await RewardPointAsync(task.SiteId, task.CurrencyId, custData.CustId, settleDate, caculateData, tpCategoryInfoList))
                 {
-                    _logger.LogError($"TurnoverWorker Wroker：Cust Reward Point Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId} CustId:{custData.CustId}.");
+                    _logger.LogError($"TurnoverWorker：Cust Reward Point Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId} CustId:{custData.CustId}.");
                     return false;
                 }
             }
@@ -124,11 +126,6 @@ public class TurnoverWorkerBLL
         foreach (var data in validTurnoverData)
         {
             var setting = CheckRate(settingLists.FirstOrDefault(x => x.TpCategoryId == data.CategoryId));
-            if (setting.Turnover <= 0 || setting.Rate <= 0)
-            {
-                _logger.LogWarning($"TurnoverWorker Wroker：Turnover Point Setting Invaild. TpCategoryId:{data.CategoryId}.");
-                return result;
-            }
             var remainAmount = remainData.FirstOrDefault(x => x.CategoryId == data.CategoryId)?.RemainAmount ?? 0;
             var caculateResult = Caculate(data.ValidBet, remainAmount, setting.Turnover, setting.Rate);
             result.Add(new CustAddPointModel()
@@ -139,6 +136,8 @@ public class TurnoverWorkerBLL
                 RateTurnover = setting.Turnover,
                 Rate = setting.Rate,
                 AddPoint = caculateResult.TotalAddPoint,
+                ThisTurnover = data.ValidBet,
+                ThisRemain = remainAmount,
                 UsedTurnover = caculateResult.UsedTurnover,
                 UnUseTurnover = caculateResult.UnUseTurnover,
                 UsedRemain = caculateResult.UsedRemain,
@@ -164,30 +163,34 @@ public class TurnoverWorkerBLL
     => _turnoverWorkerService.GetRemainListAsync(custId);
 
     private async Task<bool> RewardPointAsync(int siteId, int currencyId, int custId, string settleDate,
-        List<CustAddPointModel> addPointData)
+        List<CustAddPointModel> addPointData,
+        IEnumerable<TpCategoryInfo> tpCategoryInfoList)
     {
-        var memo = GenMemo(addPointData);
+        var memo = GenMemo(addPointData, tpCategoryInfoList);
 
         await using var conn = _mainDbClient.GetMySqlConnection();
         conn.Open();
         await using var trans = await conn.BeginTransactionAsync();
 
-        //Update Point + Insert Log
-        var result = await _rewardPointService.CustRewardPointChange(new CustRewardPointChangeParams()
+        if (addPointData.Sum(x => x.AddPoint) > 0)
         {
-            SiteId = siteId,
-            CurrencyId = currencyId,
-            CustId = custId,
-            pointType = PointTypeEnum.Turnover,
-            ChangePoint = addPointData.Sum(x => x.AddPoint),
-            TransId = settleDate,
-            Memo = memo
-        }, conn, trans);
+            //Update Point + Insert Log
+            var result = await _rewardPointService.CustRewardPointChange(new CustRewardPointChangeParams()
+            {
+                SiteId = siteId,
+                CurrencyId = currencyId,
+                CustId = custId,
+                pointType = PointTypeEnum.Turnover,
+                ChangePoint = addPointData.Sum(x => x.AddPoint),
+                TransId = settleDate,
+                Memo = memo
+            }, conn, trans);
 
-        if (!result)
-        {
-            trans.Rollback();
-            return false;
+            if (!result)
+            {
+                trans.Rollback();
+                return false;
+            }
         }
 
         //Update Remain
@@ -216,10 +219,13 @@ public class TurnoverWorkerBLL
     private (decimal UsedTurnover, decimal UnUseTurnover, decimal UsedRemain, decimal UnUseRemain, decimal ChangeRemain, decimal TotalAddPoint) Caculate
         (decimal validBet, decimal remain, decimal rateTurnover, decimal rate)
     {
+        if (rateTurnover <= 0 || rate <= 0)
+            return (0, validBet, 0, remain, validBet, 0);
+
         var totalTurnover = validBet + remain;
         var totalUnUsedTurnover = totalTurnover % rateTurnover;
         var addPoint = Math.Truncate(totalTurnover / rateTurnover * rate);
-        var totalUsedTurnover = rateTurnover * addPoint;
+        var totalUsedTurnover = rateTurnover * addPoint / rate;
 
         decimal usedTurnover = 0;
         decimal unUseTurnover = 0;
@@ -246,17 +252,28 @@ public class TurnoverWorkerBLL
         return (usedTurnover, unUseTurnover, usedRemain, unUseRemain, changeRemain, addPoint);
     }
 
-    private string GenMemo(List<CustAddPointModel> addPointData)
+    private string GenMemo(List<CustAddPointModel> addPointData, IEnumerable<TpCategoryInfo> tpCategoryInfoList)
     {
         var sb = new StringBuilder();
         foreach (var data in addPointData)
         {
-            string isInPromotionPeriod = data.IsUsePromotionRate ? "Y" : "N";
-            sb.Append($"CategoryId={data.CategoryId}, IsInPromotionPeriod,Turnover / Rate={isInPromotionPeriod},{data.RateTurnover.ToString("0.####")} / {data.Rate.ToString("0.####")}, " +
-                      $"AddPoint={data.AddPoint.ToString("0.####")}, Used(Turnover+Remain)={data.UsedTurnover.ToString("0.####")}+{data.UsedRemain.ToString("0.####")}, FinalRemain={data.UnUseRemain.ToString("0.####")}\n");
+            sb.Append($"Category:{tpCategoryInfoList.First(x => x.CategoryId == data.CategoryId).CategoryName},");
+            sb.Append($"(Turnover{data.ThisTurnover.ToString("0.####")}");
+            if (data.ThisRemain > 0)
+                sb.Append($"+Balance{data.ThisRemain.ToString("0.####")}");
+            sb.Append(")");
+            if (data.IsUsePromotionRate)
+                sb.Append($"IsInPromotionPeriod*{data.Rate.ToString("0.####")}");
+
+            sb.Append($" ( Balance{data.UnUseRemain.ToString("0.####")} ).\n");
         }
         return sb.ToString();
     }
 
+
+    private async Task<IEnumerable<TpCategoryInfo>> GetTpCategoryInfoAsync()
+    {
+        return await _commonService.GetTpCategoryInfoAsync();
+    }
     #endregion
 }

@@ -78,12 +78,13 @@ public class RedemptionService
         return false;
     }
     
-    public async Task<int> CheckCustRedemptionLimitAsync(int siteId, int currencyId , int custId )
+    public async Task<int> CheckCustRedemptionLimitAsync(int siteId, int currencyId , int custId ,int point)
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", siteId);
         para.Add("_CurrencyId", currencyId);
         para.Add("_CustId", custId);
+        para.Add("_Point", point);
         para.Add("Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
         await _reportDbClient.ExecuteAsync("Store_CustRedemptionLimitCheck_Get", para);
         var result = para.Get<int?>("Result") ?? 0;

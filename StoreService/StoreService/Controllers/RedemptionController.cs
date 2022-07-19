@@ -25,10 +25,14 @@ public class RedemptionController : ControllerBase
     public async Task<ApiResult> CreateRedemptionAsync(CreateRedemptionRequest request)
     {
         var result = new ApiResult();
-        var redemptionLimit = _redemptionBll.CheckCustRedemptionLimitAsync(request.SiteId , request.CurrencyId , request.CustId);
+        var redemptionLimit = _redemptionBll.CheckCustRedemptionLimitAsync(request.SiteId , request.CurrencyId , request.CustId ,request.Point);
         
         switch (redemptionLimit.Result)
         {
+            case (int) ErrorCodeEnum.InsufficientPoint:
+                result.ErrorCode = (int) ErrorCodeEnum.InsufficientPoint;
+                break;
+            
             case (int) ErrorCodeEnum.RedemptionLimitOverLimit:
                 result.ErrorCode = (int) ErrorCodeEnum.RedemptionLimitOverLimit;
                 break;

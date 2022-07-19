@@ -31,9 +31,9 @@ public class RedemptionBLL
         return success;
     }
    
-    public async Task<int> CheckCustRedemptionLimitAsync(int siteId, int currencyId , int custId )
+    public async Task<int> CheckCustRedemptionLimitAsync(int siteId, int currencyId , int custId ,int point )
     {
-        var result = await _redemptionService.CheckCustRedemptionLimitAsync(siteId,currencyId,custId);
+        var result = await _redemptionService.CheckCustRedemptionLimitAsync(siteId,currencyId,custId,point);
         return result;
     }
     

@@ -7,9 +7,8 @@ using StoreService.Core.Service.Model;
 
 namespace StoreService.Core.Service.Model.TurnoverWorker;
 
-public class TurnoverPeriodForWorkerUse //: TurnoverPeriod
+public class TurnoverPeriodForWorkerUse
 {
-    //TODO：繼承不到...
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public int RedeemHours { get; set; }
@@ -28,14 +27,12 @@ public class TurnoverSettingForWorkerUse
     public decimal PointRate { get; set; }
     public bool PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
-    public DateTime CaculateDate { get; set; }
-    public DateTimeOffset CurrencyTimezonePromotionStartTime { get; set; }
-    public DateTimeOffset CurrencyTimezonePromotionEndTime { get; set; }
     public bool IsInPromotionPeriod { get; set; }
 }
 
 public class TurnoverCustListModel
 {
+    public string CaculateDate { get; set; }
     public int CustId { get; set; }
     public string UserName { get; set; }
     public int VipLevel { get; set; }
@@ -67,6 +64,8 @@ public class CustAddPointModel
     public decimal RateTurnover { get; set; }
     public decimal Rate { get; set; }
     public decimal AddPoint { get; set; }
+    public decimal ThisTurnover { get; set; }
+    public decimal ThisRemain { get; set; }
     public decimal UsedTurnover { get; set; }
     public decimal UnUseTurnover { get; set; }
     public decimal UsedRemain { get; set; }

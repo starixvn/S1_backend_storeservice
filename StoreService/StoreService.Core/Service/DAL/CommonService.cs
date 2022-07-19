@@ -18,4 +18,9 @@ public class CommonService
     {
         return _reportDbClient.QueryAsync<CurrencyInfo>("Common_Currency_Get");
     }
+
+    public Task<IEnumerable<TpCategoryInfo>> GetTpCategoryInfoAsync()
+    {
+        return _reportDbClient.QueryAsync<TpCategoryInfo>("Admin_TPCategory_Get");
+    }
 }

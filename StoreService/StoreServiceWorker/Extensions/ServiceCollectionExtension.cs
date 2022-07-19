@@ -41,7 +41,8 @@ public static class ServiceCollectionExtension
             .AddSingleton<RewardPointService>()
             .AddSingleton<MemberService>()
             .AddSingleton<TurnoverPeriodService>()
-            .AddSingleton<TurnoverWorkerService>();
+            .AddSingleton<TurnoverWorkerService>()
+            .AddSingleton<CommonService>();
     }
 
     public static IServiceCollection RegisterHostServices(this IServiceCollection services)

@@ -52,7 +52,18 @@ public class TurnoverWorkerService
         return await _reportDbClient.QueryAsync<CustRemainRecordModel>("Store_TurnOverRewardPointRemainRecord_Get", para);
     }
 
-    public async Task<bool> RemainRecordUpdateAsync(int custId, int categoryId, decimal remainAmount, string workerDate, MySqlConnection conn, MySqlTransaction trans)
+    public async Task<bool> RewardCategoryRecordCreateAsync(int custId, int categoryId, string workerDate, decimal addPoint, MySqlConnection conn, MySqlTransaction trans)
+    {
+        var logPara = new DynamicParameters();
+        logPara.Add("_CustId", custId);
+        logPara.Add("_CategoryId", categoryId);
+        logPara.Add("_WorkerDate", workerDate);
+        logPara.Add("_PointEarned", addPoint);
+
+        return await conn.ExecuteAsync("Store_TurnOverRewardCategoryRecord_Ins", logPara, trans, commandType: CommandType.StoredProcedure) > 0;
+    }
+
+    public async Task<bool> RemainRecordUpdateAsync(int custId, int categoryId, string workerDate, decimal remainAmount, MySqlConnection conn, MySqlTransaction trans)
     {
         var para = new DynamicParameters();
         para.Add("_CustId", custId);

@@ -193,10 +193,19 @@ public class TurnoverWorkerBLL
             }
         }
 
-        //Update Remain
-        foreach (var data in addPointData.Where(x => x.ChangeRemain != 0))
+        foreach (var data in addPointData)
         {
-            if (!await _turnoverWorkerService.RemainRecordUpdateAsync(custId, data.CategoryId, data.ChangeRemain, settleDate, conn, trans))
+            //Ins CategoryRecord
+            if (data.AddPoint != 0
+                && !await _turnoverWorkerService.RewardCategoryRecordCreateAsync(custId, data.CategoryId, settleDate, data.AddPoint, conn, trans))
+            {
+                trans.Rollback();
+                return false;
+            }
+
+            //Update Remain
+            if (data.ChangeRemain != 0
+                && !await _turnoverWorkerService.RemainRecordUpdateAsync(custId, data.CategoryId, settleDate, data.ChangeRemain, conn, trans))
             {
                 trans.Rollback();
                 return false;

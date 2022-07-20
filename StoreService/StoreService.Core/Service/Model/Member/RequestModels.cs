@@ -85,3 +85,10 @@ public class BatchRewardPointLogInfoComparer : IEqualityComparer<BatchRewardPoin
         return t.TransId.GetHashCode();
     }
 }
+
+public class SetFavoriteRequest
+{
+    public int CustId { get; set; }
+    public int GiftId { get; set; }
+    public bool IsFavorite { get; set; }
+}

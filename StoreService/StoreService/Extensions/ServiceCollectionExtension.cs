@@ -30,6 +30,7 @@ public static class ServiceCollectionExtension
             return services
                 .AddMemoryCache()
                 .AddSingleton<CacheHelper>()
+                //.AddSingleton<ICacheHelper, RedisCacheHelper>()
                 .AddSingleton<GiftManagementService>()
                 .AddSingleton<GiftManagementBLL>()
                 .AddSingleton<RedemptionBLL>()

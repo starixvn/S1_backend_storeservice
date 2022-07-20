@@ -182,7 +182,10 @@ public class GiftManagementBLL
             CurrencyId = input.CurrencyId,
             StrLangCodes = $"[\"en\",\"{input.Lang}\"]"
         });
-        var custFavorite = await _memberBll.GetCustFavoriteGiftAsync(input.CustId);
+        var isGuest = input.CustId == 0;
+        var favorites = isGuest
+            ? new List<int>()
+            : await _memberBll.GetCustFavoriteGiftAsync(input.CustId);
 
         foreach (var data in result)
         {
@@ -196,7 +199,10 @@ public class GiftManagementBLL
                 data.TagList = tags.Where(x => tagArr.Contains(x.TagId));
             }
 
-            data.IsFavorite = custFavorite.Contains(data.GiftId);
+            if (!isGuest)
+            {
+                data.IsFavorite = favorites.Contains(data.GiftId);
+            }
         }
 
         return result;

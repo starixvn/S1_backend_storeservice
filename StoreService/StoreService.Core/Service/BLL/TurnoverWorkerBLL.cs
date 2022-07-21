@@ -50,7 +50,7 @@ public class TurnoverWorkerBLL
             //幣別時區小時 <= 指定小時，不執行排程
             if (task.CurrencyNowTime.Hour <= task.RedeemHours)
             {
-                _logger.LogWarning($"task.RedeemsHours Invaild. task value={JsonConvert.SerializeObject(task)}");
+                _logger.LogWarning($"TurnoverWorker task.RedeemsHours Invaild. task value={JsonConvert.SerializeObject(task)}");
                 continue;
             }
 
@@ -58,7 +58,7 @@ public class TurnoverWorkerBLL
             //CurrencyLastSettledTime.Date = CurrencyNowTime.Date，上次執行時間日期等於幣別時區時間日期，不可再執行(原邏輯)
             if (task.CurrencyLastSettledTime.Date == task.CurrencyNowTime.Date)
             {
-                _logger.LogWarning($"task.LastCurrencySettledTime Invaild. task value={JsonConvert.SerializeObject(task)}");
+                _logger.LogWarning($"TurnoverWorker task.LastCurrencySettledTime Invaild. task value={JsonConvert.SerializeObject(task)}");
                 continue;
             }
             result.Add(task);
@@ -79,7 +79,7 @@ public class TurnoverWorkerBLL
     {
         if (!pointSetting.Any())
         {
-            _logger.LogWarning($"TurnoverWorker：Not Exist Turnover Setting. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+            _logger.LogWarning($"TurnoverWorker : Not Exist Turnover Setting. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
             return true;
         }
         var settleDate = custList.First().CaculateDate;
@@ -100,7 +100,7 @@ public class TurnoverWorkerBLL
 
                 if (caculateData.Count > 0 && !await RewardPointAsync(task.SiteId, task.CurrencyId, custData.CustId, settleDate, caculateData, tpCategoryInfoList))
                 {
-                    _logger.LogError($"TurnoverWorker：Cust Reward Point Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId} CustId:{custData.CustId}.");
+                    _logger.LogError($"TurnoverWorker : Cust Reward Point Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId} CustId:{custData.CustId}.");
                     return false;
                 }
             }

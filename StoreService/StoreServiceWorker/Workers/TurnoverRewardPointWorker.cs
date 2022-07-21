@@ -39,11 +39,11 @@ namespace StoreServiceWorker.Workers
 
                 var doTaskList = await _turnoverWorkerBLL.VerifyTaskAsync();
 
-                _logger.LogInformation($"TurnoverWorker：Verify Task End. Count = {doTaskList.Count()}");
+                _logger.LogInformation($"TurnoverWorker : Verify Task End. Count = {doTaskList.Count()}");
 
                 foreach (var task in doTaskList)
                 {
-                    _logger.LogInformation($"TurnoverWorker：Do Task Start. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+                    _logger.LogInformation($"TurnoverWorker : Do Task Start. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
                     var sw = Stopwatch.StartNew();
                     int pageSize = 1000, pageNumber = 1;
                     var isRemain = true;
@@ -63,11 +63,11 @@ namespace StoreServiceWorker.Workers
 
                     if (!await _turnoverWorkerBLL.UpdateTaskSettledTImeASync(task.SiteId, task.CurrencyId))
                     {
-                        _logger.LogError($"TurnoverWorker：Update Task SettleTime Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+                        _logger.LogError($"TurnoverWorker : Update Task SettleTime Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
                         throw new Exception();
                     }
 
-                    _logger.LogInformation($"TurnoverWorker：Do Task End. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.\n"
+                    _logger.LogInformation($"TurnoverWorker : Do Task End. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.\n"
                     + $"Finish Time (m:s.ms): {Math.Round(sw.Elapsed.TotalMinutes)}:{Math.Round(sw.Elapsed.TotalMinutes)}.{Math.Round(sw.Elapsed.TotalMilliseconds)}.");
                 }
             }
@@ -78,7 +78,7 @@ namespace StoreServiceWorker.Workers
             }
             finally
             {
-                var dueTimeSpan = isError ? TimeSpan.FromMinutes(10) : TimeSpan.FromMinutes(30);
+                var dueTimeSpan = isError ? TimeSpan.FromMinutes(10) : TimeSpan.FromMinutes(60);
 
                 _logger.LogInformation($"TurnoverWorker Thread End. isError={isError}.\n" +
                   $"Next Thread Will Start At {DateTime.Now.Add(dueTimeSpan).AddHours(8).ToString("yyyy-MM-ddTHH:mm:ss")}");

@@ -79,4 +79,22 @@ public class MemberService
 
         return _reportDbClient.QueryAsync<CustomerInfo>("Store_InactiveCustList_Get", para);;
     }
+    
+    public async Task<string> GetCustFavoriteGiftAsync(int custId)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", custId);
+
+        return (await _reportDbClient.QueryAsync<string>("Store_CustFavoriteGift_Get", para)).FirstOrDefault();
+    }
+    
+    public Task<int> SetCustFavoriteGiftAsync(SetFavoriteParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+        para.Add("_GiftId", input.StrGiftId);
+        para.Add("_IsFavorite", input.IsFavorite);
+
+        return _mainDbClient.ExecuteAsync("Store_CustFavoriteGift_Set", para);
+    }
 }

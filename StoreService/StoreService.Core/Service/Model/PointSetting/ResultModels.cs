@@ -67,13 +67,24 @@ public class TurnoverPointSettingResult
 
 public class TpCategoryTurnoverPointSetting
 {
+    private DateTimeOffset _startTime { get; set; }
+    private DateTimeOffset _endTime { get; set; }
+    
     public int TpCategoryId { get; set; }
     public decimal Turnover { get; set; }
     public decimal PointRate { get; set; }
     public int PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
-    public DateTimeOffset PromotionStartTime { get; set; }
-    public DateTimeOffset PromotionEndTime { get; set; }
+    public DateTimeOffset PromotionStartTime
+    {
+        get => _startTime;
+        set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
+    public DateTimeOffset PromotionEndTime
+    {
+        get => _endTime;
+        set => _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
 }
 
 public class DepositPointSetting : LastUpdateModel

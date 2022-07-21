@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Based;
@@ -26,4 +27,19 @@ public class MemberBLL
     
     public Task<IEnumerable<CustomerInfo>> GetInactiveMemberListAsync(GetInactiveMemberListParams input)
         => _memberService.GetInactiveMemberListAsync(input);
+
+    public async Task<IEnumerable<int>> GetCustFavoriteGiftAsync(int custId)
+    {
+        var strFavorite = await _memberService.GetCustFavoriteGiftAsync(custId);
+        var result = JsonConvert.DeserializeObject<IEnumerable<int>>(strFavorite);
+        
+        return result;
+    }
+    
+    public async Task<bool> SetCustFavoriteGiftAsync(SetFavoriteParams input)
+    {
+        var result = await _memberService.SetCustFavoriteGiftAsync(input);
+        
+        return result > 0;
+    }
 }

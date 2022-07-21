@@ -13,6 +13,7 @@ public class FrontendGetListParams
 {
     public FrontendGetListParams(GetListRequest req)
     {
+        CustId = req.CustId;
         SiteId = req.SiteId;
         CurrencyId = req.CurrencyId;
         UseCategoryIds = req.CategoryIds != null;
@@ -23,7 +24,7 @@ public class FrontendGetListParams
         OrderByField = string.IsNullOrWhiteSpace(req.OrderByField) ? "Sort" : req.OrderByField;
         Desc = req.Desc;
     }
-
+    public int CustId { get; set; }
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public bool UseCategoryIds { get; set; }

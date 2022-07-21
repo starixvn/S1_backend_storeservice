@@ -12,7 +12,7 @@ public class MemberBLL
 {
     private MemberService _memberService;
     private readonly ILogger<MemberBLL> _logger;
-    
+
     public MemberBLL(IServiceProvider provider)
     {
         _memberService = provider.GetRequiredService<MemberService>();
@@ -21,25 +21,25 @@ public class MemberBLL
 
     public Task<PagerResultModel<MemberRewardPointInfo>> GetMemberRewardPointListAsync(GetListParams input)
         => _memberService.GetMemberRewardPointListAsync(input);
-    
+
     public Task<PagerResultModel<MemberRewardPointLog>> GetMemberRewardPointLogAsync(GetMemberRewardPointLogParams input)
         => _memberService.GetMemberRewardPointLogAsync(input);
-    
+
     public Task<IEnumerable<CustomerInfo>> GetInactiveMemberListAsync(GetInactiveMemberListParams input)
         => _memberService.GetInactiveMemberListAsync(input);
 
     public async Task<IEnumerable<int>> GetCustFavoriteGiftAsync(int custId)
     {
         var strFavorite = await _memberService.GetCustFavoriteGiftAsync(custId);
-        var result = JsonConvert.DeserializeObject<IEnumerable<int>>(strFavorite);
-        
+        var result = string.IsNullOrWhiteSpace(strFavorite) ? new List<int>() : JsonConvert.DeserializeObject<IEnumerable<int>>(strFavorite);
+
         return result;
     }
-    
+
     public async Task<bool> SetCustFavoriteGiftAsync(SetFavoriteParams input)
     {
         var result = await _memberService.SetCustFavoriteGiftAsync(input);
-        
+
         return result > 0;
     }
 }

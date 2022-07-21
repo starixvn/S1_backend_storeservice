@@ -81,7 +81,7 @@ public class ReportService
 
     #endregion
     
-    #region Adjustment
+    #region AdjustmentPoint
 
      public async Task<PagerResultModel<GetAdjustmentPointReportResult>> GetAdjustmentPointReportAsync(GetAdjustmentPointReportParams input)
     {
@@ -141,6 +141,63 @@ public class ReportService
     }
 
     #endregion
-    
-   
+
+    #region TurnoverPoint
+
+    public async Task<PagerResultModel<GetTurnoverPointReportResult>> GetTurnoverPointReportAsync(GetTurnoverPointReportParams input)
+    {
+        var para = new DynamicParameters().AddPagerParams(input.PageSize, input.StartIndex);
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_Categories", input.StrCategories);
+        para.Add("_UserName", input.UserName);
+        para.Add("_TpUserName", input.TpUserName);
+        para.Add("_StartTime", input.StartTime);
+        para.Add("_EndTime", input.EndTime);
+
+        var list = await _reportDbClient.QueryAsync<GetTurnoverPointReportResult>("Store_TurnoverPointReport_Get", para);
+        var result = new PagerResultModel<GetTurnoverPointReportResult>
+        {
+            Datas = list,
+            TotalPages = para.Get<int?>("_TotalPages") ?? 0,
+            RowCount = para.Get<int?>("_RowCount") ?? 0
+        };
+
+        return result;
+    }
+
+    public async Task<IEnumerable<GetTurnoverPointReportResult>> ExportTurnoverPointReportAsync(ExportTurnoverPointReportParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_Categories", input.StrCategories);
+        para.Add("_UserName", input.UserName);
+        para.Add("_TpUserName", input.TpUserName);
+        para.Add("_StartTime", input.StartTime);
+        para.Add("_EndTime", input.EndTime);
+
+        var list = await _reportDbClient.QueryAsync<GetTurnoverPointReportResult>("Store_TurnoverPointReportExport_Get", para);
+        return list;
+    }
+
+    public Task<IEnumerable<GetTurnoverPointOverviewResult>> GetTurnoverPointOverviewAsync(GetTurnoverPointReportParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyIds", input.StrCurrencyIds);
+        para.Add("_VipLevels", input.StrVipLevels);
+        para.Add("_Categories", input.StrCategories);
+        para.Add("_UserName", input.UserName);
+        para.Add("_TpUserName", input.TpUserName);
+        para.Add("_StartTime", input.StartTime);
+        para.Add("_EndTime", input.EndTime);
+
+        return _reportDbClient.QueryAsync<GetTurnoverPointOverviewResult>("Store_TurnoverPointOverview_Get", para);
+    }
+
+    #endregion
+
 }

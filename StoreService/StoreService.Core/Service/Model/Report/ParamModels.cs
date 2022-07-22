@@ -148,3 +148,73 @@ public class ExportAdjustmentPointReportParams
 }
 
 #endregion
+
+#region TurnoverPoint
+
+public class GetTurnoverPointReportParams : PagerParamModel
+{
+    public GetTurnoverPointReportParams(GetTurnoverPointReportRequest req)
+    {
+        SiteId = req.SiteId;
+        StrCurrencyIds = JsonConvert.SerializeObject(req.CurrencyIds);
+        StrVipLevels = JsonConvert.SerializeObject(req.VipLevels);
+        StrCategories = JsonConvert.SerializeObject(req.Categories);
+        UserName = req.UserName ?? string.Empty;
+        TpUserName = req.SabaId ?? string.Empty;
+        PageSize = req.PageSize;
+        StartIndex = req.PageSize.GetStartIndex(req.PageNumber);
+        StartTime = req.StartTime.DateTime;
+        EndTime = req.EndTime.DateTime;
+        PageNumber = req.PageNumber;
+    }
+
+    public GetTurnoverPointReportParams(ExportTurnoverPointReportParams input)
+    {
+        SiteId = input.SiteId;
+        StrCurrencyIds = input.StrCurrencyIds;
+        StrVipLevels = input.StrVipLevels;
+        StrCategories = input.StrCategories;
+        UserName = input.UserName;
+        TpUserName = input.TpUserName;
+        StartTime = input.StartTime;
+        EndTime = input.EndTime;
+    }
+
+    public int SiteId { get; set; }
+    public string StrCurrencyIds { get; set; }
+    public string StrVipLevels { get; set; }
+    public string StrCategories { get; set; }
+    public string UserName { get; set; }
+    public string TpUserName { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
+    public int PageNumber { get; set; }
+}
+
+
+
+public class ExportTurnoverPointReportParams
+{
+    public ExportTurnoverPointReportParams(ExportTurnoverPointReportRequest req)
+    {
+        SiteId = req.SiteId;
+        StrCurrencyIds = JsonConvert.SerializeObject(req.CurrencyIds);
+        StrVipLevels = JsonConvert.SerializeObject(req.VipLevels);
+        StrCategories = JsonConvert.SerializeObject(req.Categories);
+        UserName = req.UserName ?? string.Empty;
+        TpUserName = req.SabaId ?? string.Empty;
+        StartTime = req.StartTime.DateTime;
+        EndTime = req.EndTime.DateTime;
+    }
+
+    public int SiteId { get; set; }
+    public string StrCurrencyIds { get; set; }
+    public string StrVipLevels { get; set; }
+    public string StrCategories { get; set; }
+    public string UserName { get; set; }
+    public string TpUserName { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
+}
+
+#endregion

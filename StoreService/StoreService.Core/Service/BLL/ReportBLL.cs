@@ -55,7 +55,7 @@ public class ReportBLL
 
     #endregion
     
-    #region DepositPoint
+    #region AdjustmentPoint
 
     public async Task<AdjustmentPointReportResult> GetAdjustmentPointReportAsync(GetAdjustmentPointReportParams input)
     {
@@ -92,5 +92,43 @@ public class ReportBLL
     }
 
     #endregion
-    
+
+    #region TurnoverPoint
+
+    public async Task<TurnoverPointReportResult> GetTurnoverPointReportAsync(GetTurnoverPointReportParams input)
+    {
+        var list = await _reportService.GetTurnoverPointReportAsync(input);
+        var overview = await _reportService.GetTurnoverPointOverviewAsync(input);
+
+        var result = new TurnoverPointReportResult
+        {
+            List = new PagerResponseModel<GetTurnoverPointReportResult>
+            {
+                Datas = list.Datas,
+                PageNumber = input.PageNumber,
+                RowCount = list.RowCount,
+                TotalPages = list.TotalPages
+            },
+            Overview = overview
+        };
+
+        return result;
+    }
+
+    public async Task<ExportTurnoverPointReportResult> ExportTurnoverPointReportAsync(ExportTurnoverPointReportParams input)
+    {
+        var list = await _reportService.ExportTurnoverPointReportAsync(input);
+        var overview = await _reportService.GetTurnoverPointOverviewAsync(new GetTurnoverPointReportParams(input));
+
+        var result = new ExportTurnoverPointReportResult
+        {
+            List = list,
+            Overview = overview
+        };
+
+        return result;
+    }
+
+    #endregion
+
 }

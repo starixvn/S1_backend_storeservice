@@ -3,6 +3,11 @@ using StoreService.Core.Service.Model.RewardPoint;
 
 namespace StoreService.Core.Service.Model.Member;
 
+public class GetBalanceRequest
+{
+    public int CustId { get; set; }
+}
+
 public class GetListRequest : PagerRequestModel
 {
     private DateTimeOffset _startTime { get; set; }

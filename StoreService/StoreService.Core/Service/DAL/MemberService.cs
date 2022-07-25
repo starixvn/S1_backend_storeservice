@@ -27,6 +27,16 @@ public class MemberService
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
     }
     
+    public async Task<MemberPointBalance> GetMemberPointBalanceAsync(int custId)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", custId);
+
+        var result = await _reportDbClient.QueryAsync<MemberPointBalance>("Store_CustPointBalance_Get", para);
+       
+        return result.FirstOrDefault();
+    }
+    
     public async Task<PagerResultModel<MemberRewardPointInfo>> GetMemberRewardPointListAsync(GetListParams input)
     {
         var para = new DynamicParameters()

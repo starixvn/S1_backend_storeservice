@@ -19,6 +19,17 @@ public class MemberBLL
         _logger = provider.GetRequiredService<ILogger<MemberBLL>>();
     }
 
+    public async Task<MemberPointBalance> GetMemberPointBalanceAsync(int custId)
+    {
+        var result = await _memberService.GetMemberPointBalanceAsync(custId) 
+            ?? new MemberPointBalance
+            {
+                PointBalance = 0
+            };
+
+        return result;
+    }
+
     public Task<PagerResultModel<MemberRewardPointInfo>> GetMemberRewardPointListAsync(GetListParams input)
         => _memberService.GetMemberRewardPointListAsync(input);
 

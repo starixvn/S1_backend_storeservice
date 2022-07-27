@@ -97,3 +97,8 @@ public class SetFavoriteRequest
     public int GiftId { get; set; }
     public bool IsFavorite { get; set; }
 }
+
+public class GetMyCoinRequest
+{
+    public int CustId { get; set; }
+}

@@ -119,9 +119,27 @@ public class RedemptionBLL
         var result = await _redemptionService.GetRedemptionLogAsync(input);
         return result;
     }
-    
-    # region Private Methods
-    
+
+    public async Task<MyPurchesResult> GetMyPurchesAsync(GetMyPurchesParams input)
+    {
+        var list = await _redemptionService.GetMyPurchesAsync(input);
+        var result = new MyPurchesResult
+        {
+            List = new PagerResponseModel<GetMyPurchesResult>
+            {
+                Datas = list.Datas,
+                PageNumber = input.PageNumber,
+                RowCount = list.RowCount,
+                TotalPages = list.TotalPages
+            }
+        };
+
+        return result;
+    }
+
+
+    #region Private Methods
+
     private async Task<IEnumerable<GetRedemptionOverviewResult>> GetRedemptionOverviewAsync(
         GetRedemptionListParams input)
     {

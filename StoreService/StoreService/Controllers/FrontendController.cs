@@ -4,6 +4,7 @@ using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Frontend;
 using StoreService.Core.Service.Model.Member;
+using StoreService.Core.Service.Model.Redemption;
 using GetListRequest = StoreService.Core.Service.Model.Frontend.GetListRequest;
 
 namespace StoreService.Controllers
@@ -14,11 +15,13 @@ namespace StoreService.Controllers
     {
         private readonly GiftManagementBLL _giftManagementBll;
         private readonly MemberBLL _memberBll;
+        private readonly RedemptionBLL _redemptionBll;
 
         public FrontendController(IServiceProvider provider)
         {
             _giftManagementBll = provider.GetRequiredService<GiftManagementBLL>();
             _memberBll = provider.GetRequiredService<MemberBLL>();
+            _redemptionBll = provider.GetRequiredService<RedemptionBLL>();
         }
 
         [HttpPost]
@@ -54,6 +57,16 @@ namespace StoreService.Controllers
                 ErrorCode = (int)ErrorCodeEnum.Success
             };
         }
+        [HttpPost]
+        public async Task<ApiResult> GetMyPurchesAsync(GetMyPurchesRequest request)
+        {
+            var result = await _redemptionBll.GetMyPurchesAsync(new GetMyPurchesParams(request));
 
+            return new ApiResult<MyPurchesResult>
+            {
+                Data = result,
+                ErrorCode = (int)ErrorCodeEnum.Success
+            };
+        }
     }
 }

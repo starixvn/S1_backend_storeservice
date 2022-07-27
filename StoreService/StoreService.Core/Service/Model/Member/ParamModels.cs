@@ -62,3 +62,12 @@ public class SetFavoriteParams
     public string StrGiftId { get; set; }
     public bool IsFavorite { get; set; }
 }
+
+public class GetMyCoinParams
+{
+    public GetMyCoinParams(GetMyCoinRequest req)
+    {
+        CustId = req.CustId;
+    }
+    public int CustId { get; set; }
+}

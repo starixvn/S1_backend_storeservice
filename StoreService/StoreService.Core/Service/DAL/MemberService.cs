@@ -107,4 +107,34 @@ public class MemberService
 
         return _mainDbClient.ExecuteAsync("Store_CustFavoriteGift_Set", para);
     }
+
+    public Task<IEnumerable<RewardPointSummary>> GetRewardPointSummaryAsync(GetMyCoinParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+
+        return _reportDbClient.QueryAsync<RewardPointSummary>("Store_RewardPointSummary_Get", para);
+    }
+
+    public Task<IEnumerable<RedemptionPointSummary>> GetRedemptionPointSummaryAsync(GetMyCoinParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+        return _reportDbClient.QueryAsync<RedemptionPointSummary>("Store_RedemptionPointSummary_Get", para);
+    }
+
+    public Task<IEnumerable<TurnoverPointSummary>> GetTurnoverPointSummaryAsync(GetMyCoinParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+
+        return _reportDbClient.QueryAsync<TurnoverPointSummary>("Store_TurnoverPointSummary_Get", para);
+    }
+    public Task<CustPointSummary> GetCustRewardPointAsync(GetMyCoinParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+
+        return _reportDbClient.QueryFirstAsync<CustPointSummary>("Store_CustRewardPoint_GetByCustId", para);
+    }
 }

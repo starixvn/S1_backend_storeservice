@@ -42,5 +42,18 @@ namespace StoreService.Controllers
 
             return new ApiResult(success ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed);
         }
+
+        [HttpPost]
+        public async Task<ApiResult> GetMyCoinAsync(GetMyCoinRequest request)
+        {
+            var result = await _memberBll.GetCustCoinAsync(new GetMyCoinParams(request));
+
+            return new ApiResult<CustPointSummary>
+            {
+                Data = result,
+                ErrorCode = (int)ErrorCodeEnum.Success
+            };
+        }
+
     }
 }

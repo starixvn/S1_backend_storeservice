@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Based;
+using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Member;
 
 namespace StoreService.Core.Service.BLL;
@@ -21,7 +22,7 @@ public class MemberBLL
 
     public async Task<MemberPointBalance> GetMemberPointBalanceAsync(int custId)
     {
-        var result = await _memberService.GetMemberPointBalanceAsync(custId) 
+        var result = await _memberService.GetMemberPointBalanceAsync(custId)
             ?? new MemberPointBalance
             {
                 PointBalance = 0
@@ -52,5 +53,62 @@ public class MemberBLL
         var result = await _memberService.SetCustFavoriteGiftAsync(input);
 
         return result > 0;
+    }
+
+    public async Task<CustPointSummary> GetCustCoinAsync(GetMyCoinParams input)
+    {
+        var result = new List<RewardPointSummary>();
+        var redemptionSummary = await GetRedemptionPointSummaryAsync(input);
+        result.Add(redemptionSummary.Summary);
+        result.Add(await GetTurnoverPointSummaryAsync(input));
+        result.AddRange(await GetRewardPointSummaryAsync(input));
+
+        var custRewardPoint = await _memberService.GetCustRewardPointAsync(input);
+        custRewardPoint.PointLocked = redemptionSummary.LockedPoint;
+        custRewardPoint.Detail = result.OrderBy(x => x.PointType).ToList();
+        return custRewardPoint;
+    }
+
+    private async Task<(RewardPointSummary Summary, decimal LockedPoint)> GetRedemptionPointSummaryAsync(GetMyCoinParams input)
+    {
+        var result = await _memberService.GetRedemptionPointSummaryAsync(input);
+        var summary = result.Where(x => x.Status != RedemptionEnum.Rejected).Sum(x => x.Summary);
+        var lockedPoint = result.Where(x => x.Status != RedemptionEnum.Rejected && x.Status != RedemptionEnum.Approved).Sum(x => x.Summary);
+        return (new RewardPointSummary()
+        {
+            PointType = PointTypeEnum.Redemption,
+            MinusSummary = summary,
+            TotalSummary = summary
+        }, lockedPoint);
+    }
+    private async Task<RewardPointSummary> GetTurnoverPointSummaryAsync(GetMyCoinParams input)
+    {
+        var result = await _memberService.GetTurnoverPointSummaryAsync(input);
+        var summary = result.Sum(x => x.Summary);
+        return new RewardPointSummary()
+        {
+            PointType = PointTypeEnum.Turnover,
+            PlusSummary = summary,
+            TotalSummary = summary,
+            DetailRewardCoin = result.ToDictionary(t => t.CategoryName, t => t.Summary)
+        };
+    }
+    private async Task<IEnumerable<RewardPointSummary>> GetRewardPointSummaryAsync(GetMyCoinParams input)
+    {
+        var result = await _memberService.GetRewardPointSummaryAsync(input);
+        var list = result.Where(x => !new PointTypeEnum[] { PointTypeEnum.Redemption, PointTypeEnum.Turnover }.Contains(x.PointType)).ToList();
+        #region ¸É0
+
+        if (!list.Any(x => x.PointType == PointTypeEnum.Deposit))
+            list.Add(new RewardPointSummary() { PointType = PointTypeEnum.Deposit });
+
+        if (!list.Any(x => x.PointType == PointTypeEnum.Manual))
+            list.Add(new RewardPointSummary() { PointType = PointTypeEnum.Manual });
+
+        if (!list.Any(x => x.PointType == PointTypeEnum.System))
+            list.Add(new RewardPointSummary() { PointType = PointTypeEnum.System });
+
+        #endregion
+        return list;
     }
 }

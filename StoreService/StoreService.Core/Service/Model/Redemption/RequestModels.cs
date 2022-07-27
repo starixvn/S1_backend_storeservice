@@ -77,3 +77,9 @@ public class GetRedemptionLogRequest
 {
     public string TransId { get; set; }
 }
+
+public class GetMyPurchesRequest : PagerRequestModel
+{
+    public int CustId { get; set; }
+    public string Lang { get; set; }
+}

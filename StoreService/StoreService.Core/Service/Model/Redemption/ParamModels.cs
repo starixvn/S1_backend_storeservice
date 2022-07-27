@@ -103,3 +103,18 @@ public class SetRedemptionLogParams
     public string Comment { get; set; }
     public string Operator { get; set; }
 }
+
+public class GetMyPurchesParams : PagerParamModel
+{
+    public GetMyPurchesParams(GetMyPurchesRequest req)
+    {
+        CustId = req.CustId;
+        Lang = req.Lang;
+        PageNumber = req.PageNumber;
+        PageSize = req.PageSize;
+        StartIndex = req.PageSize.GetStartIndex(req.PageNumber);
+    }
+    public int CustId { get; set; }
+    public string Lang { get; set; }
+    public int PageNumber { get; set; }
+}

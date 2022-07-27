@@ -8,7 +8,7 @@ public class GetRedemptionListResult
 {
     private DateTimeOffset _createTime { get; set; }
     private DateTimeOffset _updateTime { get; set; }
-    
+
     public int SiteId { get; set; }
     public string IsoCode { get; set; }
     public int RedemptionId { get; set; }
@@ -60,7 +60,7 @@ public class GetRedemptionByTransIdResult
 {
     private DateTimeOffset _createTime { get; set; }
     private DateTimeOffset _updateTime { get; set; }
-    
+
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public int RedemptionId { get; set; }
@@ -68,7 +68,7 @@ public class GetRedemptionByTransIdResult
     public string TransId { get; set; }
     public int Status { get; set; }
     public decimal ActualCost { get; set; }
-    
+
     public DateTimeOffset CreateTime
     {
         get => _createTime;
@@ -97,7 +97,7 @@ public class GetRedemptionDetail
     public decimal PriceWorth { get; set; }
     public decimal ActualCost { get; set; }
     public int Status { get; set; }
-    [JsonIgnore] 
+    [JsonIgnore]
     private string ReceiptUrlString { get; set; }
     public IEnumerable<string> ReceiptUrls
         => JsonConvert.DeserializeObject<IEnumerable<string>>(ReceiptUrlString ?? "[]");
@@ -115,7 +115,7 @@ public class GetRedemptionDetail
 public class GetRedemptionLog
 {
     private DateTimeOffset _createTime { get; set; }
-    
+
     public int Action { get; set; }
     public string Comment { get; set; }
     public string Operator { get; set; }
@@ -123,6 +123,57 @@ public class GetRedemptionLog
     {
         get => _createTime;
         set => _createTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
+}
+
+public class MyPurchesResult
+{
+    public PagerResponseModel<GetMyPurchesResult> List { get; set; }
+}
+
+public class GetMyPurchesResult
+{
+    private DateTimeOffset _createTime { get; set; }
+    private DateTimeOffset _createTimeInCurrencyTimeZone { get; set; }
+
+    private string _giftId { get; set; }
+
+    public int SiteId { get; set; }
+    public int CustId { get; set; }
+    public int CurrencyId { get; set; }
+    public string IsoCode { get; set; }
+    public string TransId { get; set; }
+    public string GiftId
+    {
+        get => _giftId;
+        set => _giftId = "N" + value;
+    }
+    public string GiftName { get; set; }
+    public int Point { get; set; }
+    public RedemptionEnum Status { get; set; }
+    public string StatusName => Status.ToString();
+    public DateTimeOffset CreateTime
+    {
+        get => _createTime;
+        set => _createTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+    }
+
+    public string TimeZone { get; set; }
+
+    public DateTimeOffset CreateTimeInCurrencyTimeZone
+    {
+        get => _createTimeInCurrencyTimeZone;
+        set
+        {
+            if (this.TimeZone.Contains("-"))
+            {
+                _createTimeInCurrencyTimeZone = new DateTimeOffset(value.DateTime, TimeSpan.Parse(this.TimeZone));
+            }
+            else
+            {
+                _createTimeInCurrencyTimeZone = new DateTimeOffset(value.DateTime, TimeSpan.Parse(this.TimeZone.Substring(1)));
+            }
+        }
     }
 }
 

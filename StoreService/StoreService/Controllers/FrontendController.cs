@@ -57,6 +57,7 @@ namespace StoreService.Controllers
                 ErrorCode = (int)ErrorCodeEnum.Success
             };
         }
+        [HttpPost]
         public async Task<ApiResult> GetMyPurchesAsync(GetMyPurchesRequest request)
         {
             var result = await _redemptionBll.GetMyPurchesAsync(new GetMyPurchesParams(request));

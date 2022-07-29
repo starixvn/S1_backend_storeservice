@@ -22,6 +22,7 @@ public class FrontendGetListParams
         Lang = req.Lang;
         OrderByField = string.IsNullOrWhiteSpace(req.OrderByField) ? "Sort" : req.OrderByField;
         Desc = req.Desc;
+        PageSize = req.PageSize;
     }
 
     public int SiteId { get; set; }
@@ -33,5 +34,6 @@ public class FrontendGetListParams
     public string Lang { get; set; }
     public string OrderByField { get; set; }
     public bool Desc { get; set; }
+    public int PageSize { get; set; }
 }
 

@@ -232,6 +232,7 @@ public class GiftManagementService
         para.Add("_Lang", input.Lang);
         para.Add("_OrderByField", input.OrderByField);
         para.Add("_Desc", input.Desc);
+        para.Add("_PageSize", input.PageSize);
 
         return _reportDbClient.QueryAsync<GiftListModel>("Store_Frontend_GiftList_Get", para);
     }

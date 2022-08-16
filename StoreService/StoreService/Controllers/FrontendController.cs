@@ -3,6 +3,7 @@ using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Frontend;
+using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Core.Service.Model.Member;
 using StoreService.Core.Service.Model.Redemption;
 using GetListRequest = StoreService.Core.Service.Model.Frontend.GetListRequest;
@@ -36,7 +37,20 @@ namespace StoreService.Controllers
                 ErrorCode = (int)ErrorCodeEnum.Success
             };
         }
-        
+
+        [HttpPost]
+        public async Task<ApiResult> GetTagsAsync(GetTagsRequest request)
+        {
+            var result =
+                await _giftManagementBll.GetGiftTagsAsync(new GetTagsParams(request));
+
+            return new ApiListResult<GiftTag>
+            {
+                Data = result,
+                ErrorCode = (int)ErrorCodeEnum.Success
+            };
+        }
+
         [HttpPost]
         public async Task<ApiResult> SetFavoriteAsync(SetFavoriteRequest request)
         {

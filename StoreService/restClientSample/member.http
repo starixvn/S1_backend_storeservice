@@ -5,6 +5,15 @@
 # @url=http://52.221.19.140:51001
 
 ###
+# 取得用戶點數餘額
+POST {{url}}/api/Member/GetBalance HTTP/1.1
+Content-Type: application/json
+
+{
+    "custId": 643973
+}
+
+###
 # 取得用戶列表(有點數才會有資料)
 POST {{url}}/api/Member/GetList HTTP/1.1
 Content-Type: application/json

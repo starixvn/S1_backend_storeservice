@@ -9,11 +9,13 @@ namespace StoreService.Core.Service.BLL;
 public class RedemptionBLL
 {
     private readonly RedemptionService _redemptionService;
+    private readonly CommonBLL _commonBll;
     private readonly ILogger<RedemptionBLL> _logger;
 
     public RedemptionBLL(IServiceProvider provider)
     {
         _redemptionService = provider.GetRequiredService<RedemptionService>();
+        _commonBll =  provider.GetRequiredService<CommonBLL>();
         _logger = provider.GetRequiredService<ILogger<RedemptionBLL>>();
     }
     
@@ -38,7 +40,8 @@ public class RedemptionBLL
     public async Task<RedemptionListResult> GetRedemptionListAsync(GetRedemptionListParams input)
     {
         var list = await _redemptionService.GetRedemptionListAsync(input);
-        var overview = await _redemptionService.GetRedemptionOverviewAsync(input);
+        var overview = await GetRedemptionOverviewAsync(input);
+        
         var result = new RedemptionListResult
         {
             List = new PagerResponseModel<GetRedemptionListResult>
@@ -58,7 +61,7 @@ public class RedemptionBLL
     {
         var list = await _redemptionService.ExportRedemptionListAsync(input);
         var overview =
-            await _redemptionService.GetRedemptionOverviewAsync(new GetRedemptionListParams(input));
+            await GetRedemptionOverviewAsync(new GetRedemptionListParams(input, input.CurrencyIds));
         
         var result = new ExportRedemptionListResult
         {
@@ -116,4 +119,49 @@ public class RedemptionBLL
         var result = await _redemptionService.GetRedemptionLogAsync(input);
         return result;
     }
+
+    public async Task<MyPurchesResult> GetMyPurchesAsync(GetMyPurchesParams input)
+    {
+        var list = await _redemptionService.GetMyPurchesAsync(input);
+        var result = new MyPurchesResult
+        {
+            List = new PagerResponseModel<GetMyPurchesResult>
+            {
+                Datas = list.Datas,
+                PageNumber = input.PageNumber,
+                RowCount = list.RowCount,
+                TotalPages = list.TotalPages
+            }
+        };
+
+        return result;
+    }
+
+
+    #region Private Methods
+
+    private async Task<IEnumerable<GetRedemptionOverviewResult>> GetRedemptionOverviewAsync(
+        GetRedemptionListParams input)
+    {
+        var overview = await _redemptionService.GetRedemptionOverviewAsync(input);
+        var currencyList = (await _commonBll.GetCurrencyInfoAsync())
+            .Where(x => input.CurrencyIds.Contains(x.CurrencyId));
+        
+        var result = currencyList
+            .GroupJoin(overview,
+                x => x.CurrencyId,
+                y => y.CurrencyId,
+                (x, y) => new GetRedemptionOverviewResult
+                {
+                    CurrencyId = x.CurrencyId,
+                    IsoCode = x.IsoCode,
+                    TotalCost = y.FirstOrDefault()?.TotalCost ?? 0m,
+                    TotalPoint = y.FirstOrDefault()?.TotalPoint ?? 0m,
+                    TotalRecord = y.FirstOrDefault()?.TotalRecord ?? 0
+                });
+
+        return result;
+    }
+    
+    # endregion
 }

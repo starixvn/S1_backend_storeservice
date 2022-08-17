@@ -241,6 +241,23 @@ public class RedemptionService
     }
 
 
+    public async Task<PagerResultModel<GetMyPurchesResult>> GetMyPurchesAsync(GetMyPurchesParams input)
+    {
+        var para = new DynamicParameters().AddPagerParams(input.PageSize, input.StartIndex);
+        para.Add("_CustId", input.CustId);
+        para.Add("_Lang", input.Lang);
+
+        var list = await _reportDbClient.QueryAsync<GetMyPurchesResult>("Store_RedemptionByCustId_Get", para);
+        var result = new PagerResultModel<GetMyPurchesResult>
+        {
+            Datas = list,
+            TotalPages = para.Get<int?>("_TotalPages") ?? 0,
+            RowCount = para.Get<int?>("_RowCount") ?? 0
+        };
+
+        return result;
+    }
+
     #region private
 
     private int SetRedemptionLog(SetRedemptionLogParams input ,MySqlConnection conn, MySqlTransaction trans)

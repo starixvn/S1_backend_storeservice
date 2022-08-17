@@ -21,7 +21,7 @@ public class SetInactivePointExpirySettingParams
     {
         SiteId = req.SiteId;
         Days = req.Days;
-        Status = (int) req.Status;
+        Status = (int)req.Status;
         Operator = req.Operator;
     }
     public int SiteId { get; set; }
@@ -71,25 +71,33 @@ public class SetTurnoverPointSettingParams
 
 public class TurnoverPointSettingParams
 {
-    private DateTimeOffset _startTime { get; set; }
-    private DateTimeOffset _endTime { get; set; }
-    
+    private DateTimeOffset? _startTime { get; set; }
+    private DateTimeOffset? _endTime { get; set; }
+
     public int TpCategoryId { get; set; }
     public int VipLevel { get; set; }
     public decimal Turnover { get; set; }
     public decimal PointRate { get; set; }
     public int PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
-    
-    public DateTimeOffset PromotionStartTime
+
+    public DateTimeOffset? PromotionStartTime
     {
         get => _startTime;
-        set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set
+        {
+            if (value != null)
+                _startTime = new DateTimeOffset(value.Value.ToUniversalTime().DateTime, TimeSpan.Zero);
+        }
     }
-    public DateTimeOffset PromotionEndTime
+    public DateTimeOffset? PromotionEndTime
     {
         get => _endTime;
-        set => _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set
+        {
+            if (value != null)
+                _endTime = new DateTimeOffset(value.Value.ToUniversalTime().DateTime, TimeSpan.Zero);
+        }
     }
 }
 
@@ -113,24 +121,24 @@ public class SetDepositPointSettingParams
         CurrencyId = req.CurrencyId;
         DepositAmount = req.DepositAmount;
         PointRate = 1; //req.PointRate; 暫時不會開放變更，先寫死
-        PromotionStatus = (int) req.PromotionStatus;
+        PromotionStatus = (int)req.PromotionStatus;
         PromotionPointRate = req.PromotionPointRate;
-        PromotionStartTime = req.PromotionStartTime.DateTime;
-        PromotionEndTime = req.PromotionEndTime.DateTime;
+        PromotionStartTime = req.PromotionStartTime != new DateTimeOffset() ? req.PromotionStartTime?.DateTime : null;
+        PromotionEndTime = req.PromotionEndTime != new DateTimeOffset() ? req.PromotionEndTime?.DateTime : null;
         Operator = req.Operator;
     }
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public decimal DepositAmount { get; set; }
     public decimal PointRate { get; set; }
-    
+
     /// <summary>
     /// 0: Enable, 1: Disabled
     /// </summary>
     public int PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
-    public DateTime PromotionStartTime { get; set; }
-    public DateTime PromotionEndTime { get; set; }
+    public DateTime? PromotionStartTime { get; set; }
+    public DateTime? PromotionEndTime { get; set; }
     public string Operator { get; set; }
 }
 

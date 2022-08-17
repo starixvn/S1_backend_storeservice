@@ -1,3 +1,4 @@
+using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Member;
 
 namespace StoreService.Core.Service.Model.RewardPoint;
@@ -13,7 +14,7 @@ public class CreateManualRewardPointInfoParams
         Memo = req.Memo;
         Operator = req.Operator;
     }
-    
+
     public int SiteId { get; set; }
     public string UserName { get; set; }
     public decimal Point { get; set; }
@@ -30,7 +31,7 @@ public class CreateManualRewardPointInfoBatchParams
         Infos = req.Infos;
         Operator = req.Operator;
     }
-    
+
     public int SiteId { get; set; }
     public IEnumerable<ManualRewardPointInfo> Infos { get; set; }
     public string Operator { get; set; }
@@ -87,6 +88,17 @@ public class CustRewardPointUseParams
     public decimal UsePoint { get; set; }
 }
 
+public class CustRewardPointChangeParams
+{
+    public PointTypeEnum pointType { get; set; }
+    public int CustId { get; set; }
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public decimal ChangePoint { get; set; }
+    public string TransId { get; set; }
+    public string Memo { get; set; }
+}
+
 public class CustRewardPointChangeInfo
 {
     public int CustId { get; set; }
@@ -107,3 +119,4 @@ public class TransInfo
     public string TransId { get; set; }
     public decimal Amount { get; set; }
 }
+

@@ -99,3 +99,51 @@ public class ExportAdjustmentPointReportRequest
 }
 
 #endregion
+
+#region TurnoverPoint
+
+public class GetTurnoverPointReportRequest : PagerRequestModel
+{
+    private DateTimeOffset _startTime;
+    private DateTimeOffset _endTime;
+    public DateTimeOffset StartTime
+    {
+        get => _startTime;
+        set => _startTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
+    }
+    public DateTimeOffset EndTime
+    {
+        get => _endTime;
+        set => _endTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
+    }
+    public int SiteId { get; set; }
+    public IEnumerable<int> CurrencyIds { get; set; }
+    public IEnumerable<int> VipLevels { get; set; }
+    public IEnumerable<int> Categories { get; set; }
+    public string UserName { get; set; }
+    public string SabaId { get; set; }
+}
+
+public class ExportTurnoverPointReportRequest
+{
+    private DateTimeOffset _startTime;
+    private DateTimeOffset _endTime;
+    public DateTimeOffset StartTime
+    {
+        get => _startTime;
+        set => _startTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
+    }
+    public DateTimeOffset EndTime
+    {
+        get => _endTime;
+        set => _endTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
+    }
+    public int SiteId { get; set; }
+    public IEnumerable<int> CurrencyIds { get; set; }
+    public IEnumerable<int> VipLevels { get; set; }
+    public IEnumerable<int> Categories { get; set; }
+    public string UserName { get; set; }
+    public string SabaId { get; set; }
+}
+
+#endregion

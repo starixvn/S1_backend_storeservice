@@ -3,6 +3,11 @@ using StoreService.Core.Service.Model.RewardPoint;
 
 namespace StoreService.Core.Service.Model.Member;
 
+public class GetBalanceRequest
+{
+    public int CustId { get; set; }
+}
+
 public class GetListRequest : PagerRequestModel
 {
     private DateTimeOffset _startTime { get; set; }
@@ -84,4 +89,16 @@ public class BatchRewardPointLogInfoComparer : IEqualityComparer<BatchRewardPoin
     {
         return t.TransId.GetHashCode();
     }
+}
+
+public class SetFavoriteRequest
+{
+    public int CustId { get; set; }
+    public int GiftId { get; set; }
+    public bool IsFavorite { get; set; }
+}
+
+public class GetMyCoinRequest
+{
+    public int CustId { get; set; }
 }

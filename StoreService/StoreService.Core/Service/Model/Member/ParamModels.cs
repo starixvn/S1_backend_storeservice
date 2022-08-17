@@ -49,3 +49,25 @@ public class GetInactiveMemberListParams
     public int SiteId { get; set; }
     public int Days { get; set; }
 }
+
+public class SetFavoriteParams
+{
+    public SetFavoriteParams(SetFavoriteRequest req)
+    {
+        CustId = req.CustId;
+        StrGiftId = req.GiftId.ToString();
+        IsFavorite = req.IsFavorite;
+    }
+    public int CustId { get; set; }
+    public string StrGiftId { get; set; }
+    public bool IsFavorite { get; set; }
+}
+
+public class GetMyCoinParams
+{
+    public GetMyCoinParams(GetMyCoinRequest req)
+    {
+        CustId = req.CustId;
+    }
+    public int CustId { get; set; }
+}

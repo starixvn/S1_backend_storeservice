@@ -24,25 +24,25 @@ public class ReportController : ControllerBase
     {
         var result =
             await _reportBLL.GetDepositPointReportAsync(new GetDepositPointReportParams(request));
-        
-        
+
+
         return new ApiResult<DepositPointReportResult>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> ExportDepositPointReportAsync(ExportDepositPointReportRequest request)
     {
         var result =
             await _reportBLL.ExportDepositPointReportAsync(new ExportDepositPointReportParams(request));
-        
+
         return new ApiResult<ExportDepositPointReportResult>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
 
@@ -55,25 +55,56 @@ public class ReportController : ControllerBase
     {
         var result =
             await _reportBLL.GetAdjustmentPointReportAsync(new GetAdjustmentPointReportParams(request));
-        
-        
+
+
         return new ApiResult<AdjustmentPointReportResult>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> ExportAdjustmentPointReportAsync(ExportAdjustmentPointReportRequest request)
     {
         var result =
             await _reportBLL.ExportAdjustmentPointReportAsync(new ExportAdjustmentPointReportParams(request));
-        
+
         return new ApiResult<ExportAdjustmentPointReportResult>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
+        };
+    }
+
+    #endregion
+
+    #region TurnoverPoint
+
+    [HttpPost]
+    public async Task<ApiResult> GetTurnoverPointReportAsync(GetTurnoverPointReportRequest request)
+    {
+        var result =
+            await _reportBLL.GetTurnoverPointReportAsync(new GetTurnoverPointReportParams(request));
+
+
+        return new ApiResult<TurnoverPointReportResult>
+        {
+            Data = result,
+            ErrorCode = (int)ErrorCodeEnum.Success
+        };
+    }
+
+    [HttpPost]
+    public async Task<ApiResult> ExportTurnoverPointReportAsync(ExportTurnoverPointReportRequest request)
+    {
+        var result =
+            await _reportBLL.ExportTurnoverPointReportAsync(new ExportTurnoverPointReportParams(request));
+
+        return new ApiResult<ExportTurnoverPointReportResult>
+        {
+            Data = result,
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
 

@@ -191,8 +191,8 @@ public class RewardPointService
                 try
                 {
                     // STEP1: 批次更新存款佇列
-                    var updateQueueResult = await SetDepositRewardPointQueueAsync(input.DepositQueueInfos, conn, trans);
 
+                    var updateQueueResult = await SetDepositRewardPointQueueAsync(input.DepositQueueInfos, conn, trans);
                     if (updateQueueResult < input.DepositQueueInfos.Count())
                     {
                         trans.Rollback();
@@ -215,7 +215,6 @@ public class RewardPointService
 
                     var batchChangeCustRewardPointResult =
                         await BatchChangeCustRewardPointAsync(batchChangeInfo, conn, trans);
-
                     if (batchChangeCustRewardPointResult.Count() != input.DepositRewardPointInfos.Count())
                     {
                         trans.Rollback();
@@ -289,7 +288,7 @@ public class RewardPointService
             var afterBalance = para.Get<decimal>("_AfterBalance");
 
             var logPara = new DynamicParameters();
-            logPara.Add("_PointType", (int) PointTypeEnum.Redemption);
+            logPara.Add("_PointType", (int)PointTypeEnum.Redemption);
             logPara.Add("_CustId", input.CustId);
             logPara.Add("_CurrencyId", input.CurrencyId);
             logPara.Add("_SiteId", input.SiteId);
@@ -377,6 +376,49 @@ public class RewardPointService
         await conn.CloseAsync();
 
         return result;
+    }
+
+    public async Task<bool> CustRewardPointChange(CustRewardPointChangeParams input, MySqlConnection conn, MySqlTransaction trans)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+        para.Add("_SiteId", input.SiteId);
+        para.Add("_CurrencyId", input.CurrencyId);
+        para.Add("_ChangPoint", input.ChangePoint);
+        para.Add("_BeforeBalance", dbType: DbType.String, direction: ParameterDirection.Output);
+        para.Add("_AfterBalance", dbType: DbType.String, direction: ParameterDirection.Output);
+        para.Add("_Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+        await conn.ExecuteAsync("Store_CustRewardPointChange_Set", para, trans, commandType: CommandType.StoredProcedure);
+
+        var result = para.Get<int?>("_Result") ?? -9;
+        var beforeBalance = para.Get<decimal>("_BeforeBalance");
+        var afterBalance = para.Get<decimal>("_AfterBalance");
+
+        if (result == 0)
+        {
+            var logPara = new DynamicParameters();
+            logPara.Add("_PointType", (int)PointTypeEnum.Turnover);
+            logPara.Add("_CustId", input.CustId);
+            logPara.Add("_CurrencyId", input.CurrencyId);
+            logPara.Add("_SiteId", input.SiteId);
+            logPara.Add("_TransId", input.TransId);
+            logPara.Add("_ChangePoint", input.ChangePoint);
+            logPara.Add("_BeforePoint", beforeBalance);
+            logPara.Add("_AfterPoint", afterBalance);
+            logPara.Add("_Memo", input.Memo);
+            logPara.Add("_Operator", "System");
+
+            var logResult = await conn.ExecuteAsync("Store_RewardPointLog_Ins", logPara, trans,
+                commandType: CommandType.StoredProcedure);
+
+            if (logResult > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     #region Private Methods

@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using StoreService.Core.Extensions;
 using StoreService.Core.Service.Model.Based;
-using StoreService.Core.Service.Model.Report;
 
 namespace StoreService.Core.Service.Model.Redemption;
 
@@ -10,6 +9,7 @@ public class GetRedemptionListParams: PagerParamModel
     public GetRedemptionListParams(GetRedemptionListRequest req)
     {
         SiteId = req.SiteId;
+        CurrencyIds = req.CurrencyIds;
         StrCurrencyIds = JsonConvert.SerializeObject(req.CurrencyIds);
         StrVipLevels = JsonConvert.SerializeObject(req.VipLevels);
         StrStatuses = JsonConvert.SerializeObject(req.Statuses);
@@ -23,9 +23,10 @@ public class GetRedemptionListParams: PagerParamModel
         PageNumber = req.PageNumber;
     }
     
-    public GetRedemptionListParams(ExportRedemptionListParams input)
+    public GetRedemptionListParams(ExportRedemptionListParams input, IEnumerable<int> currencyIds)
     {
         SiteId = input.SiteId;
+        CurrencyIds = currencyIds;
         StrCurrencyIds = input.StrCurrencyIds;
         StrVipLevels = input.StrVipLevels;
         StrStatuses = input.StrStatuses;
@@ -37,6 +38,7 @@ public class GetRedemptionListParams: PagerParamModel
     }
    
     public int SiteId { get; set; }
+    public IEnumerable<int> CurrencyIds { get; set; }
     public string StrCurrencyIds { get; set; }
     public string StrVipLevels { get; set; }
     public string StrStatuses { get; set; }
@@ -53,6 +55,7 @@ public class ExportRedemptionListParams
     public ExportRedemptionListParams(ExportRedemptionListRequest req)
     {
         SiteId = req.SiteId;
+        CurrencyIds = req.CurrencyIds;
         StrCurrencyIds = JsonConvert.SerializeObject(req.CurrencyIds);
         StrVipLevels = JsonConvert.SerializeObject(req.VipLevels);
         StrStatuses = JsonConvert.SerializeObject(req.Statuses);
@@ -64,6 +67,7 @@ public class ExportRedemptionListParams
     }
     
     public int SiteId { get; set; }
+    public IEnumerable<int> CurrencyIds { get; set; }
     public string StrCurrencyIds { get; set; }
     public string StrVipLevels { get; set; }
     public string StrStatuses { get; set; }
@@ -98,4 +102,19 @@ public class SetRedemptionLogParams
     public int Action { get; set; }
     public string Comment { get; set; }
     public string Operator { get; set; }
+}
+
+public class GetMyPurchesParams : PagerParamModel
+{
+    public GetMyPurchesParams(GetMyPurchesRequest req)
+    {
+        CustId = req.CustId;
+        Lang = req.Lang;
+        PageNumber = req.PageNumber;
+        PageSize = req.PageSize;
+        StartIndex = req.PageSize.GetStartIndex(req.PageNumber);
+    }
+    public int CustId { get; set; }
+    public string Lang { get; set; }
+    public int PageNumber { get; set; }
 }

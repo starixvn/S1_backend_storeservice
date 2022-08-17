@@ -54,3 +54,8 @@ public class BatchChangeCustRewardPointResult
     public decimal BeforePoint { get; set; }
     public decimal AfterPoint { get; set; }
 }
+
+public class MemberPointBalance
+{
+    public decimal PointBalance { get; set; }
+}

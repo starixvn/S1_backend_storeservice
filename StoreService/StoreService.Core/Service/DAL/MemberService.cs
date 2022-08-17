@@ -27,6 +27,16 @@ public class MemberService
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
     }
     
+    public async Task<MemberPointBalance> GetMemberPointBalanceAsync(int custId)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", custId);
+
+        var result = await _reportDbClient.QueryAsync<MemberPointBalance>("Store_CustPointBalance_Get", para);
+       
+        return result.FirstOrDefault();
+    }
+    
     public async Task<PagerResultModel<MemberRewardPointInfo>> GetMemberRewardPointListAsync(GetListParams input)
     {
         var para = new DynamicParameters()
@@ -78,5 +88,53 @@ public class MemberService
         para.Add("_Days", input.Days);
 
         return _reportDbClient.QueryAsync<CustomerInfo>("Store_InactiveCustList_Get", para);;
+    }
+    
+    public async Task<string> GetCustFavoriteGiftAsync(int custId)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", custId);
+
+        return (await _reportDbClient.QueryAsync<string>("Store_CustFavoriteGift_Get", para)).FirstOrDefault();
+    }
+    
+    public Task<int> SetCustFavoriteGiftAsync(SetFavoriteParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+        para.Add("_GiftId", input.StrGiftId);
+        para.Add("_IsFavorite", input.IsFavorite);
+
+        return _mainDbClient.ExecuteAsync("Store_CustFavoriteGift_Set", para);
+    }
+
+    public Task<IEnumerable<RewardPointSummary>> GetRewardPointSummaryAsync(GetMyCoinParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+
+        return _reportDbClient.QueryAsync<RewardPointSummary>("Store_RewardPointSummary_Get", para);
+    }
+
+    public Task<IEnumerable<RedemptionPointSummary>> GetRedemptionPointSummaryAsync(GetMyCoinParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+        return _reportDbClient.QueryAsync<RedemptionPointSummary>("Store_RedemptionPointSummary_Get", para);
+    }
+
+    public Task<IEnumerable<TurnoverPointSummary>> GetTurnoverPointSummaryAsync(GetMyCoinParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+
+        return _reportDbClient.QueryAsync<TurnoverPointSummary>("Store_TurnoverPointSummary_Get", para);
+    }
+    public Task<CustPointSummary> GetCustRewardPointAsync(GetMyCoinParams input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+
+        return _reportDbClient.QueryFirstAsync<CustPointSummary>("Store_CustRewardPoint_GetByCustId", para);
     }
 }

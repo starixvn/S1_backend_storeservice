@@ -43,8 +43,8 @@ public class GetDepositPointSettingRequest
 
 public class SetDepositPointSettingRequest
 {
-    private DateTimeOffset _startTime { get; set; }
-    private DateTimeOffset _endTime { get; set; }
+    private DateTimeOffset? _startTime { get; set; }
+    private DateTimeOffset? _endTime { get; set; }
     
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
@@ -53,16 +53,25 @@ public class SetDepositPointSettingRequest
     public GeneralStatusEnum PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
     
-    public DateTimeOffset PromotionStartTime
+    public DateTimeOffset? PromotionStartTime
     {
         get => _startTime;
-        set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set
+        {
+            if (value != null)
+                _startTime = new DateTimeOffset(value.Value.ToUniversalTime().DateTime, TimeSpan.Zero);
+        }
     }
-    public DateTimeOffset PromotionEndTime
+    public DateTimeOffset? PromotionEndTime
     {
         get => _endTime;
-        set => _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set
+        {
+            if (value != null)
+                _endTime = new DateTimeOffset(value.Value.ToUniversalTime().DateTime, TimeSpan.Zero);
+        }
     }
+
     public string Operator { get; set; }
 }
 

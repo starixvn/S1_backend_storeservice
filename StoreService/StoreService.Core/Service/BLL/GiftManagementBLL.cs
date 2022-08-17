@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;
-using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Frontend;
 using StoreService.Core.Service.Model.GiftManagement;
@@ -14,12 +13,14 @@ namespace StoreService.Core.Service.BLL;
 public class GiftManagementBLL
 {
     private GiftManagementService _giftManagementService;
+    private MemberBLL _memberBll;
     private CacheHelper _cacheHelper;
     private ILogger<GiftManagementBLL> _logger;
 
     public GiftManagementBLL(IServiceProvider provider)
     {
         _giftManagementService = provider.GetRequiredService<GiftManagementService>();
+        _memberBll = provider.GetRequiredService<MemberBLL>();
         _cacheHelper = provider.GetRequiredService<CacheHelper>();
         _logger = provider.GetRequiredService<ILogger<GiftManagementBLL>>();
     }
@@ -181,6 +182,10 @@ public class GiftManagementBLL
             CurrencyId = input.CurrencyId,
             StrLangCodes = $"[\"en\",\"{input.Lang}\"]"
         });
+        var isGuest = input.CustId == 0;
+        var favorites = isGuest
+            ? new List<int>()
+            : await _memberBll.GetCustFavoriteGiftAsync(input.CustId);
 
         foreach (var data in result)
         {
@@ -192,6 +197,11 @@ public class GiftManagementBLL
             {
                 var tagArr = JsonConvert.DeserializeObject<IEnumerable<int>>(data.Tags);
                 data.TagList = tags.Where(x => tagArr.Contains(x.TagId));
+            }
+
+            if (!isGuest)
+            {
+                data.IsFavorite = favorites.Contains(data.GiftId);
             }
         }
 

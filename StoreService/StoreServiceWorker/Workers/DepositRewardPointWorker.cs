@@ -200,7 +200,7 @@ public class DepositRewardPointWorker : BackgroundService
 
     private static decimal GetPointRate(DepositPointSetting setting, DateTimeOffset updateTime)
     {
-        if (!setting.PromotionStatus)
+        if (setting.PromotionStatus != GeneralStatusEnum.Enabled)
             return setting.PointRate;
 
         return updateTime >= setting.PromotionStartTime && updateTime < setting.PromotionEndTime

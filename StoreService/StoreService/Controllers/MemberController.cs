@@ -22,6 +22,19 @@ public class MemberController : ControllerBase
     }
     
     [HttpPost]
+        public async Task<ApiResult> GetBalanceAsync(GetBalanceRequest request)
+        {
+            var result =
+                await _memberBll.GetMemberPointBalanceAsync(request.CustId);
+    
+            return new ApiResult<MemberPointBalance>
+            {
+                Data = result,
+                ErrorCode = (int) ErrorCodeEnum.Success
+            };
+        }
+    
+    [HttpPost]
     public async Task<ApiResult> GetListAsync(GetListRequest request)
     {
         var result =

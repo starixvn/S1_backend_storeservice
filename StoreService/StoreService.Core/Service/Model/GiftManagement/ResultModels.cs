@@ -29,6 +29,8 @@ public class Gift : LastUpdateModel
 
 public class GiftInfo
 {
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
     public int GiftId { get; set; }
     public string GiftName { get; set; }
     public int CategoryId { get; set; }

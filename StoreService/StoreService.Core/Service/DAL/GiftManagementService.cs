@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
@@ -235,5 +236,24 @@ public class GiftManagementService
         para.Add("_PageSize", input.PageSize);
 
         return _reportDbClient.QueryAsync<GiftListModel>("Store_Frontend_GiftList_Get", para);
+    }
+    
+    public Task<IEnumerable<Gift>> GetShoppingCartAsync(SetShoppingCartRequest request)
+    {
+        var para = new DynamicParameters();
+        para.Add("_SiteId", request.SiteId);
+        para.Add("_CurrencyId", request.CurrencyId);
+        para.Add("_CustId", request.CustId);
+        return _reportDbClient.QueryAsync<Gift>("Store_CustShoppingCart_Get", para);
+    }
+    
+    public Task<int> SetShoppingCartAsync(SetShoppingCartRequest input)
+    {
+        var para = new DynamicParameters();
+        para.Add("_CustId", input.CustId);
+        para.Add("_GiftId", input.GiftId.ToString());
+        para.Add("_IsAdd", input.IsAdd);
+        
+        return _reportDbClient.ExecuteAsync("Store_CustShoppingCart_Set", para);
     }
 }

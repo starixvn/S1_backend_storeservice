@@ -111,3 +111,12 @@ public class SetSortRequest
     public IEnumerable<SortItem> Infos { get; set; }
     public string Operator { get; set; }
 }
+
+public class SetShoppingCartRequest
+{
+    public int SiteId { get; set; }
+    public int CurrencyId { get; set; }
+    public int CustId { get; set; }
+    public int GiftId { get; set; }
+    public int IsAdd { get; set; }
+}

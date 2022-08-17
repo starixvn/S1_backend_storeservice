@@ -207,4 +207,24 @@ public class GiftManagementBLL
 
         return result;
     }
+    
+    public async Task<IEnumerable<Gift>> GetShoppingCartAsync(SetShoppingCartRequest request)
+    {
+        var result = await _giftManagementService.GetShoppingCartAsync(request);
+        
+        return result;
+    }
+    
+    public async Task<bool> SetShoppingCartAsync(SetShoppingCartRequest input)
+    {
+        var result = await _giftManagementService.SetShoppingCartAsync(input);
+        var success = result > 0;
+
+        if (!success)
+        {
+            _logger.LogError("Set ShoppingCart Failed");
+        }
+
+        return success;
+    }
 }

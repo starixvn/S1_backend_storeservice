@@ -177,4 +177,30 @@ public class GiftManagementController : ControllerBase
             ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
+    
+    [HttpPost]
+    public async Task<ApiResult> SetShoppingCartAsync(SetShoppingCartRequest request)
+    {
+        var success = true;
+        if (request.GiftId != 0)
+        {
+            success = await _giftManagementBll.SetShoppingCartAsync(request);
+        }
+        
+        if (success)
+        {
+            var result = await _giftManagementBll.GetShoppingCartAsync(request);
+            return new ApiResult<IEnumerable<Gift>>
+            {
+                Data = result,
+                ErrorCode = (int) ErrorCodeEnum.Success
+            };
+        }
+
+        return new ApiResult<IEnumerable<Gift>>
+        {
+            ErrorCode = (int) ErrorCodeEnum.Failed
+        };
+        
+    }
 }

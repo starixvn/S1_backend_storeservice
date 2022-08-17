@@ -271,6 +271,7 @@ public class RewardPointService
     public async Task<bool> CustRewardPointUseAsync(CustRewardPointUseParams input, string transId, MySqlConnection conn,
         MySqlTransaction trans)
     {
+        var isUsed = Math.Sign(input.UsePoint);
         var para = new DynamicParameters();
         para.Add("_CustId", input.CustId);
         para.Add("_SiteId", input.SiteId);
@@ -293,10 +294,10 @@ public class RewardPointService
             logPara.Add("_CurrencyId", input.CurrencyId);
             logPara.Add("_SiteId", input.SiteId);
             logPara.Add("_TransId", transId);
-            logPara.Add("_ChangePoint", input.UsePoint);
+            logPara.Add("_ChangePoint",  isUsed >= 0 ? - input.UsePoint : input.UsePoint);
             logPara.Add("_BeforePoint", beforeBalance);
             logPara.Add("_AfterPoint", afterBalance);
-            logPara.Add("_Memo", "Apply Redemption");
+            logPara.Add("_Memo", isUsed >= 0 ? "Apply Redemption" : "Reject Redemption");
             logPara.Add("_Operator", "System");
 
             var logResult = await conn.ExecuteAsync("Store_RewardPointLog_Ins", logPara, trans,

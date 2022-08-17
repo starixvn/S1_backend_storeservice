@@ -213,18 +213,32 @@ public class RedemptionService
                     
                     if (logResult > 0)
                     {
-                        trans.Commit();
                         success = true;
-                    
                     }
+                    
+                    if (action == (int) RedemptionEnum.Rejected)
+                    {
+                        var custRewardPointUseRequest = new CustRewardPointUseParams
+                        {
+                            CustId = info.CustId,
+                            CurrencyId = info.CurrencyId,
+                            SiteId = input.SiteId,
+                            UsePoint = -info.Point
+                        };
+                        var pointUseResult = await _rewardPointService.CustRewardPointUseAsync(custRewardPointUseRequest,info.TransId,conn,trans);
+
+                        if (!pointUseResult)
+                        {
+                            success = false;
+                        }
+                    }
+                    
+                    if(!success)
+                        trans.Rollback();
                     else
                     {
-                        trans.Rollback();
+                        trans.Commit();
                     }
-                }
-                else
-                {
-                    trans.Rollback();
                 }
             }
             catch (Exception e)

@@ -294,7 +294,7 @@ public class RewardPointService
             logPara.Add("_CurrencyId", input.CurrencyId);
             logPara.Add("_SiteId", input.SiteId);
             logPara.Add("_TransId", transId);
-            logPara.Add("_ChangePoint",  isUsed >= 0 ? input.UsePoint : input.UsePoint * -1);
+            logPara.Add("_ChangePoint",  input.UsePoint * -1);
             logPara.Add("_BeforePoint", beforeBalance);
             logPara.Add("_AfterPoint", afterBalance);
             logPara.Add("_Memo", isUsed >= 0 ? "Apply Redemption" : "Reject Redemption");

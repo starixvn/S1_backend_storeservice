@@ -117,6 +117,6 @@ public class SetShoppingCartRequest
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public int CustId { get; set; }
-    public IEnumerable<int> GiftId { get; set; }
+    public IEnumerable<int> GiftIds { get; set; }
     public int IsAdd { get; set; }
 }

@@ -182,7 +182,7 @@ public class GiftManagementController : ControllerBase
     public async Task<ApiResult> SetShoppingCartAsync(SetShoppingCartRequest request)
     {
         var success = true;
-        if (request.GiftId != 0)
+        if (request.GiftId.ToList().Count > 0)
         {
             success = await _giftManagementBll.SetShoppingCartAsync(request);
         }

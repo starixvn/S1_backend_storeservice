@@ -251,7 +251,7 @@ public class GiftManagementService
     {
         var para = new DynamicParameters();
         para.Add("_CustId", input.CustId);
-        para.Add("_GiftId", input.GiftId.ToString());
+        para.Add("_GiftId", JsonConvert.SerializeObject(input.GiftId));
         para.Add("_IsAdd", input.IsAdd);
         
         return _reportDbClient.ExecuteAsync("Store_CustShoppingCart_Set", para);

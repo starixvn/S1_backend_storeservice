@@ -180,7 +180,7 @@ public class GiftManagementBLL
         {
             SiteId = input.SiteId,
             CurrencyId = input.CurrencyId,
-            StrLangCodes = $"[\"en\",\"{input.Lang}\"]"
+            StrLangCodes = "[\"en\"]" // 前端說因為其他語系太長會跑版，因此只要回en即可
         });
         var isGuest = input.CustId == 0;
         var favorites = isGuest

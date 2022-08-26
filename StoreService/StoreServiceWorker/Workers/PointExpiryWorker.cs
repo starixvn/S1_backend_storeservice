@@ -50,7 +50,8 @@ public class PointExpiryWorker : BackgroundService
 
                 if (!settings.Any())
                 {
-                    _logger.LogError("GetAllInactivePointExpirySettings Failed.");
+                    _logger.LogInformation("Inactive point expiry setting has no data.");
+                    return;
                 }
 
                 var enableSettings =
@@ -58,6 +59,7 @@ public class PointExpiryWorker : BackgroundService
                 
                 if (!enableSettings.Any())
                 {
+                    _logger.LogInformation("Has no enabled inactive point expiry settings.");
                     return;
                 }
 
@@ -78,6 +80,7 @@ public class PointExpiryWorker : BackgroundService
 
                 if (!inactiveMemberList.Any())
                 {
+                    _logger.LogInformation("Has no inactive members.");
                     return;
                 }
 

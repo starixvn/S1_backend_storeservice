@@ -55,6 +55,11 @@ public class PointExpiryWorker : BackgroundService
 
                 var enableSettings =
                     settings.Where(x => x.Status == (int) GeneralStatusEnum.Enabled);
+                
+                if (!enableSettings.Any())
+                {
+                    return;
+                }
 
                 // STEP2: 取得非活躍用戶
                 var inactiveMemberList = new List<CustomerInfo>();
@@ -69,6 +74,11 @@ public class PointExpiryWorker : BackgroundService
                         });
 
                     inactiveMemberList.AddRange(inactiveList);
+                }
+
+                if (!inactiveMemberList.Any())
+                {
+                    return;
                 }
 
                 // STEP3: 點數歸零膏

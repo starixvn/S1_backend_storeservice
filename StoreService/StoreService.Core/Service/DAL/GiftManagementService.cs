@@ -244,7 +244,7 @@ public class GiftManagementService
         para.Add("_SiteId", request.SiteId);
         para.Add("_CurrencyId", request.CurrencyId);
         para.Add("_CustId", request.CustId);
-        return _reportDbClient.QueryAsync<Gift>("Store_CustShoppingCart_Get", para);
+        return _mainDbClient.QueryAsync<Gift>("Store_CustShoppingCart_Get", para);
     }
     
     public async Task<int> SetShoppingCartAsync(SetShoppingCartRequest input)

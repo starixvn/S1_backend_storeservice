@@ -247,13 +247,13 @@ public class GiftManagementService
         return _reportDbClient.QueryAsync<Gift>("Store_CustShoppingCart_Get", para);
     }
     
-    public Task<int> SetShoppingCartAsync(SetShoppingCartRequest input)
+    public async Task<int> SetShoppingCartAsync(SetShoppingCartRequest input)
     {
         var para = new DynamicParameters();
         para.Add("_CustId", input.CustId);
         para.Add("_GiftIds", JsonConvert.SerializeObject(input.GiftIds));
         para.Add("_IsAdd", input.IsAdd);
         
-        return _reportDbClient.ExecuteAsync("Store_CustShoppingCart_Set", para);
+        return await _reportDbClient.ExecuteAsync("Store_CustShoppingCart_Set", para);
     }
 }

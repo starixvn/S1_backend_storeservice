@@ -254,6 +254,6 @@ public class GiftManagementService
         para.Add("_GiftIds", JsonConvert.SerializeObject(input.GiftIds));
         para.Add("_IsAdd", input.IsAdd);
         
-        return await _reportDbClient.ExecuteAsync("Store_CustShoppingCart_Set", para);
+        return await _mainDbClient.ExecuteAsync("Store_CustShoppingCart_Set", para);
     }
 }

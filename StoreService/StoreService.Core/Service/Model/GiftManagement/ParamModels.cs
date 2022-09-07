@@ -36,13 +36,9 @@ public class GetTagsParams
     
     public GetTagsParams(GetTagsRequest req)
     {
-        SiteId = req.SiteId;
-        CurrencyId = req.CurrencyId;
         StrLangCodes = JsonConvert.SerializeObject(req.LangCodes);
     }
     
-    public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
     public string StrLangCodes { get; set; }
 }
 
@@ -50,13 +46,9 @@ public class GetCategoriesParams
 {
     public GetCategoriesParams(GetCategoriesRequest req)
     {
-        SiteId = req.SiteId;
-        CurrencyId = req.CurrencyId;
         StrLangCodes = JsonConvert.SerializeObject(req.LangCodes);
     }
     
-    public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
     public string StrLangCodes { get; set; }
 }
 

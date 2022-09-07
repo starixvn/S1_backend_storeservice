@@ -30,8 +30,6 @@ public class GiftManagementBLL
         var result = await _giftManagementService.GetGiftListAsync(input);
         var tags = await GetGiftTagsAsync(new GetTagsParams
         {
-            SiteId = input.SiteId,
-            CurrencyId = input.CurrencyId,
             StrLangCodes = "[\"en\"]"
         });
 
@@ -53,7 +51,7 @@ public class GiftManagementBLL
 
     public async Task<IEnumerable<GiftTag>> GetGiftTagsAsync(GetTagsParams input)
     {
-        var key = $"GiftTags_{input.SiteId}_{input.CurrencyId}_{input.StrLangCodes}";
+        var key = $"GiftTags_{input.StrLangCodes}";
 
         return await _cacheHelper.TryGetOrCreate(key,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)),
@@ -62,7 +60,7 @@ public class GiftManagementBLL
 
     public async Task<IEnumerable<GiftCategory>> GetGiftCategoriesAsync(GetCategoriesParams input)
     {
-        var key = $"GiftCategories_{input.SiteId}_{input.CurrencyId}_{input.StrLangCodes}";
+        var key = $"GiftCategories_{input.StrLangCodes}";
 
         return await _cacheHelper.TryGetOrCreate(key,
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)),
@@ -178,8 +176,6 @@ public class GiftManagementBLL
         var result = await _giftManagementService.GetGiftListAsync(input);
         var tags = await GetGiftTagsAsync(new GetTagsParams
         {
-            SiteId = input.SiteId,
-            CurrencyId = input.CurrencyId,
             StrLangCodes = "[\"en\"]" // 前端說因為其他語系太長會跑版，因此只要回en即可
         });
         var isGuest = input.CustId == 0;

@@ -51,8 +51,6 @@ public class GiftManagementService
     {
         var para = new DynamicParameters();
 
-        para.Add("_SiteId", input.SiteId);
-        para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Langs", input.StrLangCodes);
 
         return _reportDbClient.QueryAsync<GiftTag>("Store_GiftTag_Get", para);
@@ -62,8 +60,6 @@ public class GiftManagementService
     {
         var para = new DynamicParameters();
 
-        para.Add("_SiteId", input.SiteId);
-        para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Langs", input.StrLangCodes);
 
         return _reportDbClient.QueryAsync<GiftCategory>("Store_GiftCategory_Get", para);
@@ -143,8 +139,6 @@ public class GiftManagementService
     public Task<int> CreateCategoryAsync(CreateCategoryParams input)
     {
         var para = new DynamicParameters();
-        para.Add("_SiteId", input.SiteId);
-        para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Infos", input.StrInfos);
 
         var result = _mainDbClient.ExecuteAsync("Store_GiftCategory_Ins", para);
@@ -166,8 +160,6 @@ public class GiftManagementService
     public Task<int> CreateTagAsync(CreateTagParams input)
     {
         var para = new DynamicParameters();
-        para.Add("_SiteId", input.SiteId);
-        para.Add("_CurrencyId", input.CurrencyId);
         para.Add("_Infos", input.StrInfos);
 
         var result = _mainDbClient.ExecuteAsync("Store_GiftTag_Ins", para);

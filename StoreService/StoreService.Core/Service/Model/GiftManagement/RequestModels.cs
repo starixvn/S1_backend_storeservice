@@ -17,15 +17,11 @@ public class GetListRequest
 
 public class GetTagsRequest
 {
-    public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
     public IEnumerable<string> LangCodes { get; set; }
 }
 
 public class GetCategoriesRequest
 {
-    public int SiteId { get; set; }
-    public int CurrencyId { get; set; }
     public IEnumerable<string> LangCodes { get; set; }
 }
 

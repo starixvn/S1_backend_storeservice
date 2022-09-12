@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Serilog.Context;
+using StoreService.Core.Exceptions;
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.PointSetting;
@@ -44,8 +45,7 @@ public class DepositRewardPointWorker : BackgroundService
 
                 if (!queue.Any())
                 {
-                    _logger.LogInformation("No any data in the queue.");
-                    return;
+                    throw new StoreException("No any data in the queue.");
                 }
 
                 // STEP2: 取得存款點數設定
@@ -53,12 +53,15 @@ public class DepositRewardPointWorker : BackgroundService
 
                 if (!settings.Any())
                 {
-                    _logger.LogError("GetAllDepositPointSetting Failed.");
-                    return;
+                    throw new StoreException("GetAllDepositPointSetting Failed.");
                 }
 
                 // STEP3: 計算 & 發放點數
                 await RewardPointAsync(queue, settings);
+            }
+            catch (StoreException ex)
+            {
+                _logger.LogError(ex.Message);
             }
             catch (Exception ex)
             {

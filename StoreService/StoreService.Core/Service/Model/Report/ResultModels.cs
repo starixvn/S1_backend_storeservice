@@ -122,7 +122,7 @@ public class GetTurnoverPointReportResult
     public int VipLevel { get; set; }
     public string VipLevelName { get; set; }
     public int TpCategoryId { get; set; }
-    public string CategoryName { get; set; }
+    public string TpCategoryName { get; set; }
     public decimal PointEarned { get; set; }
     public string SettleDate { get; set; }
     public DateTimeOffset CreateTime

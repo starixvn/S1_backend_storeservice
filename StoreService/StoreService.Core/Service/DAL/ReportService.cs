@@ -183,7 +183,7 @@ public class ReportService
         return list;
     }
 
-    public Task<IEnumerable<GetTurnoverPointOverviewResult>> GetTurnoverPointOverviewAsync(GetTurnoverPointReportParams input)
+    public async Task<IEnumerable<GetTurnoverPointOverviewResult>> GetTurnoverPointOverviewAsync(GetTurnoverPointReportParams input)
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
@@ -195,7 +195,7 @@ public class ReportService
         para.Add("_StartTime", input.StartTime);
         para.Add("_EndTime", input.EndTime);
 
-        return _reportDbClient.QueryAsync<GetTurnoverPointOverviewResult>("Store_TurnoverPointOverview_Get", para);
+        return await _reportDbClient.QueryAsync<GetTurnoverPointOverviewResult>("Store_TurnoverPointOverview_Get", para);
     }
 
     #endregion

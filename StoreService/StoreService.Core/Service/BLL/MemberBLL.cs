@@ -63,7 +63,7 @@ public class MemberBLL
         result.Add(await GetTurnoverPointSummaryAsync(input));
         result.AddRange(await GetRewardPointSummaryAsync(input));
 
-        var custRewardPoint = await _memberService.GetCustRewardPointAsync(input);
+        var custRewardPoint = _memberService.GetCustRewardPointAsync(input) ?? new CustPointSummary() ;
         custRewardPoint.PointLocked = redemptionSummary.LockedPoint;
         custRewardPoint.Detail = result.OrderBy(x => x.PointType).ToList();
         return custRewardPoint;

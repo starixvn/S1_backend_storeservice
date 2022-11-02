@@ -130,11 +130,11 @@ public class MemberService
 
         return _reportDbClient.QueryAsync<TurnoverPointSummary>("Store_TurnoverPointSummary_Get", para);
     }
-    public Task<CustPointSummary> GetCustRewardPointAsync(GetMyCoinParams input)
+    public CustPointSummary GetCustRewardPointAsync(GetMyCoinParams input)
     {
         var para = new DynamicParameters();
         para.Add("_CustId", input.CustId);
 
-        return _reportDbClient.QueryFirstAsync<CustPointSummary>("Store_CustRewardPoint_GetByCustId", para);
+        return _reportDbClient.QueryAsync<CustPointSummary>("Store_CustRewardPoint_GetByCustId", para).Result.FirstOrDefault();
     }
 }

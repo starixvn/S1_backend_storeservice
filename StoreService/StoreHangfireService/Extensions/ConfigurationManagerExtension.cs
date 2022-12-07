@@ -6,13 +6,29 @@ namespace StoreHangfireService.Extensions;
 
 public static class ConfigurationManagerExtension
 {
-    public static ConfigurationManager AddRemoteJsonConfig(this ConfigurationManager configuration, string remoteUrl)
+    public static ConfigurationManager AddRemoteJsonConfig(this ConfigurationManager configuration, IEnumerable<string> remoteUrls)
     {
-        if (string.IsNullOrWhiteSpace(remoteUrl))
-            return configuration;
-
         using var client = new HttpClient();
-        configuration.AddJsonStream(client.GetAsync(remoteUrl).Result.Content.ReadAsStreamAsync().Result);
+        Stream result = null;
+        foreach (var url in remoteUrls)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                continue;
+            }
+
+            try
+            {
+                result = client.GetAsync(url).Result.Content.ReadAsStreamAsync().Result;
+                break;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex);
+            }
+        }
+
+        configuration.AddJsonStream(result);
         return configuration;
     }
 }

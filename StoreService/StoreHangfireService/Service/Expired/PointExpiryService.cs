@@ -4,6 +4,7 @@ using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.Member;
+using StoreService.Core.Service.Model.PointSetting;
 
 namespace StoreHangfireService.Service.Expired;
 
@@ -25,37 +26,27 @@ public class PointExpiryService
     public async Task RunJobAsync()
     {
         // STEP1: 取得歸零膏設定
-        var settings = await _pointSettingbll.GetAllInactivePointExpirySettingsAsync();
+        var settings = await GetAllInactivePointExpirySettings();
 
         if (!settings.Any())
         {
             _logger.LogInformation("Inactive point expiry setting has no data.");
-            return ;
+            return;
         }
 
-        var enableSettings =
-                   settings.Where(x => x.Status == (int)GeneralStatusEnum.Enabled);
+        var enableSettings = settings.Where(x => x.Status == (int)GeneralStatusEnum.Enabled);
 
         if (!enableSettings.Any())
         {
             _logger.LogInformation("Has no enabled inactive point expiry settings.");
-            return ;
+            return;
         }
 
         // STEP2: 取得非活躍用戶
         var inactiveMemberList = new List<CustomerInfo>();
 
         foreach (var setting in enableSettings)
-        {
-            var inactiveList = await _memberBll.GetInactiveMemberListAsync(
-                new GetInactiveMemberListParams
-                {
-                    SiteId = setting.SiteId,
-                    Days = setting.Days
-                });
-
-            inactiveMemberList.AddRange(inactiveList);
-        }
+            inactiveMemberList.AddRange(await GetInactiveMemberList(setting.SiteId, setting.Days));
 
         if (!inactiveMemberList.Any())
         {
@@ -64,13 +55,24 @@ public class PointExpiryService
         }
 
         // STEP3: 點數歸零膏
-        var success = await _rewardPointbll.SetPointExpiryAsync(inactiveMemberList);
-
-        if (!success)
-        {
+        if (!await SetPointExpiry(inactiveMemberList))
             _logger.LogError("SetPointExpiry Failed." + JsonConvert.SerializeObject(inactiveMemberList));
-        }
 
         await Task.CompletedTask;
     }
+
+    private async Task<IEnumerable<InactivePointExpirySetting>> GetAllInactivePointExpirySettings()
+        => await _pointSettingbll.GetAllInactivePointExpirySettingsAsync();
+
+    private async Task<IEnumerable<CustomerInfo>> GetInactiveMemberList(int siteId, int days)
+        => await _memberBll.GetInactiveMemberListAsync(
+                new GetInactiveMemberListParams
+                {
+                    SiteId = siteId,
+                    Days = days
+                });
+
+    private async Task<bool> SetPointExpiry(List<CustomerInfo> inactiveMemberList)
+    => await _rewardPointbll.SetPointExpiryAsync(inactiveMemberList);
+
 }

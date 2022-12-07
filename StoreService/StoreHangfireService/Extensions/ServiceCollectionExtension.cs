@@ -8,6 +8,7 @@ using StoreHangfireService.Job.Interfaces;
 using StoreHangfireService.Model.Options;
 using StoreHangfireService.Service;
 using StoreHangfireService.Service.Expired;
+using StoreHangfireService.Service.Reward;
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;
@@ -30,10 +31,14 @@ public static class ServiceCollectionExtension
     public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
     {
         return services
+            //StoreHangfireService
             .AddSingleton<ConfigService>()
 
             .AddSingleton<PointExpiryService>()
+            .AddSingleton<DepositRewardService>()
+            .AddSingleton<TurnoverRewardService>()
 
+            //Store.Core
             .AddSingleton<PointSettingBLL>()
             .AddSingleton<RewardPointBLL>()
             .AddSingleton<MemberBLL>()
@@ -86,7 +91,7 @@ public static class ServiceCollectionExtension
     {
         var provider = services.BuildServiceProvider();
         var configService = provider.GetRequiredService<ConfigService>();
-        var jobGroups = configService.Query<JobOption>("Service_ScheduledJob_Get", new { Project = "StoreWorker" })
+        var jobGroups = configService.Query<JobOption>("Service_ScheduledJob_Get", new { Project = "Store" })
            .GroupBy(i => i.Group)
            .ToDictionary(i => i.Key, i => i.ToList());
         services.AddSingleton(provider => jobGroups);

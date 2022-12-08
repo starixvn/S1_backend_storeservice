@@ -25,7 +25,7 @@ public class DepositRewardJob : BaseJob, IScheduledJob
         PerformContext context,
         IJobCancellationToken cancellationToken)
     {
-        _logger.LogInformation($"{DateTime.Now:HH:mm:ss} || {jobName} running......");
+        _logger.LogWarning($"{DateTime.Now:HH:mm:ss} || {jobName} running......");
         try
         {
             await _depositRewardService.RunJobAsync();
@@ -35,7 +35,7 @@ public class DepositRewardJob : BaseJob, IScheduledJob
             _logger.LogError(ex, ex.Message, $"{DateTime.Now:HH:mm:ss} || {jobName} exception......");
             return false;
         }
-        _logger.LogInformation($"{DateTime.Now:HH:mm:ss} || {jobName} End......");
+        _logger.LogWarning($"{DateTime.Now:HH:mm:ss} || {jobName} End......");
         return true;
     }
 }

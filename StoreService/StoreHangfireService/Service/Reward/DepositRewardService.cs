@@ -139,7 +139,7 @@ public class DepositRewardService
                         DepositQueueInfos = depositQueueInfos,
                         DepositRewardPointInfos = depositPointInfos
                     };
-                    _logger.LogWarning("Process Queue: " + JsonConvert.SerializeObject(input));
+                    _logger.LogWarning("DepositReward-Process Queue: " + JsonConvert.SerializeObject(input));
 
                     await BatchRewardPointAsync(input);
                 }

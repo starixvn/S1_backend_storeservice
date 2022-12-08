@@ -29,7 +29,7 @@ public class DepositRewardService
 
         if (!queue.Any())
         {
-            _logger.LogInformation("No any data in the queue.");
+            _logger.LogError("No any data in the queue.");
             return;
         }
 
@@ -38,7 +38,7 @@ public class DepositRewardService
 
         if (!settings.Any())
         {
-            _logger.LogInformation("GetAllDepositPointSetting Failed.");
+            _logger.LogError("GetAllDepositPointSetting Failed.");
             return;
         }
 
@@ -139,7 +139,7 @@ public class DepositRewardService
                         DepositQueueInfos = depositQueueInfos,
                         DepositRewardPointInfos = depositPointInfos
                     };
-                    _logger.LogWarning("Process Queue: " + JsonConvert.SerializeObject(input));
+                    _logger.LogError("Process Queue: " + JsonConvert.SerializeObject(input));
 
                     await BatchRewardPointAsync(input);
                 }

@@ -28,13 +28,19 @@ public class DepositRewardService
         var queue = await GetDepositRewardPointQueue();
 
         if (!queue.Any())
-            _logger.LogWarning("No any data in the queue.");
+        {
+            _logger.LogInformation("No any data in the queue.");
+            return;
+        }
 
         // STEP2: 取得存款點數設定
         var settings = await GetAllDepositPointSettingAsync();
 
         if (!settings.Any())
-            _logger.LogWarning("GetAllDepositPointSetting Failed.");
+        {
+            _logger.LogInformation("GetAllDepositPointSetting Failed.");
+            return;
+        }
 
         // STEP3: 計算 & 發放點數
         await RewardPointAsync(queue, settings);
@@ -127,7 +133,15 @@ public class DepositRewardService
                 // 批次發放
                 if (depositQueueInfos.Any())
                 {
-                    await BatchRewardPointAsync(group.Key, depositQueueInfos, depositPointInfos);
+                    var input = new DepositBatchRewardPointParams
+                    {
+                        CurrencyId = group.Key,
+                        DepositQueueInfos = depositQueueInfos,
+                        DepositRewardPointInfos = depositPointInfos
+                    };
+                    _logger.LogWarning("Process Queue: " + JsonConvert.SerializeObject(input));
+
+                    await BatchRewardPointAsync(input);
                 }
             }
             catch (Exception ex)
@@ -149,19 +163,8 @@ public class DepositRewardService
             : setting.PointRate;
     }
 
-    private async Task BatchRewardPointAsync(int currencyId,
-        IEnumerable<DepositRewardPointQueueInfo> queueInfos,
-        IEnumerable<DepositRewardPointInfo> rewardPointInfos)
+    private async Task BatchRewardPointAsync(DepositBatchRewardPointParams input)
     {
-        var input = new DepositBatchRewardPointParams
-        {
-            CurrencyId = currencyId,
-            DepositQueueInfos = queueInfos,
-            DepositRewardPointInfos = rewardPointInfos
-        };
-
-        _logger.LogInformation("Process Queue: " + JsonConvert.SerializeObject(input));
-
         var success = await _rewardPointbll.DepositBatchRewardPointAsync(input);
         if (!success)
         {

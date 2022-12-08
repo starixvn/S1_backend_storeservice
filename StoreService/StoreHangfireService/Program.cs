@@ -41,7 +41,7 @@ if (!app.Environment.EnvironmentName.Equals("Local"))
 app.UseRouting();
 app.UseHangfireDashboard(pathMatch: "", options: new DashboardOptions()
 {
-    DashboardTitle = "AI.Lab.StoreWorker",
+    DashboardTitle = "AI.Lab.StoreHangfireService",
     AppPath = null,
     Authorization = new[] { new LocalAuthorizationFilter() }
 });

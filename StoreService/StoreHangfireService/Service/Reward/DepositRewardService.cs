@@ -28,13 +28,13 @@ public class DepositRewardService
         var queue = await GetDepositRewardPointQueue();
 
         if (!queue.Any())
-            throw new StoreException("No any data in the queue.");
+            _logger.LogWarning("No any data in the queue.");
 
         // STEP2: 取得存款點數設定
         var settings = await GetAllDepositPointSettingAsync();
 
         if (!settings.Any())
-            throw new StoreException("GetAllDepositPointSetting Failed.");
+            _logger.LogWarning("GetAllDepositPointSetting Failed.");
 
         // STEP3: 計算 & 發放點數
         await RewardPointAsync(queue, settings);

@@ -30,7 +30,7 @@ public class PointExpiryService
 
         if (!settings.Any())
         {
-            _logger.LogInformation("Inactive point expiry setting has no data.");
+            _logger.LogWarning("Inactive point expiry setting has no data.");
             return;
         }
 
@@ -38,7 +38,7 @@ public class PointExpiryService
 
         if (!enableSettings.Any())
         {
-            _logger.LogInformation("Has no enabled inactive point expiry settings.");
+            _logger.LogWarning("Has no enabled inactive point expiry settings.");
             return;
         }
 
@@ -50,7 +50,7 @@ public class PointExpiryService
 
         if (!inactiveMemberList.Any())
         {
-            _logger.LogInformation("Has no inactive members.");
+            _logger.LogWarning("Has no inactive members.");
             return;
         }
 

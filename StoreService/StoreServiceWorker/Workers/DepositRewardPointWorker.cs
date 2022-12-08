@@ -73,7 +73,7 @@ public class DepositRewardPointWorker : BackgroundService
                 var ts = envName is "Development" or "Local"
                     ? TimeSpan.FromMinutes(1)
                     : TimeSpan.FromMinutes(5);
-                
+
                 _timer.Change(ts, TimeSpan.Zero);
             }
         }
@@ -126,7 +126,7 @@ public class DepositRewardPointWorker : BackgroundService
                             mergeTransList.Add(new TransInfo(q.TransId, q.RemainAmount));
                             depositQueueInfos.Add(new DepositRewardPointQueueInfo
                             {
-                                Status = (int) DepositRewardPointQueueStatusEnum.Finish,
+                                Status = (int)DepositRewardPointQueueStatusEnum.Finish,
                                 RemainAmount = 0,
                                 TransId = q.TransId
                             });
@@ -136,7 +136,7 @@ public class DepositRewardPointWorker : BackgroundService
                             mergeTransList.Add(new TransInfo(q.TransId, usedAmount));
                             depositQueueInfos.Add(new DepositRewardPointQueueInfo
                             {
-                                Status = (int) DepositRewardPointQueueStatusEnum.Running,
+                                Status = (int)DepositRewardPointQueueStatusEnum.Running,
                                 RemainAmount = q.RemainAmount - usedAmount,
                                 TransId = q.TransId
                             });
@@ -166,7 +166,14 @@ public class DepositRewardPointWorker : BackgroundService
                 // 批次發放
                 if (depositQueueInfos.Any())
                 {
-                    await BatchRewardPointAsync(group.Key, depositQueueInfos, depositPointInfos);
+                    var input = new DepositBatchRewardPointParams
+                    {
+                        CurrencyId = group.Key,
+                        DepositQueueInfos = depositQueueInfos,
+                        DepositRewardPointInfos = depositPointInfos
+                    };
+                    _logger.LogWarning("Process Queue: " + JsonConvert.SerializeObject(input));
+                    await BatchRewardPointAsync(input);
                 }
             }
             catch (Exception ex)
@@ -179,19 +186,8 @@ public class DepositRewardPointWorker : BackgroundService
         }
     }
 
-    private async Task BatchRewardPointAsync(int currencyId,
-        IEnumerable<DepositRewardPointQueueInfo> queueInfos,
-        IEnumerable<DepositRewardPointInfo> rewardPointInfos)
+    private async Task BatchRewardPointAsync(DepositBatchRewardPointParams input)
     {
-        var input = new DepositBatchRewardPointParams
-        {
-            CurrencyId = currencyId,
-            DepositQueueInfos = queueInfos,
-            DepositRewardPointInfos = rewardPointInfos
-        };
-
-        _logger.LogInformation("Process Queue: " + JsonConvert.SerializeObject(input));
-
         var success = await _rewardPointbll.DepositBatchRewardPointAsync(input);
         if (!success)
         {

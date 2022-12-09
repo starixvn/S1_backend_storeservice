@@ -45,11 +45,11 @@ public class TurnoverRewardService
             {
                 var custList = await GetCustList(task.SiteId, task.CurrencyId, task.TimeZone, pageNumber, pageSize);
                 isRemain = custList.Count() >= pageSize;
-
-                if (!await CaculatePoint(task, custList, pointSetting))
-                {
-                    throw new Exception();
-                }
+                if (custList.Any())
+                    if (!await CaculatePoint(task, custList, pointSetting))
+                    {
+                        throw new Exception();
+                    }
             }
 
             if (!await UpdateTaskSettledTIme(task.SiteId, task.CurrencyId))

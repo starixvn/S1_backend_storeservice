@@ -22,6 +22,13 @@ public class MySqlClient
         _logger = logger;
     }
 
+    public MySqlClient(string connectionString, ILogger<MySqlClient> logger, DataBaseEnum dataBase)
+    {
+        _connectionString = connectionString;
+        _logger = logger;
+        DataBase = dataBase;
+    }
+
     public IEnumerable<T> Query<T>(string spName,
         object parameters = null, 
         CommandType commandType = CommandType.StoredProcedure,

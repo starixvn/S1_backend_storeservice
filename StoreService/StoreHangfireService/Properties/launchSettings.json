@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "StoreHangfireService": {
+      "externalUrlConfiguration": true,
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local",
+        "ServiceType": "Worker"
+      },
+      "applicationUrl": "http://localhost:51003"
+    }
+  }
+}

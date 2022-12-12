@@ -1,0 +1,21 @@
+﻿using Newtonsoft.Json;
+
+namespace StoreHangfireService.Job;
+
+public class BaseJob
+{
+    protected readonly ILogger<BaseJob> _logger;
+
+    public BaseJob(IServiceProvider provider)
+    {
+        _logger = provider.GetRequiredService<ILogger<BaseJob>>();
+    }
+
+    protected string ToJson(object t)
+    {
+        return JsonConvert.SerializeObject(t, new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        });
+    }
+}

@@ -5,9 +5,13 @@ VisualStudioVersion = 17.0.32002.185
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreServiceWorker", "StoreServiceWorker\StoreServiceWorker.csproj", "{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreService", "StoreService\StoreService.csproj", "{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreService", "StoreService\StoreService.csproj", "{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreService.Core", "StoreService.Core\StoreService.Core.csproj", "{C4248741-202D-47DF-846B-D66DE299326F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreService.Core", "StoreService.Core\StoreService.Core.csproj", "{C4248741-202D-47DF-846B-D66DE299326F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreHangfireService", "StoreHangfireService\StoreHangfireService.csproj", "{8B77530B-A6A6-499A-A295-9B5CAA7BD8ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreHangfireService.Test", "StoreHangfireService.Test\StoreHangfireService.Test.csproj", "{15419A59-40E7-4676-80A6-577CD41CE50C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{C4248741-202D-47DF-846B-D66DE299326F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4248741-202D-47DF-846B-D66DE299326F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4248741-202D-47DF-846B-D66DE299326F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B77530B-A6A6-499A-A295-9B5CAA7BD8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B77530B-A6A6-499A-A295-9B5CAA7BD8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B77530B-A6A6-499A-A295-9B5CAA7BD8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B77530B-A6A6-499A-A295-9B5CAA7BD8ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15419A59-40E7-4676-80A6-577CD41CE50C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15419A59-40E7-4676-80A6-577CD41CE50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15419A59-40E7-4676-80A6-577CD41CE50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15419A59-40E7-4676-80A6-577CD41CE50C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

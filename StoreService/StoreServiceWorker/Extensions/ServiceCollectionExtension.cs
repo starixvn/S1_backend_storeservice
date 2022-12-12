@@ -49,7 +49,7 @@ public static class ServiceCollectionExtension
     {
         return services
             //.AddHostedService<DepositRewardPointWorker>()
-            .AddHostedService<PointExpiryWorker>()
-            .AddHostedService<TurnoverRewardPointWorker>();
+            //.AddHostedService<PointExpiryWorker>()
+            //.AddHostedService<TurnoverRewardPointWorker>();
     }
 }

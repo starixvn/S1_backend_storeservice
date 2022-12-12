@@ -30,7 +30,7 @@ public class PointExpiryService
 
         if (!settings.Any())
         {
-            _logger.LogError("Inactive point expiry setting has no data.");
+            _logger.LogWarning("Inactive point expiry setting has no data.");
             return;
         }
 
@@ -38,7 +38,7 @@ public class PointExpiryService
 
         if (!enableSettings.Any())
         {
-            _logger.LogError("Has no enabled inactive point expiry settings.");
+            _logger.LogWarning("Has no enabled inactive point expiry settings.");
             return;
         }
 
@@ -50,13 +50,13 @@ public class PointExpiryService
 
         if (!inactiveMemberList.Any())
         {
-            _logger.LogError("Has no inactive members.");
+            _logger.LogWarning("Has no inactive members.");
             return;
         }
 
         // STEP3: 點數歸零膏
         if (!await SetPointExpiry(inactiveMemberList))
-            _logger.LogInformation("SetPointExpiry Failed." + JsonConvert.SerializeObject(inactiveMemberList));
+            _logger.LogError("SetPointExpiry Failed." + JsonConvert.SerializeObject(inactiveMemberList));
 
         await Task.CompletedTask;
     }

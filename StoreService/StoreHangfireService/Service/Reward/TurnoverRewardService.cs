@@ -34,7 +34,7 @@ public class TurnoverRewardService
 
         foreach (var task in doTaskList)
         {
-            _logger.LogInformation($"TurnoverWorker : Do Task Start. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+            _logger.LogWarning($"TurnoverWorker : Do Task Start. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
             var sw = Stopwatch.StartNew();
             int pageSize = 1000, pageNumber = 1;
             var isRemain = true;
@@ -48,6 +48,7 @@ public class TurnoverRewardService
                 if (custList.Any())
                     if (!await CaculatePoint(task, custList, pointSetting))
                     {
+                        _logger.LogError($"TurnoverWorker : CaculatePoint Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
                         throw new Exception();
                     }
             }

@@ -50,8 +50,9 @@ namespace StoreServiceWorker.Workers
 
                     var custList = await _turnoverWorkerBLL.GetCustListAsync(task.SiteId, task.CurrencyId, task.TimeZone);
 
-                    if (!await _turnoverWorkerBLL.CaculatePointAsync(task, custList, pointSetting))
-                        throw new Exception();
+                    if (custList.Any())
+                        if (!await _turnoverWorkerBLL.CaculatePointAsync(task, custList, pointSetting))
+                            throw new Exception();
 
                     if (!await _turnoverWorkerBLL.UpdateTaskSettledTImeASync(task.SiteId, task.CurrencyId))
                     {

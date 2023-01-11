@@ -70,8 +70,8 @@ public class TurnoverWorkerBLL
     public Task<IEnumerable<TurnoverSettingForWorkerUse>> GetSettingAsync(int siteId, int currencyId, string timezone)
         => _turnoverWorkerService.GetTurnoverSettingAsync(siteId, currencyId, timezone);
 
-    public Task<IEnumerable<TurnoverCustListModel>> GetCustListAsync(int siteId, int currencyId, string timezone, int pageNumber, int pageSize)
-        => _turnoverWorkerService.GetCustListAsync(siteId, currencyId, timezone, Math.Abs(pageNumber - 1) * Math.Abs(pageSize), pageSize);
+    public Task<IEnumerable<TurnoverCustListModel>> GetCustListAsync(int siteId, int currencyId, string timezone)
+        => _turnoverWorkerService.GetCustListAsync(siteId, currencyId, timezone);
 
     public async Task<bool> CaculatePointAsync(TurnoverPeriodForWorkerUse task,
         IEnumerable<TurnoverCustListModel> custList,

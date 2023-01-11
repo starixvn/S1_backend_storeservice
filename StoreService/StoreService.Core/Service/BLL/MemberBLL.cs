@@ -97,7 +97,7 @@ public class MemberBLL
     {
         var result = await _memberService.GetRewardPointSummaryAsync(input);
         var list = result.Where(x => !new PointTypeEnum[] { PointTypeEnum.Redemption, PointTypeEnum.Turnover }.Contains(x.PointType)).ToList();
-        #region ¸É0
+        #region ï¿½ï¿½0
 
         if (!list.Any(x => x.PointType == PointTypeEnum.Deposit))
             list.Add(new RewardPointSummary() { PointType = PointTypeEnum.Deposit });

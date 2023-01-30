@@ -13,8 +13,6 @@ internal class DepositRewardServiceTest
 {
     private readonly IServiceProvider _provider;
 
-    private IFinanceTpHelper _tpHelper;
-
     private readonly MySqlClient _dbClient;
 
     public DepositRewardServiceTest()

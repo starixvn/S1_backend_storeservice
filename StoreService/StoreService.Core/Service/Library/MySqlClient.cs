@@ -21,7 +21,7 @@ public class MySqlClient
         _connectionString = connectionString;
         _logger = logger;
     }
-    
+
     public MySqlConnection GetMySqlConnection()
     {
         return new MySqlConnection(_connectionString);

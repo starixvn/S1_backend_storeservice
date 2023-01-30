@@ -24,8 +24,14 @@ public static class ServiceCollectionExtension
         var logger = provider.GetRequiredService<ILogger<MySqlClient>>();
         var serviceType = Environment.GetEnvironmentVariable("ServiceType") ?? configuration.GetValue<string>("ServiceType");
         return services
-        .AddSingleton(param => new MySqlClient(configuration.GetConnectionString($"{serviceType}_MainDB"), logger, DataBaseEnum.Main))
-        .AddSingleton(param => new MySqlClient(configuration.GetConnectionString($"{serviceType}_ReportDB"), logger, DataBaseEnum.Report));
+            .AddSingleton(param => new MySqlClient(configuration.GetConnectionString($"{serviceType}_MainDB"), logger)
+            {
+                DataBase = DataBaseEnum.Main
+            })
+            .AddSingleton(param => new MySqlClient(configuration.GetConnectionString($"{serviceType}_ReportDB"), logger)
+            {
+                DataBase = DataBaseEnum.Report
+            });
     }
 
     public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)

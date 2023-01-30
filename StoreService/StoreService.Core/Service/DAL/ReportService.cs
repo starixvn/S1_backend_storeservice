@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Based;
@@ -13,12 +12,9 @@ public class ReportService
 {
     private readonly MySqlClient _mainDbClient;
     private readonly MySqlClient _reportDbClient;
-    private readonly string _connectionString;
 
     public ReportService(IServiceProvider provider)
     {
-        var configuration = provider.GetRequiredService<IConfiguration>();
-        _connectionString = configuration.GetConnectionString("ConnectionString");
         _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
     }

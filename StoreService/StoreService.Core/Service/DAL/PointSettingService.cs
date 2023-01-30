@@ -1,5 +1,4 @@
 using Dapper;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Enums;
@@ -9,15 +8,11 @@ namespace StoreService.Core.Service.DAL;
 
 public class PointSettingService
 {
-    private readonly IConfiguration _configuration;
     private readonly MySqlClient _mainDbClient;
     private readonly MySqlClient _reportDbClient;
-    private readonly string _connectionString;
 
     public PointSettingService(IServiceProvider provider)
     {
-        _configuration = provider.GetRequiredService<IConfiguration>();
-        _connectionString = _configuration.GetConnectionString("ConnectionString");
         _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
     }

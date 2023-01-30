@@ -11,15 +11,16 @@ public static class ServiceCollectionExtension
         {
             var provider = services.BuildServiceProvider();
             var logger = provider.GetRequiredService<ILogger<MySqlClient>>();
+            var serviceType = Environment.GetEnvironmentVariable("ServiceType") ?? configuration.GetValue<string>("ServiceType");
             
             return services
                 .AddSingleton(param =>
-                    new MySqlClient(configuration.GetConnectionString("ConnectionString"), logger)
+                    new MySqlClient(configuration.GetConnectionString($"{serviceType}_MainDB"), logger)
                     {
                         DataBase = DataBaseEnum.Main
                     })
                 .AddSingleton(param =>
-                    new MySqlClient(configuration.GetConnectionString("ConnectionStringReport"), logger)
+                    new MySqlClient(configuration.GetConnectionString($"{serviceType}_ReportDB"), logger)
                     {
                         DataBase = DataBaseEnum.Report
                     });

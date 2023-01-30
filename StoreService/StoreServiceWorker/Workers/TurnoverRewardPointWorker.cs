@@ -45,21 +45,14 @@ namespace StoreServiceWorker.Workers
                 {
                     _logger.LogInformation($"TurnoverWorker : Do Task Start. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
                     var sw = Stopwatch.StartNew();
-                    int pageSize = 1000, pageNumber = 1;
-                    var isRemain = true;
 
                     var pointSetting = await _turnoverWorkerBLL.GetSettingAsync(task.SiteId, task.CurrencyId, task.TimeZone);
 
-                    while (isRemain)
-                    {
-                        var custList = await _turnoverWorkerBLL.GetCustListAsync(task.SiteId, task.CurrencyId, task.TimeZone, pageNumber, pageSize);
-                        isRemain = custList.Count() >= pageSize;
-                        if (custList.Any())
-                            if (!await _turnoverWorkerBLL.CaculatePointAsync(task, custList, pointSetting))
-                            {
-                                throw new Exception();
-                            }
-                    }
+                    var custList = await _turnoverWorkerBLL.GetCustListAsync(task.SiteId, task.CurrencyId, task.TimeZone);
+
+                    if (custList.Any())
+                        if (!await _turnoverWorkerBLL.CaculatePointAsync(task, custList, pointSetting))
+                            throw new Exception();
 
                     if (!await _turnoverWorkerBLL.UpdateTaskSettledTImeASync(task.SiteId, task.CurrencyId))
                     {

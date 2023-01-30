@@ -36,22 +36,16 @@ public class TurnoverRewardService
         {
             _logger.LogWarning($"TurnoverWorker : Do Task Start. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
             var sw = Stopwatch.StartNew();
-            int pageSize = 1000, pageNumber = 1;
-            var isRemain = true;
 
             var pointSetting = await GetSetting(task.SiteId, task.CurrencyId, task.TimeZone);
 
-            while (isRemain)
-            {
-                var custList = await GetCustList(task.SiteId, task.CurrencyId, task.TimeZone, pageNumber, pageSize);
-                isRemain = custList.Count() >= pageSize;
-                if (custList.Any())
-                    if (!await CaculatePoint(task, custList, pointSetting))
-                    {
-                        _logger.LogError($"TurnoverWorker : CaculatePoint Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
-                        throw new Exception();
-                    }
-            }
+            var custList = await GetCustList(task.SiteId, task.CurrencyId, task.TimeZone);
+            if (custList.Any())
+                if (!await CaculatePoint(task, custList, pointSetting))
+                {
+                    _logger.LogError($"TurnoverWorker : CaculatePoint Fail. SiteId:{task.SiteId} CurrencyId:{task.CurrencyId}.");
+                    throw new Exception();
+                }
 
             if (!await UpdateTaskSettledTIme(task.SiteId, task.CurrencyId))
             {
@@ -70,9 +64,8 @@ public class TurnoverRewardService
 
     private async Task<IEnumerable<TurnoverSettingForWorkerUse>> GetSetting(int siteId, int currencyId, string timeZone)
         => await _turnoverWorkerBll.GetSettingAsync(siteId, currencyId, timeZone);
-    private async Task<IEnumerable<TurnoverCustListModel>> GetCustList(int siteId, int currencyId, string timeZone,
-        int pageNumber, int pageSize)
-        => await _turnoverWorkerBll.GetCustListAsync(siteId, currencyId, timeZone, pageNumber, pageSize);
+    private async Task<IEnumerable<TurnoverCustListModel>> GetCustList(int siteId, int currencyId, string timeZone)
+        => await _turnoverWorkerBll.GetCustListAsync(siteId, currencyId, timeZone);
 
     private async Task<bool> CaculatePoint(TurnoverPeriodForWorkerUse task,
         IEnumerable<TurnoverCustListModel> custList,

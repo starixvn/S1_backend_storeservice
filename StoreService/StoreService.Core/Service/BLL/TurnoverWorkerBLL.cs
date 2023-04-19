@@ -70,8 +70,8 @@ public class TurnoverWorkerBLL
     public Task<IEnumerable<TurnoverSettingForWorkerUse>> GetSettingAsync(int siteId, int currencyId, string timezone)
         => _turnoverWorkerService.GetTurnoverSettingAsync(siteId, currencyId, timezone);
 
-    public Task<IEnumerable<TurnoverCustListModel>> GetCustListAsync(int siteId, int currencyId, string timezone, int pageNumber, int pageSize)
-        => _turnoverWorkerService.GetCustListAsync(siteId, currencyId, timezone, Math.Abs(pageNumber - 1) * Math.Abs(pageSize), pageSize);
+    public Task<IEnumerable<TurnoverCustListModel>> GetCustListAsync(int siteId, int currencyId, string timezone)
+        => _turnoverWorkerService.GetCustListAsync(siteId, currencyId, timezone);
 
     public async Task<bool> CaculatePointAsync(TurnoverPeriodForWorkerUse task,
         IEnumerable<TurnoverCustListModel> custList,
@@ -184,11 +184,13 @@ public class TurnoverWorkerBLL
                 ChangePoint = addPointData.Sum(x => x.AddPoint),
                 TransId = settleDate,
                 Memo = memo
-            }, conn, trans);
+            }, trans);
 
             if (!result)
             {
                 trans.Rollback();
+                await conn.CloseAsync();
+                await conn.DisposeAsync();
                 return false;
             }
         }
@@ -197,22 +199,28 @@ public class TurnoverWorkerBLL
         {
             //Ins CategoryRecord
             if (data.AddPoint != 0
-                && !await _turnoverWorkerService.RewardCategoryRecordCreateAsync(custId, data.CategoryId, settleDate, data.AddPoint, conn, trans))
+                && !await _turnoverWorkerService.RewardCategoryRecordCreateAsync(custId, data.CategoryId, settleDate, data.AddPoint, trans))
             {
                 trans.Rollback();
+                await conn.CloseAsync();
+                await conn.DisposeAsync();
                 return false;
             }
 
             //Update Remain
             if (data.ChangeRemain != 0
-                && !await _turnoverWorkerService.RemainRecordUpdateAsync(custId, data.CategoryId, settleDate, data.ChangeRemain, conn, trans))
+                && !await _turnoverWorkerService.RemainRecordUpdateAsync(custId, data.CategoryId, settleDate, data.ChangeRemain, trans))
             {
                 trans.Rollback();
+                await conn.CloseAsync();
+                await conn.DisposeAsync();
                 return false;
             }
         }
 
         trans.Commit();
+        await conn.CloseAsync();
+        await conn.DisposeAsync();
         return true;
     }
 

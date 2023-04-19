@@ -1,35 +1,24 @@
 using System.Data;
 using Dapper;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using StoreService.Core.Service.Library;
-using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Core.Service.Model.Frontend;
-using StoreService.Core.Service.Model.RewardPoint;
-using StoreService.Extensions;
 
 namespace StoreService.Core.Service.DAL;
 
 public class GiftManagementService
 {
-    private readonly IConfiguration _configuration;
     private readonly MySqlClient _mainDbClient;
     private readonly MySqlClient _reportDbClient;
-    private readonly RewardPointService _rewardPointService;
-    
-    private readonly string _connectionString;
+
 
     public GiftManagementService(IServiceProvider provider)
     {
-        _configuration = provider.GetRequiredService<IConfiguration>();
-        _connectionString = _configuration.GetConnectionString("ConnectionString");
         _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
-        _rewardPointService = provider.GetRequiredService<RewardPointService>();
     }
 
     public Task<IEnumerable<Gift>> GetGiftListAsync(GetListParams input)
@@ -76,7 +65,6 @@ public class GiftManagementService
 
     public async Task<int> CreateGiftAsync(CreateGiftParams input)
     {
-        var resultCode = -9;
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
         para.Add("_CurrencyId", input.CurrencyId);
@@ -91,28 +79,24 @@ public class GiftManagementService
         para.Add("_Operator", input.Operator);
         para.Add("_Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-        await using (MySqlConnection conn = new MySqlConnection(_connectionString))
+        await using var conn = _mainDbClient.GetMySqlConnection();
+        conn.Open();
+        await using var trans = await conn.BeginTransactionAsync();
+        
+        _ = _mainDbClient.ExecuteAsync("Store_GiftInfo_Ins", trans ,para );
+        var resultCode = para.Get<int?>("_Result") ?? -9;
+
+        if (resultCode == 0)
         {
-            conn.Open();
-
-            await using (var trans = conn.BeginTransaction())
-            {
-                _ = conn.ExecuteAsync("Store_GiftInfo_Ins", para, transaction: trans,
-                    commandType: CommandType.StoredProcedure);
-                resultCode = para.Get<int?>("_Result") ?? -9;
-
-                if (resultCode == 0)
-                {
-                    trans.Commit();
-                }
-                else
-                {
-                    trans.Rollback();
-                }
-            }
-
-            await conn.CloseAsync();
+            trans.Commit();
         }
+        else
+        {
+            trans.Rollback();
+        }
+        
+        await conn.CloseAsync();
+        await conn.DisposeAsync();
 
         return resultCode;
     }

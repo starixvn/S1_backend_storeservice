@@ -48,9 +48,9 @@ public static class ServiceCollectionExtension
 
     public static IServiceCollection RegisterHostServices(this IServiceCollection services)
     {
-        return services
-            .AddHostedService<DepositRewardPointWorker>()
-            .AddHostedService<PointExpiryWorker>()
-            .AddHostedService<TurnoverRewardPointWorker>();
+        return services;
+            //.AddHostedService<DepositRewardPointWorker>()
+            //.AddHostedService<PointExpiryWorker>()
+            //.AddHostedService<TurnoverRewardPointWorker>();
     }
 }

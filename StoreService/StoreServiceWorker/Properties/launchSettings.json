@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "StoreServiceWorker": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local",
+        "ServiceType": "Worker"
+      }
+    }
+  }
+}

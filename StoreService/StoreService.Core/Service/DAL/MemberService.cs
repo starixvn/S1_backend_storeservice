@@ -81,7 +81,7 @@ public class MemberService
         para.Add("_SiteId", input.SiteId);
         para.Add("_Days", input.Days);
 
-        return _reportDbClient.QueryAsync<CustomerInfo>("Store_InactiveCustList_Get", para);;
+        return _reportDbClient.QueryAsync<CustomerInfo>("Store_InactiveCustList_Get_V2", para);;
     }
     
     public async Task<string> GetCustFavoriteGiftAsync(int custId)

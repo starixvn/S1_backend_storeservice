@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32002.185
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreServiceWorker", "StoreServiceWorker\StoreServiceWorker.csproj", "{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreService", "StoreService\StoreService.csproj", "{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreService.Core", "StoreService.Core\StoreService.Core.csproj", "{C4248741-202D-47DF-846B-D66DE299326F}"
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A56C8C49-D85C-4774-B5F3-D4FD875EDC29}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBDEC8DD-7F17-4497-8DBC-9C5CFE77D688}.Release|Any CPU.ActiveCfg = Release|Any CPU

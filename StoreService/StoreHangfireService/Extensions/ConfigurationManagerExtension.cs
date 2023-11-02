@@ -1,13 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
-
-namespace StoreHangfireService.Extensions;
+﻿namespace StoreHangfireService.Extensions;
 
 public static class ConfigurationManagerExtension
 {
     public static ConfigurationManager AddRemoteJsonConfig(this ConfigurationManager configuration, IEnumerable<string> remoteUrls)
     {
+        if (remoteUrls is null)
+        {
+            return configuration;
+        }
+
         using var client = new HttpClient();
         Stream result = null;
         foreach (var url in remoteUrls)

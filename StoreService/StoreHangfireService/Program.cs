@@ -6,7 +6,10 @@ using StoreHangfireService.Extensions.ActionFilters;
 using StoreHangfireService.Job;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddRemoteJsonConfig(builder.Configuration.GetSection("ConfigService").Get<string[]>());
+
+var remoteUrls = builder.Configuration.GetSection("ConfigService").Get<string[]>();
+remoteUrls = builder.Configuration.CheckLocalConfig(builder.Environment, args, remoteUrls);
+builder.Configuration.AddRemoteJsonConfig(remoteUrls);
 
 var excludesMessage = builder.Configuration.GetSection("ExcludesMessage").Get<string[]>();
 var excludesApiEndpoints = builder.Configuration.GetSection("ExcludesApiEndpoint").Get<string[]>();
@@ -39,6 +42,11 @@ if (!app.Environment.EnvironmentName.Equals("Local"))
 }
 
 app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGet("/health", () => "OK.");
+});
+
 app.UseHangfireDashboard(pathMatch: "", options: new DashboardOptions()
 {
     DashboardTitle = "AI.Lab.StoreHangfireService",
@@ -47,12 +55,4 @@ app.UseHangfireDashboard(pathMatch: "", options: new DashboardOptions()
 });
 
 MyJobManager.AddRecurringJob(app.Services);
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapGet("/", async context =>
-    {
-        await context.Response.WriteAsync("OK.");
-    });
-
-});
 app.Run();

@@ -3,6 +3,7 @@
     "StoreHangfireService": {
       "externalUrlConfiguration": true,
       "commandName": "Project",
+      "commandLineArgs": "Nova", // Nova or Leobet
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Local",

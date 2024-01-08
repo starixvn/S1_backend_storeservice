@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
@@ -11,12 +12,12 @@ namespace StoreService.Controllers;
 public class PointSettingController : ControllerBase
 {
     private readonly PointSettingBLL _pointSettingBll;
-    
+
     public PointSettingController(IServiceProvider provider)
     {
         _pointSettingBll = provider.GetRequiredService<PointSettingBLL>();
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> GetInactivePointExpirySettingAsync(GetInactivePointExpirySettingRequest request)
     {
@@ -26,10 +27,10 @@ public class PointSettingController : ControllerBase
         return new ApiResult<InactivePointExpirySetting>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> SetInactivePointExpirySettingAsync(SetInactivePointExpirySettingRequest request)
     {
@@ -38,10 +39,10 @@ public class PointSettingController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> GetTurnoverPointSettingListAsync(GetTurnoverPointSettingListRequest request)
     {
@@ -51,10 +52,10 @@ public class PointSettingController : ControllerBase
         return new ApiListResult<TurnoverPointSettingResult>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> GetTurnoverPointSettingAsync(GetTurnoverPointSettingRequest request)
     {
@@ -64,10 +65,10 @@ public class PointSettingController : ControllerBase
         return new ApiListResult<TurnoverPointSetting>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> SetTurnoverPointSettingAsync(SetTurnoverPointSettingRequest request)
     {
@@ -76,10 +77,10 @@ public class PointSettingController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> GetDepositPointSettingAsync(GetDepositPointSettingRequest request)
     {
@@ -89,10 +90,10 @@ public class PointSettingController : ControllerBase
         return new ApiListResult<DepositPointSetting>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> SetDepositPointSettingAsync(SetDepositPointSettingRequest request)
     {
@@ -101,10 +102,10 @@ public class PointSettingController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> GetTurnoverPointStatusSettingAsync(GetTurnoverPointStatusSettingRequest request)
     {
@@ -114,10 +115,10 @@ public class PointSettingController : ControllerBase
         return new ApiListResult<TurnoverPointStatusSetting>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> SetTurnoverPointStatusSettingAsync(SetTurnoverPointStatusSettingRequest request)
     {
@@ -126,7 +127,7 @@ public class PointSettingController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
 }

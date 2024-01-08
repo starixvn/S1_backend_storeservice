@@ -45,14 +45,14 @@ public class SetDepositPointSettingRequest
 {
     private DateTimeOffset? _startTime { get; set; }
     private DateTimeOffset? _endTime { get; set; }
-    
+
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public decimal DepositAmount { get; set; }
     public decimal PointRate { get; set; }
     public GeneralStatusEnum PromotionStatus { get; set; }
     public decimal PromotionPointRate { get; set; }
-    
+
     public DateTimeOffset? PromotionStartTime
     {
         get => _startTime;

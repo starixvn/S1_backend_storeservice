@@ -1,6 +1,9 @@
 using System.Text;
+
 using Microsoft.AspNetCore.Http.Extensions;
+
 using Newtonsoft.Json;
+
 using Serilog.Context;
 
 namespace StoreService.Extensions.Middlewares;
@@ -8,62 +11,62 @@ namespace StoreService.Extensions.Middlewares;
 public class RequestLogMiddleware
 {
     private readonly ILogger _logger;
-        private readonly RequestDelegate _next;
+    private readonly RequestDelegate _next;
 
-        public RequestLogMiddleware(RequestDelegate next, ILoggerFactory factory)
+    public RequestLogMiddleware(RequestDelegate next, ILoggerFactory factory)
+    {
+        _next = next;
+        _logger = factory.CreateLogger("RequestLog");
+    }
+
+    public async Task Invoke(HttpContext context)
+    {
+        context.Request.EnableBuffering();
+        var url = context.Request.GetDisplayUrl();
+        if (context.Request.Method.Equals("HEAD", StringComparison.OrdinalIgnoreCase))
         {
-            _next = next;
-            _logger = factory.CreateLogger("RequestLog");
+            await _next(context);
         }
-
-        public async Task Invoke(HttpContext context)
+        else
         {
-            context.Request.EnableBuffering();
-            var url = context.Request.GetDisplayUrl();
-            if (context.Request.Method.Equals("HEAD", StringComparison.OrdinalIgnoreCase))
+            var originalRequestBody = context.Request.Body;
+            var content = string.Empty;
+            if (context.Request.ContentType?.StartsWith("application/x-www-form-urlencoded") ?? false)
             {
-                await _next(context);
+                var formData = await context.Request.ReadFormAsync();
+                content = JsonConvert.SerializeObject(formData);
             }
-            else
-            {               
-                var originalRequestBody = context.Request.Body;
-                var content = string.Empty;
-                if (context.Request.ContentType?.StartsWith("application/x-www-form-urlencoded") ?? false)
+            var requestBodyStream = new MemoryStream();
+            await context.Request.Body.CopyToAsync(requestBodyStream);
+            requestBodyStream.Seek(0, SeekOrigin.Begin);
+
+            using (var requestBody = new StreamReader(requestBodyStream, Encoding.UTF8, true, 1024, true))
+            {
+                var codePage = requestBody.CurrentEncoding.CodePage;
+
+                content = !context.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase)
+                          && string.IsNullOrEmpty(content)
+                    ? await requestBody.ReadToEndAsync()
+                    : content;
+                if (context.Request.RouteValues.TryGetValue("controller", out var controller))
                 {
-                    var formData = await context.Request.ReadFormAsync();
-                    content = JsonConvert.SerializeObject(formData);
-                }
-                var requestBodyStream = new MemoryStream();
-                await context.Request.Body.CopyToAsync(requestBodyStream);
-                requestBodyStream.Seek(0, SeekOrigin.Begin);
-
-                using (var requestBody = new StreamReader(requestBodyStream, Encoding.UTF8, true, 1024, true))
-                {
-                    var codePage = requestBody.CurrentEncoding.CodePage;
-                
-                    content = !context.Request.Method.Equals("GET",StringComparison.OrdinalIgnoreCase)
-                              && string.IsNullOrEmpty(content)
-                        ? await requestBody.ReadToEndAsync()
-                        : content;
-                    if (context.Request.RouteValues.TryGetValue("controller", out var controller))
-                    {
-                        LogContext.PushProperty("Store", controller?.ToString());
-                    }
-
-                    if (context.Request.RouteValues.TryGetValue("action", out var action))
-                    {
-                        LogContext.PushProperty("Action", action?.ToString());
-                    }
-
-                    _logger.LogInformation(
-                        $"REQUEST METHOD: {context.Request.Method}, CodePage: {codePage}, REQUEST BODY: {content}, REQUEST URL: {url}");
+                    LogContext.PushProperty("Store", controller?.ToString());
                 }
 
-                requestBodyStream.Seek(0, SeekOrigin.Begin);
-                context.Request.Body = requestBodyStream;
+                if (context.Request.RouteValues.TryGetValue("action", out var action))
+                {
+                    LogContext.PushProperty("Action", action?.ToString());
+                }
 
-                await _next(context);
-                context.Request.Body = originalRequestBody;
+                _logger.LogInformation(
+                    $"REQUEST METHOD: {context.Request.Method}, CodePage: {codePage}, REQUEST BODY: {content}, REQUEST URL: {url}");
             }
+
+            requestBodyStream.Seek(0, SeekOrigin.Begin);
+            context.Request.Body = requestBodyStream;
+
+            await _next(context);
+            context.Request.Body = originalRequestBody;
         }
+    }
 }

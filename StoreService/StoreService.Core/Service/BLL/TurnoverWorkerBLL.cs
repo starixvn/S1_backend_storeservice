@@ -1,20 +1,16 @@
-﻿using Dapper;
+﻿using System.Text;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MySql.Data.MySqlClient;
+
 using Newtonsoft.Json;
+
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
-using StoreService.Core.Service.Model.PointSetting;
 using StoreService.Core.Service.Model.RewardPoint;
 using StoreService.Core.Service.Model.TurnoverWorker;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreService.Core.Service.BLL;
 

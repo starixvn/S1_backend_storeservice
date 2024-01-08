@@ -1,15 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics;
+
 using StoreHangfireService.Job;
+
 using StoreService.Core.Service.BLL;
-using StoreService.Core.Service.Model.Enums;
-using StoreService.Core.Service.Model.Member;
-using StoreService.Core.Service.Model.PointSetting;
-using StoreService.Core.Service.Model;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using StoreService.Core.Service.Model.TurnoverWorker;
-using System;
-using System.Drawing.Printing;
 
 namespace StoreHangfireService.Service.Reward;
 

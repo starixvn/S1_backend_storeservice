@@ -1,5 +1,7 @@
 ﻿using Dapper;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
@@ -21,7 +23,7 @@ public class ReportService
 
     #region DepositPoint
 
-     public async Task<PagerResultModel<GetDepositPointReportResult>> GetDepositPointReportAsync(GetDepositPointReportParams input)
+    public async Task<PagerResultModel<GetDepositPointReportResult>> GetDepositPointReportAsync(GetDepositPointReportParams input)
     {
         var para = new DynamicParameters().AddPagerParams(input.PageSize, input.StartIndex);
         para.Add("_SiteId", input.SiteId);
@@ -32,7 +34,7 @@ public class ReportService
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
         para.Add("_TpUserName", input.TpUserName);
-        
+
         var list = await _reportDbClient.QueryAsync<GetDepositPointReportResult>("Store_DepositPointReport_Get", para);
         var result = new PagerResultModel<GetDepositPointReportResult>
         {
@@ -40,10 +42,10 @@ public class ReportService
             TotalPages = para.Get<int?>("_TotalPages") ?? 0,
             RowCount = para.Get<int?>("_RowCount") ?? 0
         };
-        
+
         return result;
     }
-    
+
     public async Task<IEnumerable<GetDepositPointReportResult>> ExportDepositPointReportAsync(ExportDepositPointReportParams input)
     {
         var para = new DynamicParameters();
@@ -55,11 +57,11 @@ public class ReportService
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
         para.Add("_TpUserName", input.TpUserName);
-        
+
         var list = await _reportDbClient.QueryAsync<GetDepositPointReportResult>("Store_DepositPointReportExport_Get", para);
         return list;
     }
-    
+
     public Task<IEnumerable<GetDepositPointOverviewResult>> GetDepositPointOverviewAsync(GetDepositPointReportParams input)
     {
         var para = new DynamicParameters();
@@ -76,10 +78,10 @@ public class ReportService
     }
 
     #endregion
-    
+
     #region AdjustmentPoint
 
-     public async Task<PagerResultModel<GetAdjustmentPointReportResult>> GetAdjustmentPointReportAsync(GetAdjustmentPointReportParams input)
+    public async Task<PagerResultModel<GetAdjustmentPointReportResult>> GetAdjustmentPointReportAsync(GetAdjustmentPointReportParams input)
     {
         var para = new DynamicParameters().AddPagerParams(input.PageSize, input.StartIndex);
         para.Add("_SiteId", input.SiteId);
@@ -91,7 +93,7 @@ public class ReportService
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
         para.Add("_TpUserName", input.TpUserName);
-        
+
         var list = await _reportDbClient.QueryAsync<GetAdjustmentPointReportResult>("Store_AdjustmentPointReport_Get", para);
         var result = new PagerResultModel<GetAdjustmentPointReportResult>
         {
@@ -99,10 +101,10 @@ public class ReportService
             TotalPages = para.Get<int?>("_TotalPages") ?? 0,
             RowCount = para.Get<int?>("_RowCount") ?? 0
         };
-        
+
         return result;
     }
-    
+
     public async Task<IEnumerable<GetAdjustmentPointReportResult>> ExportAdjustmentPointReportAsync(ExportAdjustmentPointReportParams input)
     {
         var para = new DynamicParameters();
@@ -115,11 +117,11 @@ public class ReportService
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
         para.Add("_TpUserName", input.TpUserName);
-        
+
         var list = await _reportDbClient.QueryAsync<GetAdjustmentPointReportResult>("Store_AdjustmentPointReportExport_Get", para);
         return list;
     }
-    
+
     public Task<IEnumerable<GetAdjustmentPointOverviewResult>> GetAdjustmentPointOverviewAsync(GetAdjustmentPointReportParams input)
     {
         var para = new DynamicParameters();

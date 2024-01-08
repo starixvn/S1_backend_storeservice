@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+
 using StoreService.Core.Service.Model.Enums;
 
 namespace StoreService.Core.Exceptions;

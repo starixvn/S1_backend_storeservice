@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using StoreService.Core.Extensions;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Model;
@@ -30,7 +31,7 @@ public class RewardPointBLL
         CreateManualRewardPointInfoParams input)
     {
         var result = await _rewardPointService.CreateManualRewardPointInfoAsync(input, _prefix);
-        var success = result.ResultCode == (int) ErrorCodeEnum.Success;
+        var success = result.ResultCode == (int)ErrorCodeEnum.Success;
 
         if (!success)
         {
@@ -74,7 +75,7 @@ public class RewardPointBLL
 
         return success;
     }
-    
+
     public async Task<bool> SetPointExpiryAsync(IEnumerable<CustomerInfo> custList)
     {
         var result = await _rewardPointService.SetPointExpiryAsync(custList);

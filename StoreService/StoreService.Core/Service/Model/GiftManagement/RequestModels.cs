@@ -1,4 +1,3 @@
-using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 
 namespace StoreService.Core.Service.Model.GiftManagement;

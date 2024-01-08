@@ -1,6 +1,9 @@
 using System.Data;
+
 using Dapper;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Based;
@@ -20,17 +23,17 @@ public class MemberService
         _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
     }
-    
+
     public async Task<MemberPointBalance> GetMemberPointBalanceAsync(int custId)
     {
         var para = new DynamicParameters();
         para.Add("_CustId", custId);
 
         var result = await _reportDbClient.QueryAsync<MemberPointBalance>("Store_CustPointBalance_Get", para);
-       
+
         return result.FirstOrDefault();
     }
-    
+
     public async Task<PagerResultModel<MemberRewardPointInfo>> GetMemberRewardPointListAsync(GetListParams input)
     {
         var para = new DynamicParameters()
@@ -54,7 +57,7 @@ public class MemberService
 
         return result;
     }
-    
+
     public async Task<PagerResultModel<MemberRewardPointLog>> GetMemberRewardPointLogAsync(GetMemberRewardPointLogParams input)
     {
         var para = new DynamicParameters()
@@ -74,16 +77,16 @@ public class MemberService
 
         return result;
     }
-    
+
     public Task<IEnumerable<CustomerInfo>> GetInactiveMemberListAsync(GetInactiveMemberListParams input)
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
         para.Add("_Days", input.Days);
 
-        return _reportDbClient.QueryAsync<CustomerInfo>("Store_InactiveCustList_Get_V2", para);;
+        return _reportDbClient.QueryAsync<CustomerInfo>("Store_InactiveCustList_Get_V2", para); ;
     }
-    
+
     public async Task<string> GetCustFavoriteGiftAsync(int custId)
     {
         var para = new DynamicParameters();
@@ -91,7 +94,7 @@ public class MemberService
 
         return (await _reportDbClient.QueryAsync<string>("Store_CustFavoriteGift_Get", para)).FirstOrDefault();
     }
-    
+
     public Task<int> SetCustFavoriteGiftAsync(SetFavoriteParams input)
     {
         var para = new DynamicParameters();

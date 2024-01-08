@@ -1,11 +1,15 @@
 using System.Data;
+
 using Dapper;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
+
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Enums;
-using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Core.Service.Model.Frontend;
+using StoreService.Core.Service.Model.GiftManagement;
 
 namespace StoreService.Core.Service.DAL;
 
@@ -82,8 +86,8 @@ public class GiftManagementService
         await using var conn = _mainDbClient.GetMySqlConnection();
         conn.Open();
         await using var trans = await conn.BeginTransactionAsync();
-        
-        _ = _mainDbClient.ExecuteAsync("Store_GiftInfo_Ins", trans ,para );
+
+        _ = _mainDbClient.ExecuteAsync("Store_GiftInfo_Ins", trans, para);
         var resultCode = para.Get<int?>("_Result") ?? -9;
 
         if (resultCode == 0)
@@ -94,7 +98,7 @@ public class GiftManagementService
         {
             trans.Rollback();
         }
-        
+
         await conn.CloseAsync();
         await conn.DisposeAsync();
 
@@ -213,7 +217,7 @@ public class GiftManagementService
 
         return _reportDbClient.QueryAsync<GiftListModel>("Store_Frontend_GiftList_Get", para);
     }
-    
+
     public Task<IEnumerable<Gift>> GetShoppingCartAsync(SetShoppingCartRequest request)
     {
         var para = new DynamicParameters();
@@ -222,14 +226,14 @@ public class GiftManagementService
         para.Add("_CustId", request.CustId);
         return _mainDbClient.QueryAsync<Gift>("Store_CustShoppingCart_Get", para);
     }
-    
+
     public async Task<int> SetShoppingCartAsync(SetShoppingCartRequest input)
     {
         var para = new DynamicParameters();
         para.Add("_CustId", input.CustId);
         para.Add("_GiftIds", JsonConvert.SerializeObject(input.GiftIds));
         para.Add("_IsAdd", input.IsAdd);
-        
+
         return await _mainDbClient.ExecuteAsync("Store_CustShoppingCart_Set", para);
     }
 }

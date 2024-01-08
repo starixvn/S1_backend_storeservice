@@ -41,18 +41,18 @@ public class ApiResult
     public string RawMessage { get; set; }
 
     public ApiResult()
-        : this((int) ErrorCodeEnum.SystemError, "")
+        : this((int)ErrorCodeEnum.SystemError, "")
     {
     }
 
     public ApiResult(ISelLang selLang)
-        : this((int) ErrorCodeEnum.SystemError, "")
+        : this((int)ErrorCodeEnum.SystemError, "")
     {
         SelLang = selLang;
     }
-    
+
     public ApiResult(ErrorCodeEnum errorCode, string message = "")
-        : this((int) errorCode, message)
+        : this((int)errorCode, message)
     {
     }
 
@@ -67,17 +67,17 @@ public class ApiResult
 
 public class ApiResult<TData> : ApiResult
 {
-    public ApiResult() : this((int) ErrorCodeEnum.SystemError, default)
+    public ApiResult() : this((int)ErrorCodeEnum.SystemError, default)
     {
     }
 
-    public ApiResult(ISelLang selLang) : this((int) ErrorCodeEnum.SystemError, default)
+    public ApiResult(ISelLang selLang) : this((int)ErrorCodeEnum.SystemError, default)
     {
         SelLang = selLang;
     }
-    
+
     public ApiResult(ErrorCodeEnum errorCode, TData data, string message = "")
-        : this((int) errorCode, data, message)
+        : this((int)errorCode, data, message)
     {
     }
 
@@ -91,15 +91,15 @@ public class ApiResult<TData> : ApiResult
 
 public class ApiListResult<TData> : ApiResult
 {
-    public ApiListResult() : this((int) ErrorCodeEnum.SystemError)
+    public ApiListResult() : this((int)ErrorCodeEnum.SystemError)
     {
     }
 
-    public ApiListResult(ISelLang selLang) : this((int) ErrorCodeEnum.SystemError)
+    public ApiListResult(ISelLang selLang) : this((int)ErrorCodeEnum.SystemError)
     {
         SelLang = selLang;
     }
-    
+
     public ApiListResult(int errorCode, string message = "") : base(errorCode, message)
     {
     }

@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+
 using StackExchange.Redis;
 
 namespace StoreService.Core.Service.Library;
@@ -6,10 +7,10 @@ namespace StoreService.Core.Service.Library;
 public class RedisCacheHelper : ICacheHelper
 {
     private readonly IDatabase _redis;
-        
+
     public RedisCacheHelper(IConnectionMultiplexer multiplexer)
     {
-        _redis =  multiplexer.GetDatabase();
+        _redis = multiplexer.GetDatabase();
     }
     public TItem TryGetOrCreate<TItem>(string key, TimeSpan timeSpan, Func<string, TItem> factory)
     {
@@ -28,7 +29,7 @@ public class RedisCacheHelper : ICacheHelper
         var json = _redis.StringGet(key);
         return JsonConvert.DeserializeObject<TItem>(json);
     }
-        
+
     public async Task<TItem> TryGetOrCreateAsync<TItem>(string key, TimeSpan? timeSpan, Func<string, Task<TItem>> factory)
     {
         if (!_redis.KeyExists(key))

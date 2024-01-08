@@ -1,5 +1,7 @@
 ﻿using Dapper;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.TurnoverWorker;

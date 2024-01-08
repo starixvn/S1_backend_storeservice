@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
@@ -11,7 +12,7 @@ namespace StoreService.Controllers;
 public class GiftManagementController : ControllerBase
 {
     private readonly GiftManagementBLL _giftManagementBll;
-    
+
     public GiftManagementController(IServiceProvider provider)
     {
         _giftManagementBll = provider.GetRequiredService<GiftManagementBLL>();
@@ -26,10 +27,10 @@ public class GiftManagementController : ControllerBase
         return new ApiResult<IEnumerable<Gift>>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> GetTagsAsync(GetTagsRequest request)
     {
@@ -39,10 +40,10 @@ public class GiftManagementController : ControllerBase
         return new ApiListResult<GiftTag>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> GetCategoriesAsync(GetCategoriesRequest request)
     {
@@ -52,10 +53,10 @@ public class GiftManagementController : ControllerBase
         return new ApiListResult<GiftCategory>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> GetRedemptionLimitAsync(GetRedemptionLimitRequest request)
     {
@@ -65,10 +66,10 @@ public class GiftManagementController : ControllerBase
         return new ApiResult<RedemptionLimit>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> GetAsync(GetGiftRequest request)
     {
@@ -78,10 +79,10 @@ public class GiftManagementController : ControllerBase
         return new ApiResult<IEnumerable<GiftInfo>>
         {
             Data = result,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> CreateAsync(CreateGiftRequest request)
     {
@@ -90,10 +91,10 @@ public class GiftManagementController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> UpdateAsync(UpdateGiftRequest request)
     {
@@ -102,10 +103,10 @@ public class GiftManagementController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> CreateCategoryAsync(CreateCategoryRequest request)
     {
@@ -114,10 +115,10 @@ public class GiftManagementController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> UpdateCategoryAsync(UpdateCategoryRequest request)
     {
@@ -126,10 +127,10 @@ public class GiftManagementController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> CreateTagAsync(CreateTagRequest request)
     {
@@ -138,10 +139,10 @@ public class GiftManagementController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> UpdateTagAsync(UpdateTagRequest request)
     {
@@ -150,10 +151,10 @@ public class GiftManagementController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> SetRedemptionLimitAsync(SetRedemptionLimitRequest request)
     {
@@ -162,10 +163,10 @@ public class GiftManagementController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> SetSortAsync(SetSortRequest request)
     {
@@ -174,10 +175,10 @@ public class GiftManagementController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> SetShoppingCartAsync(SetShoppingCartRequest request)
     {
@@ -186,21 +187,21 @@ public class GiftManagementController : ControllerBase
         {
             success = await _giftManagementBll.SetShoppingCartAsync(request);
         }
-        
+
         if (success)
         {
             var result = await _giftManagementBll.GetShoppingCartAsync(request);
             return new ApiResult<IEnumerable<Gift>>
             {
                 Data = result,
-                ErrorCode = (int) ErrorCodeEnum.Success
+                ErrorCode = (int)ErrorCodeEnum.Success
             };
         }
 
         return new ApiResult<IEnumerable<Gift>>
         {
-            ErrorCode = (int) ErrorCodeEnum.Failed
+            ErrorCode = (int)ErrorCodeEnum.Failed
         };
-        
+
     }
 }

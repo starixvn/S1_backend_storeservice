@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Report;
@@ -35,10 +36,10 @@ public class ReportBLL
             },
             Overview = overview
         };
-        
+
         return result;
     }
-    
+
     public async Task<ExportDepositPointReportResult> ExportDepositPointReportAsync(ExportDepositPointReportParams input)
     {
         var list = await _reportService.ExportDepositPointReportAsync(input);
@@ -49,12 +50,12 @@ public class ReportBLL
             List = list,
             Overview = overview
         };
-        
+
         return result;
     }
 
     #endregion
-    
+
     #region AdjustmentPoint
 
     public async Task<AdjustmentPointReportResult> GetAdjustmentPointReportAsync(GetAdjustmentPointReportParams input)
@@ -73,10 +74,10 @@ public class ReportBLL
             },
             Overview = overview
         };
-        
+
         return result;
     }
-    
+
     public async Task<ExportAdjustmentPointReportResult> ExportAdjustmentPointReportAsync(ExportAdjustmentPointReportParams input)
     {
         var list = await _reportService.ExportAdjustmentPointReportAsync(input);
@@ -87,7 +88,7 @@ public class ReportBLL
             List = list,
             Overview = overview
         };
-        
+
         return result;
     }
 

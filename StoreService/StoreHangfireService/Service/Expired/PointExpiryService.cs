@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+
 using StoreHangfireService.Job;
+
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;

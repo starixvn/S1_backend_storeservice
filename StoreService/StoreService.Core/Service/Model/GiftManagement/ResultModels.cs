@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 
@@ -10,7 +11,7 @@ public class Gift : LastUpdateModel
     public string GiftName { get; set; }
     public int SiteId { get; set; }
     public string SiteName { get; set; }
-    public int CurrencyId { get; set; }	
+    public int CurrencyId { get; set; }
     public string IsoCode { get; set; }
     public int CategoryId { get; set; }
     public string Lang { get; set; }
@@ -42,7 +43,7 @@ public class GiftInfo
     public string Tags { get; set; }
     public IEnumerable<int> TagIds
         => JsonConvert.DeserializeObject<IEnumerable<int>>(Tags ?? "[]");
-    
+
     public int Point { get; set; }
     public decimal PriceWorth { get; set; }
     public bool ShowStock { get; set; }

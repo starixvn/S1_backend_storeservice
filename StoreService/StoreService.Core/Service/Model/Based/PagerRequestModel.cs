@@ -4,7 +4,7 @@ public class PagerRequestModel
 {
     private int _pageNumber { get; set; }
     private int _pageSize { get; set; } = 10;
-    
+
     public int PageNumber
     {
         get => _pageNumber;

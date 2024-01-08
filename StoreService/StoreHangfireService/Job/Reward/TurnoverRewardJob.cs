@@ -1,10 +1,12 @@
-﻿using Hangfire;
+﻿using System.ComponentModel;
+
+using Hangfire;
 using Hangfire.Dashboard.Management.Metadata;
 using Hangfire.Server;
+
 using StoreHangfireService.Job.Interfaces;
 using StoreHangfireService.Model.Options;
 using StoreHangfireService.Service.Reward;
-using System.ComponentModel;
 
 namespace StoreHangfireService.Job.Reward;
 

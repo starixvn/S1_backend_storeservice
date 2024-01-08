@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Builder;
 using StoreService.Extensions.Middlewares;
 
 namespace StoreService.Extensions;

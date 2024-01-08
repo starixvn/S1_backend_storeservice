@@ -2,13 +2,16 @@
 using Hangfire.Console.Extensions;
 using Hangfire.Dashboard.Management;
 using Hangfire.MemoryStorage;
+
 using StackExchange.Redis;
+
 using StoreHangfireService.Job;
 using StoreHangfireService.Job.Interfaces;
 using StoreHangfireService.Model.Options;
 using StoreHangfireService.Service;
 using StoreHangfireService.Service.Expired;
 using StoreHangfireService.Service.Reward;
+
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;

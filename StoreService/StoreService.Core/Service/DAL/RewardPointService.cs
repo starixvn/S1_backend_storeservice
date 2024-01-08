@@ -1,8 +1,12 @@
 using System.Data;
+
 using Dapper;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
+
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
@@ -41,8 +45,8 @@ public class RewardPointService
         await using var conn = _mainDbClient.GetMySqlConnection();
         conn.Open();
         await using var trans = await conn.BeginTransactionAsync();
-        
-        _ = await _mainDbClient.ExecuteAsync("Store_ManualRewardPointInfo_Ins", trans , para );
+
+        _ = await _mainDbClient.ExecuteAsync("Store_ManualRewardPointInfo_Ins", trans, para);
         var resultCode = para.Get<int?>("_Result") ?? -9;
         var transId = para.Get<string>("_TransId") ?? string.Empty;
 
@@ -54,11 +58,11 @@ public class RewardPointService
         {
             trans.Rollback();
         }
-    
+
 
         await conn.CloseAsync();
         await conn.DisposeAsync();
-        
+
 
         return (resultCode, transId);
     }
@@ -68,11 +72,11 @@ public class RewardPointService
     {
         var result = -9;
         var count = input.Infos.Count();
-        
+
         await using var conn = _mainDbClient.GetMySqlConnection();
         conn.Open();
         await using var trans = await conn.BeginTransactionAsync();
-        
+
         try
         {
             // STEP1: 批次新增手動變更點數紀錄
@@ -157,7 +161,7 @@ public class RewardPointService
             await conn.DisposeAsync();
             throw;
         }
-        
+
         await conn.CloseAsync();
         await conn.DisposeAsync();
 
@@ -175,7 +179,7 @@ public class RewardPointService
         await using var conn = _mainDbClient.GetMySqlConnection();
         conn.Open();
         await using var trans = await conn.BeginTransactionAsync();
-        
+
         try
         {
             // STEP1: 批次更新存款佇列
@@ -250,7 +254,7 @@ public class RewardPointService
             await conn.DisposeAsync();
             throw;
         }
-        
+
         await conn.CloseAsync();
         await conn.DisposeAsync();
 
@@ -268,7 +272,7 @@ public class RewardPointService
         para.Add("_BeforeBalance", dbType: DbType.String, direction: ParameterDirection.Output);
         para.Add("_AfterBalance", dbType: DbType.String, direction: ParameterDirection.Output);
 
-        var result = await _mainDbClient.ExecuteAsync("Store_CustRewardPointUse_Set", trans , para );
+        var result = await _mainDbClient.ExecuteAsync("Store_CustRewardPointUse_Set", trans, para);
 
         if (result > 0)
         {
@@ -281,13 +285,13 @@ public class RewardPointService
             logPara.Add("_CurrencyId", input.CurrencyId);
             logPara.Add("_SiteId", input.SiteId);
             logPara.Add("_TransId", transId);
-            logPara.Add("_ChangePoint",  input.UsePoint * -1);
+            logPara.Add("_ChangePoint", input.UsePoint * -1);
             logPara.Add("_BeforePoint", beforeBalance);
             logPara.Add("_AfterPoint", afterBalance);
             logPara.Add("_Memo", isUsed >= 0 ? "Apply Redemption" : "Reject Redemption");
             logPara.Add("_Operator", "System");
 
-            var logResult = await _mainDbClient.ExecuteAsync("Store_RewardPointLog_Ins", trans , logPara);
+            var logResult = await _mainDbClient.ExecuteAsync("Store_RewardPointLog_Ins", trans, logPara);
             if (logResult > 0)
             {
                 return true;
@@ -303,7 +307,7 @@ public class RewardPointService
         await using var conn = _mainDbClient.GetMySqlConnection();
         conn.Open();
         await using var trans = await conn.BeginTransactionAsync();
-        
+
         try
         {
             // STEP1: 批次歸零點數
@@ -397,7 +401,7 @@ public class RewardPointService
             logPara.Add("_Memo", input.Memo);
             logPara.Add("_Operator", "System");
 
-            var logResult = await _mainDbClient.ExecuteAsync("Store_RewardPointLog_Ins", trans , logPara);
+            var logResult = await _mainDbClient.ExecuteAsync("Store_RewardPointLog_Ins", trans, logPara);
 
             if (logResult > 0)
             {
@@ -419,7 +423,7 @@ public class RewardPointService
         para.Add("_Prefix", prefix);
         para.Add("_Operator", input.Operator);
 
-        var result = _mainDbClient.QueryAsync<BatchManualRewardPointResult>("Store_ManualRewardPointInfoBatch_Ins", trans ,para);
+        var result = _mainDbClient.QueryAsync<BatchManualRewardPointResult>("Store_ManualRewardPointInfoBatch_Ins", trans, para);
 
         return result;
     }
@@ -430,18 +434,18 @@ public class RewardPointService
         var para = new DynamicParameters();
         para.Add("_Infos", JsonConvert.SerializeObject(batchChangeInfo));
 
-        return _mainDbClient.QueryAsync<BatchChangeCustRewardPointResult>("Store_CustRewardPointChangeBatch_Set", trans , para);
+        return _mainDbClient.QueryAsync<BatchChangeCustRewardPointResult>("Store_CustRewardPointChangeBatch_Set", trans, para);
     }
 
     private Task<int> BatchRewardPointLogAsync(PointTypeEnum type, string @operator,
         IEnumerable<BatchRewardPointLogInfo> batchLogInfo, IDbTransaction trans)
     {
         var para = new DynamicParameters();
-        para.Add("_PointType", (int) type);
+        para.Add("_PointType", (int)type);
         para.Add("_Infos", JsonConvert.SerializeObject(batchLogInfo));
         para.Add("_Operator", @operator);
 
-        return _mainDbClient.ExecuteAsync("Store_RewardPointLogBatch_Ins", trans , para);
+        return _mainDbClient.ExecuteAsync("Store_RewardPointLogBatch_Ins", trans, para);
     }
 
     private Task<int> SetDepositRewardPointQueueAsync(
@@ -450,17 +454,17 @@ public class RewardPointService
         var para = new DynamicParameters();
         para.Add("_Infos", JsonConvert.SerializeObject(infos));
 
-        return _mainDbClient.ExecuteAsync("Store_DepositRewardPointQueue_Set", trans , para);
+        return _mainDbClient.ExecuteAsync("Store_DepositRewardPointQueue_Set", trans, para);
     }
 
     private async Task<(IEnumerable<BatchChangeCustRewardPointResult> ChangeResult, int RowCount)>
-        BatchExpiryCustRewardPointAsync(IEnumerable<int> custIds,IDbTransaction trans)
+        BatchExpiryCustRewardPointAsync(IEnumerable<int> custIds, IDbTransaction trans)
     {
         var para = new DynamicParameters();
         para.Add("_CustIds", JsonConvert.SerializeObject(custIds));
         para.Add("_EffectedRowCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-        var result = await _mainDbClient.QueryAsync<BatchChangeCustRewardPointResult>("Store_CustRewardPointExpiryBatch_Set", trans ,para);
+        var result = await _mainDbClient.QueryAsync<BatchChangeCustRewardPointResult>("Store_CustRewardPointExpiryBatch_Set", trans, para);
         var rowCount = para.Get<int?>("_EffectedRowCount") ?? 0;
         return (result, rowCount);
     }

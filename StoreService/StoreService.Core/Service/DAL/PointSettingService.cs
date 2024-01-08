@@ -1,5 +1,7 @@
 using Dapper;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.PointSetting;
@@ -24,7 +26,7 @@ public class PointSettingService
 
         return _reportDbClient.QueryAsync<InactivePointExpirySetting>("Store_InactivePointExpiry_Get", para);
     }
-    
+
     public Task<int> SetInactivePointExpirySettingAsync(SetInactivePointExpirySettingParams input)
     {
         var para = new DynamicParameters();
@@ -45,7 +47,7 @@ public class PointSettingService
 
         return _reportDbClient.QueryAsync<TurnoverPointSetting>("Store_TurnoverPointSetting_Get", para);
     }
-    
+
     public Task<IEnumerable<SimpleTurnoverPointSetting>> GetTurnoverPointSettingListAsync(GetTurnoverPointSettingListParams input)
     {
         var para = new DynamicParameters();
@@ -54,7 +56,7 @@ public class PointSettingService
 
         return _reportDbClient.QueryAsync<SimpleTurnoverPointSetting>("Store_TurnoverPointSettingList_Get", para);
     }
-    
+
     public Task<int> SetTurnoverPointSettingAsync(SetTurnoverPointSettingParams input)
     {
         var para = new DynamicParameters();
@@ -65,7 +67,7 @@ public class PointSettingService
 
         return _mainDbClient.ExecuteAsync("Store_TurnoverPointSetting_Set", para);
     }
-    
+
     public Task<IEnumerable<DepositPointSetting>> GetDepositPointSettingAsync(GetDepositPointSettingParams input)
     {
         var para = new DynamicParameters();
@@ -73,7 +75,7 @@ public class PointSettingService
 
         return _reportDbClient.QueryAsync<DepositPointSetting>("Store_DepositPointSetting_Get", para);
     }
-    
+
     public Task<int> SetDepositPointSettingAsync(SetDepositPointSettingParams input)
     {
         var para = new DynamicParameters();
@@ -89,7 +91,7 @@ public class PointSettingService
 
         return _mainDbClient.ExecuteAsync("Store_DepositPointSetting_Set", para);
     }
-    
+
     public Task<IEnumerable<TurnoverPointStatusSetting>> GetTurnoverPointStatusSettingAsync(GetTurnoverPointStatusSettingParams input)
     {
         var para = new DynamicParameters();
@@ -99,7 +101,7 @@ public class PointSettingService
 
         return _reportDbClient.QueryAsync<TurnoverPointStatusSetting>("Store_TurnoverPointStatusSetting_Get", para);
     }
-    
+
     public Task<int> SetTurnoverPointStatusSettingAsync(SetTurnoverPointStatusSettingParams input)
     {
         var para = new DynamicParameters();

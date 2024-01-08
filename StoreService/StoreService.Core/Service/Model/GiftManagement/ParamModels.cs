@@ -58,6 +58,7 @@ public class GetGiftParams
     {
         GiftId = req.GiftId;
     }
+    public GetGiftParams() { }
     public int GiftId { get; set; }
 }
 

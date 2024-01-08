@@ -2,6 +2,7 @@
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
+using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Core.Service.Model.Redemption;
 
 namespace StoreService.Controllers;
@@ -25,6 +26,22 @@ public class RedemptionController : ControllerBase
     public async Task<ApiResult> CreateRedemptionAsync(CreateRedemptionRequest request)
     {
         var result = new ApiResult();
+
+        //新增Gift狀態檢查
+        var giftList = await _giftManagementBll.GetGiftAsync(new GetGiftParams() { GiftId = request.GiftId });
+        var gift = giftList.FirstOrDefault(i => i.GiftId == request.GiftId);
+        if (gift == null)
+        {
+            result.ErrorCode = (int)ErrorCodeEnum.Failed;
+            return result;
+        }
+
+        if (gift.Status == GeneralStatusEnum.Disabled)
+        {
+            result.ErrorCode = (int)ErrorCodeEnum.RedemptionLimitOverLimit;
+            return result;
+        }
+
         var redemptionLimit = _redemptionBll.CheckCustRedemptionLimitAsync(request.SiteId , request.CurrencyId , request.CustId ,request.Point);
         
         switch (redemptionLimit.Result)

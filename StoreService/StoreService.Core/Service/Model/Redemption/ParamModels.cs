@@ -1,10 +1,11 @@
 using Newtonsoft.Json;
+
 using StoreService.Core.Extensions;
 using StoreService.Core.Service.Model.Based;
 
 namespace StoreService.Core.Service.Model.Redemption;
 
-public class GetRedemptionListParams: PagerParamModel
+public class GetRedemptionListParams : PagerParamModel
 {
     public GetRedemptionListParams(GetRedemptionListRequest req)
     {
@@ -22,7 +23,7 @@ public class GetRedemptionListParams: PagerParamModel
         EndTime = req.EndTime.DateTime;
         PageNumber = req.PageNumber;
     }
-    
+
     public GetRedemptionListParams(ExportRedemptionListParams input, IEnumerable<int> currencyIds)
     {
         SiteId = input.SiteId;
@@ -36,7 +37,7 @@ public class GetRedemptionListParams: PagerParamModel
         StartTime = input.StartTime;
         EndTime = input.EndTime;
     }
-   
+
     public int SiteId { get; set; }
     public IEnumerable<int> CurrencyIds { get; set; }
     public string StrCurrencyIds { get; set; }
@@ -65,7 +66,7 @@ public class ExportRedemptionListParams
         StartTime = req.StartTime.DateTime;
         EndTime = req.EndTime.DateTime;
     }
-    
+
     public int SiteId { get; set; }
     public IEnumerable<int> CurrencyIds { get; set; }
     public string StrCurrencyIds { get; set; }

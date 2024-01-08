@@ -7,7 +7,7 @@ public class VipLevel
         LevelId = id;
         LevelName = name;
     }
-    
+
     public int LevelId { get; set; }
     public string LevelName { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 using StoreService.Core.Extensions;
 using StoreService.Core.Service.Model.Based;
 
@@ -6,7 +7,7 @@ namespace StoreService.Core.Service.Model.Report;
 
 #region DepositPoint
 
-public class GetDepositPointReportParams: PagerParamModel
+public class GetDepositPointReportParams : PagerParamModel
 {
     public GetDepositPointReportParams(GetDepositPointReportRequest req)
     {
@@ -22,7 +23,7 @@ public class GetDepositPointReportParams: PagerParamModel
         EndTime = req.EndTime.DateTime;
         PageNumber = req.PageNumber;
     }
-    
+
     public GetDepositPointReportParams(ExportDepositPointReportParams input)
     {
         SiteId = input.SiteId;
@@ -34,7 +35,7 @@ public class GetDepositPointReportParams: PagerParamModel
         StartTime = input.StartTime;
         EndTime = input.EndTime;
     }
-    
+
     public int SiteId { get; set; }
     public string StrCurrencyIds { get; set; }
     public string StrVipLevels { get; set; }
@@ -61,7 +62,7 @@ public class ExportDepositPointReportParams
         StartTime = req.StartTime.DateTime;
         EndTime = req.EndTime.DateTime;
     }
-    
+
     public int SiteId { get; set; }
     public string StrCurrencyIds { get; set; }
     public string StrVipLevels { get; set; }
@@ -73,10 +74,10 @@ public class ExportDepositPointReportParams
 }
 
 #endregion
-    
+
 #region AdjustmentPoint
 
-public class GetAdjustmentPointReportParams: PagerParamModel
+public class GetAdjustmentPointReportParams : PagerParamModel
 {
     public GetAdjustmentPointReportParams(GetAdjustmentPointReportRequest req)
     {
@@ -93,7 +94,7 @@ public class GetAdjustmentPointReportParams: PagerParamModel
         EndTime = req.EndTime.DateTime;
         PageNumber = req.PageNumber;
     }
-    
+
     public GetAdjustmentPointReportParams(ExportAdjustmentPointReportParams input)
     {
         SiteId = input.SiteId;
@@ -106,7 +107,7 @@ public class GetAdjustmentPointReportParams: PagerParamModel
         StartTime = input.StartTime;
         EndTime = input.EndTime;
     }
-    
+
     public int SiteId { get; set; }
     public string StrCurrencyIds { get; set; }
     public string StrAdjustTypes { get; set; }
@@ -135,7 +136,7 @@ public class ExportAdjustmentPointReportParams
         StartTime = req.StartTime.DateTime;
         EndTime = req.EndTime.DateTime;
     }
-    
+
     public int SiteId { get; set; }
     public string StrCurrencyIds { get; set; }
     public string StrVipLevels { get; set; }

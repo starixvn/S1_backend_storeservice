@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+
 using StoreService.Core.Extensions;
 using StoreService.Core.Service.Model.Based;
 
@@ -18,7 +19,7 @@ public class GetListParams : PagerParamModel
         StartTime = req.StartTime.DateTime;
         EndTime = req.EndTime.DateTime;
     }
-    
+
     public int SiteId { get; set; }
     public string StrCurrencyIds { get; set; }
     public string StrVipLevels { get; set; }
@@ -38,7 +39,7 @@ public class GetMemberRewardPointLogParams : PagerParamModel
         StartTime = req.StartTime.DateTime;
         EndTime = req.EndTime.DateTime;
     }
-    
+
     public int CustId { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }

@@ -1,6 +1,4 @@
 using Newtonsoft.Json;
-using StoreService.Core.Extensions;
-using StoreService.Core.Service.Model.Based;
 
 namespace StoreService.Core.Service.Model.GiftManagement;
 
@@ -17,7 +15,7 @@ public class GetListParams
         OrderByField = req.OrderByField;
         Desc = req.Desc;
     }
-    
+
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public string StrStatus { get; set; }
@@ -33,12 +31,12 @@ public class GetTagsParams
     public GetTagsParams()
     {
     }
-    
+
     public GetTagsParams(GetTagsRequest req)
     {
         StrLangCodes = JsonConvert.SerializeObject(req.LangCodes);
     }
-    
+
     public string StrLangCodes { get; set; }
 }
 
@@ -48,7 +46,7 @@ public class GetCategoriesParams
     {
         StrLangCodes = JsonConvert.SerializeObject(req.LangCodes);
     }
-    
+
     public string StrLangCodes { get; set; }
 }
 
@@ -68,17 +66,17 @@ public class CreateGiftParams
     {
         SiteId = req.SiteId;
         CurrencyId = req.CurrencyId;
-        Status = (int) req.Status;
+        Status = (int)req.Status;
         CategoryId = req.CategoryId;
         StrTags = JsonConvert.SerializeObject(req.Tags);
         Point = req.Point;
         PriceWorth = req.PriceWorth;
-        ShowStock = (int) req.ShowStock;
+        ShowStock = (int)req.ShowStock;
         Stock = req.Stock;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
         Operator = req.Operator;
     }
-    
+
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public int Status { get; set; }
@@ -97,17 +95,17 @@ public class UpdateGiftParams
     public UpdateGiftParams(UpdateGiftRequest req)
     {
         GiftId = req.GiftId;
-        Status = (int) req.Status;
+        Status = (int)req.Status;
         CategoryId = req.CategoryId;
         StrTags = JsonConvert.SerializeObject(req.Tags);
         Point = req.Point;
         PriceWorth = req.PriceWorth;
-        ShowStock = (int) req.ShowStock;
+        ShowStock = (int)req.ShowStock;
         Stock = req.Stock;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
         Operator = req.Operator;
     }
-    
+
     public int GiftId { get; set; }
     public int Status { get; set; }
     public int CategoryId { get; set; }
@@ -128,7 +126,7 @@ public class CreateCategoryParams
         CurrencyId = req.CurrencyId;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
     }
-    
+
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public string StrInfos { get; set; }
@@ -143,8 +141,8 @@ public class UpdateCategoryParams
         CategoryId = req.CategoryId;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
     }
-    
-    
+
+
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public int CategoryId { get; set; }
@@ -159,7 +157,7 @@ public class CreateTagParams
         CurrencyId = req.CurrencyId;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
     }
-    
+
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public string StrInfos { get; set; }
@@ -174,7 +172,7 @@ public class UpdateTagParams
         TagId = req.TagId;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
     }
-    
+
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public int TagId { get; set; }
@@ -188,7 +186,7 @@ public class GetRedemptionLimitParams
     {
         SiteId = req.SiteId;
     }
-    
+
     public int SiteId { get; set; }
 }
 
@@ -197,11 +195,11 @@ public class SetRedemptionLimitParams
     public SetRedemptionLimitParams(SetRedemptionLimitRequest req)
     {
         SiteId = req.SiteId;
-        Status = (int) req.Status;
+        Status = (int)req.Status;
         Limit = req.Limit;
         Operator = req.Operator;
     }
-    
+
     public int SiteId { get; set; }
     public int Status { get; set; }
     public int Limit { get; set; }
@@ -211,7 +209,7 @@ public class SetRedemptionLimitParams
 public class CreateGiftInfo : LangNameModel
 {
     public string Description { get; set; }
-    
+
     public string PictureUrl { get; set; }
 }
 

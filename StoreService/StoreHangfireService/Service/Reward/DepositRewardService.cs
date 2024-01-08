@@ -1,13 +1,11 @@
 ﻿using Newtonsoft.Json;
+
 using StoreHangfireService.Job;
+
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model.Enums;
-using StoreService.Core.Service.Model.Member;
 using StoreService.Core.Service.Model.PointSetting;
-using StoreService.Core.Service.Model;
-using StoreService.Core.Exceptions;
 using StoreService.Core.Service.Model.RewardPoint;
-using StoreService.Core.Service.DAL;
 
 namespace StoreHangfireService.Service.Reward;
 

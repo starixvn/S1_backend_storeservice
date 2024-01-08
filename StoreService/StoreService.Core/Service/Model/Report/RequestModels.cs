@@ -8,15 +8,15 @@ public class GetDepositPointReportRequest : PagerRequestModel
 {
     private DateTimeOffset _startTime;
     private DateTimeOffset _endTime;
-    public DateTimeOffset StartTime 
+    public DateTimeOffset StartTime
     {
         get => _startTime;
         set => _startTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
     }
-    public DateTimeOffset EndTime 
+    public DateTimeOffset EndTime
     {
         get => _endTime;
-        set =>  _endTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
+        set => _endTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
     }
     public int SiteId { get; set; }
     public IEnumerable<int> CurrencyIds { get; set; }
@@ -26,19 +26,19 @@ public class GetDepositPointReportRequest : PagerRequestModel
     public string SabaId { get; set; }
 }
 
-public class ExportDepositPointReportRequest 
+public class ExportDepositPointReportRequest
 {
     private DateTimeOffset _startTime;
     private DateTimeOffset _endTime;
-    public DateTimeOffset StartTime 
+    public DateTimeOffset StartTime
     {
         get => _startTime;
         set => _startTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
     }
-    public DateTimeOffset EndTime 
+    public DateTimeOffset EndTime
     {
         get => _endTime;
-        set =>  _endTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
+        set => _endTime = new DateTimeOffset(value.ToUniversalTime().DateTime, TimeSpan.Zero);
     }
     public int SiteId { get; set; }
     public IEnumerable<int> CurrencyIds { get; set; }
@@ -56,15 +56,15 @@ public class GetAdjustmentPointReportRequest : PagerRequestModel
 {
     private DateTimeOffset _startTime;
     private DateTimeOffset _endTime;
-    public DateTimeOffset StartTime 
+    public DateTimeOffset StartTime
     {
         get => _startTime;
         set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
     }
-    public DateTimeOffset EndTime 
+    public DateTimeOffset EndTime
     {
         get => _endTime;
-        set =>  _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set => _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
     }
     public int SiteId { get; set; }
     public IEnumerable<int> CurrencyIds { get; set; }
@@ -75,19 +75,19 @@ public class GetAdjustmentPointReportRequest : PagerRequestModel
     public string SabaId { get; set; }
 }
 
-public class ExportAdjustmentPointReportRequest 
+public class ExportAdjustmentPointReportRequest
 {
     private DateTimeOffset _startTime;
     private DateTimeOffset _endTime;
-    public DateTimeOffset StartTime 
+    public DateTimeOffset StartTime
     {
         get => _startTime;
         set => _startTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
     }
-    public DateTimeOffset EndTime 
+    public DateTimeOffset EndTime
     {
         get => _endTime;
-        set =>  _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
+        set => _endTime = new DateTimeOffset(value.DateTime, TimeSpan.Zero);
     }
     public int SiteId { get; set; }
     public IEnumerable<int> CurrencyIds { get; set; }

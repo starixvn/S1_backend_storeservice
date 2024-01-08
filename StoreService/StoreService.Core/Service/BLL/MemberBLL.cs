@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
+
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Based;
@@ -63,7 +65,7 @@ public class MemberBLL
         result.Add(await GetTurnoverPointSummaryAsync(input));
         result.AddRange(await GetRewardPointSummaryAsync(input));
 
-        var custRewardPoint = _memberService.GetCustRewardPointAsync(input) ?? new CustPointSummary() ;
+        var custRewardPoint = _memberService.GetCustRewardPointAsync(input) ?? new CustPointSummary();
         custRewardPoint.PointLocked = redemptionSummary.LockedPoint;
         custRewardPoint.Detail = result.OrderBy(x => x.PointType).ToList();
         return custRewardPoint;

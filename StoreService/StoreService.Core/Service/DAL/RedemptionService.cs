@@ -1,7 +1,11 @@
 ﻿using System.Data;
+
 using Dapper;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
+
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
@@ -23,8 +27,8 @@ public class RedemptionService
         _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
         _rewardPointService = provider.GetRequiredService<RewardPointService>();
     }
-    
-    public async Task<bool> CreateRedemptionAsync(CreateRedemptionParams input )
+
+    public async Task<bool> CreateRedemptionAsync(CreateRedemptionParams input)
     {
         var para = new DynamicParameters();
         para.Add("_GiftId", input.GiftId);
@@ -38,8 +42,8 @@ public class RedemptionService
         await using var conn = _mainDbClient.GetMySqlConnection();
         conn.Open();
         await using var trans = await conn.BeginTransactionAsync();
-        
-        _ = _mainDbClient.ExecuteAsync("Store_RedemptionInfo_Ins", trans ,para);
+
+        _ = _mainDbClient.ExecuteAsync("Store_RedemptionInfo_Ins", trans, para);
         var transId = para.Get<string>("_TransId") ?? string.Empty;
 
         if (!string.IsNullOrEmpty(transId))
@@ -51,8 +55,8 @@ public class RedemptionService
                 SiteId = input.SiteId,
                 UsePoint = input.Point
             };
-            var pointUseResult = await _rewardPointService.CustRewardPointUseAsync(custRewardPointUseRequest,transId,trans);
-                
+            var pointUseResult = await _rewardPointService.CustRewardPointUseAsync(custRewardPointUseRequest, transId, trans);
+
             if (pointUseResult)
             {
                 trans.Commit();
@@ -67,14 +71,14 @@ public class RedemptionService
         {
             trans.Rollback();
         }
-        
+
         await conn.CloseAsync();
         await conn.CloseAsync();
 
         return false;
     }
-    
-    public async Task<int> CheckCustRedemptionLimitAsync(int siteId, int currencyId , int custId ,int point)
+
+    public async Task<int> CheckCustRedemptionLimitAsync(int siteId, int currencyId, int custId, int point)
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", siteId);
@@ -84,10 +88,10 @@ public class RedemptionService
         para.Add("Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
         await _reportDbClient.ExecuteAsync("Store_CustRedemptionLimitCheck_Get", para);
         var result = para.Get<int?>("Result") ?? 0;
-        
+
         return result;
     }
-    
+
     public async Task<PagerResultModel<GetRedemptionListResult>> GetRedemptionListAsync(GetRedemptionListParams input)
     {
         var para = new DynamicParameters().AddPagerParams(input.PageSize, input.StartIndex);
@@ -100,7 +104,7 @@ public class RedemptionService
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
         para.Add("_TpUserName", input.TpUserName);
-        
+
         var list = await _reportDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionList_Get", para);
         var result = new PagerResultModel<GetRedemptionListResult>
         {
@@ -108,10 +112,10 @@ public class RedemptionService
             TotalPages = para.Get<int?>("_TotalPages") ?? 0,
             RowCount = para.Get<int?>("_RowCount") ?? 0
         };
-        
+
         return result;
     }
-    
+
     public Task<IEnumerable<GetRedemptionOverviewResult>> GetRedemptionOverviewAsync(GetRedemptionListParams input)
     {
         var para = new DynamicParameters();
@@ -127,8 +131,8 @@ public class RedemptionService
 
         return _reportDbClient.QueryAsync<GetRedemptionOverviewResult>("Store_RedemptionOverview_Get", para);
     }
-    
-    public async Task<IEnumerable<GetRedemptionListResult>> ExportRedemptionListAsync(ExportRedemptionListParams input )
+
+    public async Task<IEnumerable<GetRedemptionListResult>> ExportRedemptionListAsync(ExportRedemptionListParams input)
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
@@ -140,59 +144,59 @@ public class RedemptionService
         para.Add("_TransId", input.TransId);
         para.Add("_UserName", input.UserName);
         para.Add("_TpUserName", input.TpUserName);
-        
+
         var results = await _reportDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionListExport_Get", para);
 
         return results;
     }
-    
-    public async Task<GetRedemptionDetail> GetRedemptionDetailAsync(GetRedemptionDetailRequest input )
+
+    public async Task<GetRedemptionDetail> GetRedemptionDetailAsync(GetRedemptionDetailRequest input)
     {
         var para = new DynamicParameters();
         para.Add("_RedemptionId", input.RedemptionId);
         var result = await _reportDbClient.QueryFirstAsync<GetRedemptionDetail>("Store_RedemptionInfoById_Get", para);
-        
+
         return result;
     }
-    
-    public async Task<IEnumerable<GetRedemptionLog>> GetRedemptionLogAsync(GetRedemptionLogRequest input )
+
+    public async Task<IEnumerable<GetRedemptionLog>> GetRedemptionLogAsync(GetRedemptionLogRequest input)
     {
         var para = new DynamicParameters();
         para.Add("_TransId", input.TransId);
         var result = await _reportDbClient.QueryAsync<GetRedemptionLog>("Store_RedemptionLog_Get", para);
-        
+
         return result;
     }
-    
-    public async Task<GetRedemptionByTransIdResult> GetRedemptionByTransIdAsync(string transId )
+
+    public async Task<GetRedemptionByTransIdResult> GetRedemptionByTransIdAsync(string transId)
     {
         var para = new DynamicParameters();
         para.Add("_TransId", transId);
         var result = await _reportDbClient.QueryAsync<GetRedemptionByTransIdResult>("Store_RedemptionByTransId_Get", para);
-        
+
         return result.FirstOrDefault();
     }
-    
-    public async Task<bool> SetRedemptionInfoAsync(SetRedemptionInfoRequest input ,GetRedemptionByTransIdResult info)
+
+    public async Task<bool> SetRedemptionInfoAsync(SetRedemptionInfoRequest input, GetRedemptionByTransIdResult info)
     {
         var success = false;
         await using var conn = _mainDbClient.GetMySqlConnection();
         conn.Open();
         await using var trans = await conn.BeginTransactionAsync();
-        
+
         try
         {
-            var action = input.Action == (int) RedemptionEnum.Draft ? info.Status : input.Action;
+            var action = input.Action == (int)RedemptionEnum.Draft ? info.Status : input.Action;
             var receiptUrls = input.ReceiptUrls.Any() ? JsonConvert.SerializeObject(input.ReceiptUrls) : "";
-            
+
             var para = new DynamicParameters();
             para.Add("_TransId", input.TransId);
             para.Add("_Status", action);
             para.Add("_ActualCost", input.ActualCost);
             para.Add("_ReceiptUrls", receiptUrls);
             para.Add("_Operator", input.Operator);
-            var setResult = _mainDbClient.ExecuteAsync("Store_RedemptionInfo_Set", trans ,para);
-        
+            var setResult = _mainDbClient.ExecuteAsync("Store_RedemptionInfo_Set", trans, para);
+
             if (setResult.Result > 0)
             {
                 var logRequest = new SetRedemptionLogParams
@@ -203,15 +207,15 @@ public class RedemptionService
                     Comment = input.Comment,
                     Operator = input.Operator
                 };
-            
-                var logResult = SetRedemptionLog(logRequest,trans);
-                
+
+                var logResult = SetRedemptionLog(logRequest, trans);
+
                 if (logResult > 0)
                 {
                     success = true;
                 }
-                
-                if (action == (int) RedemptionEnum.Rejected)
+
+                if (action == (int)RedemptionEnum.Rejected)
                 {
                     var custRewardPointUseRequest = new CustRewardPointUseParams
                     {
@@ -220,15 +224,15 @@ public class RedemptionService
                         SiteId = input.SiteId,
                         UsePoint = -info.Point
                     };
-                    var pointUseResult = await _rewardPointService.CustRewardPointUseAsync(custRewardPointUseRequest,info.TransId,trans);
+                    var pointUseResult = await _rewardPointService.CustRewardPointUseAsync(custRewardPointUseRequest, info.TransId, trans);
 
                     if (!pointUseResult)
                     {
                         success = false;
                     }
                 }
-                
-                if(!success)
+
+                if (!success)
                     trans.Rollback();
                 else
                 {
@@ -242,11 +246,11 @@ public class RedemptionService
             await conn.CloseAsync();
             throw;
         }
-        
+
         await conn.CloseAsync();
         await conn.DisposeAsync();
-        
-        return success ;
+
+        return success;
     }
 
 
@@ -269,7 +273,7 @@ public class RedemptionService
 
     #region private
 
-    private int SetRedemptionLog(SetRedemptionLogParams input ,IDbTransaction trans)
+    private int SetRedemptionLog(SetRedemptionLogParams input, IDbTransaction trans)
     {
         var para = new DynamicParameters();
         para.Add("_SiteId", input.SiteId);
@@ -277,11 +281,11 @@ public class RedemptionService
         para.Add("_Action", input.Action);
         para.Add("_Comment", input.Comment);
         para.Add("_Operator", input.Operator);
-        var setResult = _mainDbClient.Execute("Store_RedemptionLog_Ins", trans ,para );
+        var setResult = _mainDbClient.Execute("Store_RedemptionLog_Ins", trans, para);
 
         return setResult;
     }
 
     #endregion
-    
+
 }

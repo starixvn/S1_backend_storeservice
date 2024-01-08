@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Enums;
@@ -6,6 +7,7 @@ using StoreService.Core.Service.Model.Frontend;
 using StoreService.Core.Service.Model.GiftManagement;
 using StoreService.Core.Service.Model.Member;
 using StoreService.Core.Service.Model.Redemption;
+
 using GetListRequest = StoreService.Core.Service.Model.Frontend.GetListRequest;
 
 namespace StoreService.Controllers

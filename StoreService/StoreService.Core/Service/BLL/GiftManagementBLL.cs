@@ -1,7 +1,9 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
+
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Enums;
@@ -100,7 +102,7 @@ public class GiftManagementBLL
         {
             _logger.LogError("Insert Gift Category Failed");
         }
-        
+
         return success;
     }
 
@@ -113,7 +115,7 @@ public class GiftManagementBLL
         {
             _logger.LogError("Update Gift Category Failed");
         }
-        
+
         return success;
     }
 
@@ -203,14 +205,14 @@ public class GiftManagementBLL
 
         return result;
     }
-    
+
     public async Task<IEnumerable<Gift>> GetShoppingCartAsync(SetShoppingCartRequest request)
     {
         var result = await _giftManagementService.GetShoppingCartAsync(request);
-        
+
         return result;
     }
-    
+
     public async Task<bool> SetShoppingCartAsync(SetShoppingCartRequest input)
     {
         var result = await _giftManagementService.SetShoppingCartAsync(input);

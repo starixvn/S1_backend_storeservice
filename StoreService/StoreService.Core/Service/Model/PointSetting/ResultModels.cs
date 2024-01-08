@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using StoreService.Core.Service.Model.Based;
 using StoreService.Core.Service.Model.Enums;
 
@@ -15,7 +14,7 @@ public class TurnoverPointSetting : LastUpdateModel
 {
     private DateTimeOffset _startTime { get; set; }
     private DateTimeOffset _endTime { get; set; }
-    
+
     public int TpCategoryId { get; set; }
     public string TpCategoryName { get; set; }
     public decimal Turnover { get; set; }
@@ -38,7 +37,7 @@ public class SimpleTurnoverPointSetting
 {
     private DateTimeOffset _startTime { get; set; }
     private DateTimeOffset _endTime { get; set; }
-    
+
     public int TpCategoryId { get; set; }
     public int VipLevel { get; set; }
     public string VipLevelName { get; set; }
@@ -69,7 +68,7 @@ public class TpCategoryTurnoverPointSetting
 {
     private DateTimeOffset _startTime { get; set; }
     private DateTimeOffset _endTime { get; set; }
-    
+
     public int TpCategoryId { get; set; }
     public decimal Turnover { get; set; }
     public decimal PointRate { get; set; }
@@ -91,7 +90,7 @@ public class DepositPointSetting : LastUpdateModel
 {
     private DateTimeOffset _startTime { get; set; }
     private DateTimeOffset _endTime { get; set; }
-    
+
     public int SiteId { get; set; }
     public int CurrencyId { get; set; }
     public string IsoCode { get; set; }

@@ -1,8 +1,10 @@
-﻿using Hangfire;
+﻿using System.ComponentModel;
+
+using Hangfire;
 using Hangfire.Dashboard.Management.Pages;
+
 using StoreHangfireService.Job.Interfaces;
 using StoreHangfireService.Model.Options;
-using System.ComponentModel;
 
 namespace StoreHangfireService.Job;
 

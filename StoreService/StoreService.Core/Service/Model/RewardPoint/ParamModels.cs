@@ -109,7 +109,7 @@ public class CustRewardPointChangeInfo
 
 public class TransInfo
 {
-    public TransInfo(){}
+    public TransInfo() { }
 
     public TransInfo(string transId, decimal amount)
     {

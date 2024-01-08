@@ -1,9 +1,12 @@
-﻿using Dapper;
+﻿using System.Data;
+
+using Dapper;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Enums;
 using StoreService.Core.Service.Model.TurnoverWorker;
-using System.Data;
 
 namespace StoreService.Core.Service.DAL;
 
@@ -54,7 +57,7 @@ public class TurnoverWorkerService
         logPara.Add("_WorkerDate", workerDate);
         logPara.Add("_PointEarned", addPoint);
 
-        return await _mainDbClient.ExecuteAsync("Store_TurnOverRewardCategoryRecord_Ins", trans , logPara) > 0;
+        return await _mainDbClient.ExecuteAsync("Store_TurnOverRewardCategoryRecord_Ins", trans, logPara) > 0;
     }
 
     public async Task<bool> RemainRecordUpdateAsync(int custId, int categoryId, string workerDate, decimal remainAmount, IDbTransaction trans)
@@ -67,7 +70,7 @@ public class TurnoverWorkerService
         para.Add("_AfterRemain", dbType: DbType.String, direction: ParameterDirection.Output);
         para.Add("_Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-        await _mainDbClient.ExecuteAsync("Store_TurnOverRewardPointRemainRecord_Set", trans ,para);
+        await _mainDbClient.ExecuteAsync("Store_TurnOverRewardPointRemainRecord_Set", trans, para);
 
         var result = para.Get<int?>("_Result") ?? -9;
         var beforeRemain = para.Get<decimal>("_BeforeRemain");
@@ -83,7 +86,7 @@ public class TurnoverWorkerService
             logPara.Add("_BeforeRemain", beforeRemain);
             logPara.Add("_AfterRemain", afterRemain);
 
-            var logResult = await _mainDbClient.ExecuteAsync("Store_TurnOverRemainRecordLog_Ins", trans , logPara);
+            var logResult = await _mainDbClient.ExecuteAsync("Store_TurnOverRemainRecordLog_Ins", trans, logPara);
 
             if (logResult > 0)
             {

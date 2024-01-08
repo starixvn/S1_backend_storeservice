@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model;
@@ -18,7 +19,7 @@ public class CommonBLL
     }
 
     public Task<IEnumerable<CurrencyInfo>> GetCurrencyInfoAsync()
-    { 
+    {
         return _cacheHelper.TryGetOrCreate("CurrencyInfoList",
             new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)),
             i => _commonService.GetCurrencyInfoAsync());

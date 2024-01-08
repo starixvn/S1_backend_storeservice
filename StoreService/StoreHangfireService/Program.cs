@@ -1,6 +1,8 @@
 using Hangfire;
+
 using Serilog;
 using Serilog.Exceptions;
+
 using StoreHangfireService.Extensions;
 using StoreHangfireService.Extensions.ActionFilters;
 using StoreHangfireService.Job;

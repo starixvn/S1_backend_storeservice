@@ -2,8 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using NSubstitute;
+
 using StoreHangfireService.Extensions;
+
 using StoreService.Core.Service.Library;
 using StoreService.Core.Service.Model.Enums;
 

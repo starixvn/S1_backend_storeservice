@@ -18,7 +18,7 @@ public class CacheHelper
         {
             var entry = _cache.CreateEntry(key);
             result = factory(entry);
-            
+
             if (options != null)
             {
                 entry.SetOptions(options);
@@ -35,7 +35,7 @@ public class CacheHelper
         }
         return (TItem)result;
     }
-    
+
     public void Remove(string key)
     {
         _cache.Remove(key);

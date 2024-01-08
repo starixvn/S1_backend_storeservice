@@ -1,11 +1,6 @@
-﻿using StoreService.Core.Service.Model.Enums;
+﻿using System.Text.Json.Serialization;
+
 using StoreService.Core.Service.Model.GiftManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace StoreService.Core.Service.Model.Frontend;
 

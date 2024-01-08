@@ -12,7 +12,7 @@ public class GetListRequest : PagerRequestModel
 {
     private DateTimeOffset _startTime { get; set; }
     private DateTimeOffset _endTime { get; set; }
-    
+
     public int SiteId { get; set; }
     public IEnumerable<int> CurrencyIds { get; set; }
     public IEnumerable<int> VipLevels { get; set; }
@@ -34,7 +34,7 @@ public class GetMemberRewardPointLogRequest : PagerRequestModel
 {
     private DateTimeOffset _startTime { get; set; }
     private DateTimeOffset _endTime { get; set; }
-    
+
     public int CustId { get; set; }
     public DateTimeOffset StartTime
     {

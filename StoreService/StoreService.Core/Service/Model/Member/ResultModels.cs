@@ -7,7 +7,7 @@ public class MemberRewardPointInfo
 {
     private DateTimeOffset _lastUpdateTime { get; set; }
     private DateTimeOffset _lastRedemptionTime { get; set; }
-    
+
     public int CustId { get; set; }
     public string IsoCode { get; set; }
     public string UserName { get; set; }

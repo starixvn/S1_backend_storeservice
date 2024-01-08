@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+
 using StoreService.Core.Service.BLL;
 using StoreService.Core.Service.Model;
 using StoreService.Core.Service.Model.Based;
@@ -14,26 +15,26 @@ public class MemberController : ControllerBase
 {
     private readonly MemberBLL _memberBll;
     private readonly RewardPointBLL _rewardPointBll;
-    
+
     public MemberController(IServiceProvider provider)
     {
         _memberBll = provider.GetRequiredService<MemberBLL>();
         _rewardPointBll = provider.GetRequiredService<RewardPointBLL>();
     }
-    
+
     [HttpPost]
-        public async Task<ApiResult> GetBalanceAsync(GetBalanceRequest request)
+    public async Task<ApiResult> GetBalanceAsync(GetBalanceRequest request)
+    {
+        var result =
+            await _memberBll.GetMemberPointBalanceAsync(request.CustId);
+
+        return new ApiResult<MemberPointBalance>
         {
-            var result =
-                await _memberBll.GetMemberPointBalanceAsync(request.CustId);
-    
-            return new ApiResult<MemberPointBalance>
-            {
-                Data = result,
-                ErrorCode = (int) ErrorCodeEnum.Success
-            };
-        }
-    
+            Data = result,
+            ErrorCode = (int)ErrorCodeEnum.Success
+        };
+    }
+
     [HttpPost]
     public async Task<ApiResult> GetListAsync(GetListRequest request)
     {
@@ -46,10 +47,10 @@ public class MemberController : ControllerBase
             PageNumber = request.PageNumber,
             TotalPages = result.TotalPages,
             RowCount = result.RowCount,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> GetRewardPointLogAsync(GetMemberRewardPointLogRequest request)
     {
@@ -62,10 +63,10 @@ public class MemberController : ControllerBase
             PageNumber = request.PageNumber,
             TotalPages = result.TotalPages,
             RowCount = result.RowCount,
-            ErrorCode = (int) ErrorCodeEnum.Success
+            ErrorCode = (int)ErrorCodeEnum.Success
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> ManualRewardPointAsync(CreateManualRewardPointInfoRequest request)
     {
@@ -75,10 +76,10 @@ public class MemberController : ControllerBase
         return new ApiResult<TransIdModel>
         {
             Data = new TransIdModel(result.TransId),
-            ErrorCode = (int) (result.Success ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result.Success ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
-    
+
     [HttpPost]
     public async Task<ApiResult> BatchManualRewardPointAsync(CreateManualRewardPointInfoBatchRequest request)
     {
@@ -87,7 +88,7 @@ public class MemberController : ControllerBase
 
         return new ApiResult
         {
-            ErrorCode = (int) (result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
+            ErrorCode = (int)(result ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed)
         };
     }
 }

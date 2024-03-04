@@ -59,6 +59,7 @@ public class RedemptionController : ControllerBase
                 {
                     var success = await _redemptionBll.CreateRedemptionAsync(new CreateRedemptionParams(request));
                     result.ErrorCode = (int)(success ? ErrorCodeEnum.Success : ErrorCodeEnum.Failed);
+                    result.Message = gift.GiftType.ToString();
                     break;
                 }
 

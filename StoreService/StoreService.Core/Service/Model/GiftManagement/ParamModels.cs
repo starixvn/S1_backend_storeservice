@@ -75,6 +75,8 @@ public class CreateGiftParams
         Stock = req.Stock;
         StrInfos = JsonConvert.SerializeObject(req.Infos);
         Operator = req.Operator;
+        GiftType = (int)req.GiftType;
+        Round = req.Round;
     }
 
     public int SiteId { get; set; }
@@ -88,6 +90,8 @@ public class CreateGiftParams
     public int Stock { get; set; }
     public string StrInfos { get; set; }
     public string Operator { get; set; }
+    public int GiftType { get; set; }
+    public int Round { get; set; }
 }
 
 public class UpdateGiftParams

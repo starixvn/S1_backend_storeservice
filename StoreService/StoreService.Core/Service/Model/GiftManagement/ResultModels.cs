@@ -49,6 +49,8 @@ public class GiftInfo
     public bool ShowStock { get; set; }
     public int Stock { get; set; }
     public int Sort { get; set; }
+
+    public int GiftType { get; set; }
 }
 
 public class GiftCategory

@@ -81,13 +81,15 @@ public class GiftManagementService
         para.Add("_Stock", input.Stock);
         para.Add("_Infos", input.StrInfos);
         para.Add("_Operator", input.Operator);
+        para.Add("_GiftType", input.GiftType);
+        para.Add("_Round", input.Round);
         para.Add("_Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
         await using var conn = _mainDbClient.GetMySqlConnection();
         conn.Open();
         await using var trans = await conn.BeginTransactionAsync();
 
-        _ = _mainDbClient.ExecuteAsync("Store_GiftInfo_Ins", trans, para);
+        _ = _mainDbClient.ExecuteAsync("Store_GiftInfo_Ins_V2", trans, para);
         var resultCode = para.Get<int?>("_Result") ?? -9;
 
         if (resultCode == 0)

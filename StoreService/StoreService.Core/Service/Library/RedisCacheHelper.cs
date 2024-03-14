@@ -12,6 +12,7 @@ public class RedisCacheHelper : ICacheHelper
     {
         _redis = multiplexer.GetDatabase();
     }
+
     public TItem TryGetOrCreate<TItem>(string key, TimeSpan timeSpan, Func<string, TItem> factory)
     {
         if (!_redis.KeyExists(key))

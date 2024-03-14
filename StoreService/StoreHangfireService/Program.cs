@@ -4,6 +4,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Json;
+
 using StoreHangfireService.Extensions;
 using StoreHangfireService.Extensions.ActionFilters;
 using StoreHangfireService.Job;

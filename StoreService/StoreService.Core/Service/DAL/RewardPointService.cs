@@ -24,8 +24,8 @@ public class RewardPointService
     public RewardPointService(IServiceProvider provider)
     {
         _logger = provider.GetRequiredService<ILogger<RewardPointService>>();
-        _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
-        _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
+        _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBase.Main);
+        _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBase.Report);
     }
 
     public async Task<(int ResultCode, string TransId)> CreateManualRewardPointInfoAsync(

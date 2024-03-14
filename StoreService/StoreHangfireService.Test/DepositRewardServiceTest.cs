@@ -39,7 +39,7 @@ internal class DepositRewardServiceTest
 
         var app = builder.Build();
 
-        _dbClient = app.Services.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
+        _dbClient = app.Services.GetServices<MySqlClient>().First(p => p.DataBase == DataBase.Main);
         _provider = app.Services;
     }
 

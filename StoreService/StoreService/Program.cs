@@ -1,7 +1,7 @@
 using Serilog;
-using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Json;
+
 using StoreService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,7 +46,7 @@ void OverrideLoggerWriteToLFile(LoggerConfiguration configuration)
 
 builder.Services
     .AddDatabaseConnection(builder.Configuration)
-    .RegisterServices(builder.Configuration)
+    .RegisterServices()
     .AddControllers()
     .AddNewtonsoftJson();
 

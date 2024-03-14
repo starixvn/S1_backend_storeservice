@@ -12,7 +12,7 @@ public class CommonService
 
     public CommonService(IServiceProvider provider)
     {
-        _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
+        _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBase.Report);
     }
 
     public Task<IEnumerable<CurrencyInfo>> GetCurrencyInfoAsync()

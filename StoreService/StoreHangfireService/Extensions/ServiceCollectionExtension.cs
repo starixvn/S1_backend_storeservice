@@ -29,11 +29,11 @@ public static class ServiceCollectionExtension
         return services
             .AddSingleton(param => new MySqlClient(configuration.GetConnectionString($"{serviceType}_MainDB"), logger)
             {
-                DataBase = DataBaseEnum.Main
+                DataBase = DataBase.Main
             })
             .AddSingleton(param => new MySqlClient(configuration.GetConnectionString($"{serviceType}_ReportDB"), logger)
             {
-                DataBase = DataBaseEnum.Report
+                DataBase = DataBase.Report
             });
     }
 

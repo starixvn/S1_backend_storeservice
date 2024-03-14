@@ -1,9 +1,10 @@
 namespace StoreService.Core.Service.Model.Enums;
 
-public enum DataBaseEnum
+public enum DataBase
 {
     Main,
-    Report
+    Report,
+    ReportBackupDB
 }
 
 public enum GeneralStatusEnum

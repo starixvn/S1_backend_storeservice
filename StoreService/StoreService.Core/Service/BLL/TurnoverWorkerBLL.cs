@@ -31,7 +31,7 @@ public class TurnoverWorkerBLL
         _rewardPointService = provider.GetRequiredService<RewardPointService>();
         _commonService = provider.GetRequiredService<CommonService>();
         _logger = provider.GetRequiredService<ILogger<TurnoverWorkerBLL>>();
-        _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
+        _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBase.Main);
     }
 
     public async Task<IEnumerable<TurnoverPeriodForWorkerUse>> VerifyTaskAsync()

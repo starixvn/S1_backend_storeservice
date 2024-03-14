@@ -33,13 +33,13 @@ internal class DepositRewardServiceTest
         builder.Services.AddTransient(p => logger);
         builder.Services
             .AddDatabaseConnection(builder.Configuration)
-            .RegisterServices(builder.Configuration)
-            .AddHangfireService(builder.Configuration)
-            .RegisterScheduledJobs(builder.Configuration);
+            .RegisterServices()
+            .AddHangfireService()
+            .RegisterScheduledJobs();
 
         var app = builder.Build();
 
-        _dbClient = app.Services.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
+        _dbClient = app.Services.GetServices<MySqlClient>().First(p => p.DataBase == DataBase.Main);
         _provider = app.Services;
     }
 

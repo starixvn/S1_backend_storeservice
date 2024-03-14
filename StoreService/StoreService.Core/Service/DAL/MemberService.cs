@@ -20,8 +20,8 @@ public class MemberService
 
     public MemberService(IServiceProvider provider)
     {
-        _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Main);
-        _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
+        _mainDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBase.Main);
+        _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBase.Report);
     }
 
     public async Task<MemberPointBalance> GetMemberPointBalanceAsync(int custId)

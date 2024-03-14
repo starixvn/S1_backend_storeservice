@@ -9,7 +9,7 @@ public class ConfigService
 
     public ConfigService(IServiceProvider provider)
     {
-        _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBaseEnum.Report);
+        _reportDbClient = provider.GetServices<MySqlClient>().First(p => p.DataBase == DataBase.Report);
     }
 
     public IEnumerable<T> Query<T>(string sql, object parameters = null)

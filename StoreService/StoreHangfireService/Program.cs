@@ -54,9 +54,9 @@ void OverrideLoggerWriteToLFile(LoggerConfiguration configuration)
 
 builder.Services
     .AddDatabaseConnection(builder.Configuration)
-    .RegisterServices(builder.Configuration)
-    .RegisterScheduledJobs(builder.Configuration)
-    .AddHangfireService(builder.Configuration);
+    .RegisterServices()
+    .RegisterScheduledJobs()
+    .AddHangfireService();
 
 var app = builder.Build();
 

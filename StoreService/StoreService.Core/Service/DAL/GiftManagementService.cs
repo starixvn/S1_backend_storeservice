@@ -64,7 +64,7 @@ public class GiftManagementService
 
         para.Add("_GiftId", input.GiftId);
 
-        return _reportDbClient.QueryAsync<GiftInfo>("Store_GiftInfo_Get", para);
+        return _reportDbClient.QueryAsync<GiftInfo>("Store_GiftInfo_Get_V2", para);
     }
 
     public async Task<int> CreateGiftAsync(CreateGiftParams input)

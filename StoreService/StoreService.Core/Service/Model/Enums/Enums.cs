@@ -44,3 +44,11 @@ public enum RedemptionEnum
     OnHold = 4
 }
 
+/// <summary>
+/// 禮物類型，一般 = 1,FreeSpin = 2
+/// </summary>
+public enum GiftTypeEnum
+{
+    common = 1,
+    FreeSpin = 2
+}

@@ -42,6 +42,9 @@ public class CreateGiftRequest
     public int Stock { get; set; }
     public IEnumerable<CreateGiftInfo> Infos { get; set; }
     public string Operator { get; set; }
+
+    public GiftTypeEnum GiftType { get; set; }
+    public int Round { get; set; }
 }
 
 public class UpdateGiftRequest

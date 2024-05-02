@@ -105,7 +105,7 @@ public class RedemptionService
         para.Add("_UserName", input.UserName);
         para.Add("_TpUserName", input.TpUserName);
 
-        var list = await _reportDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionList_Get", para);
+        var list = await _reportDbClient.QueryAsync<GetRedemptionListResult>("Store_RedemptionList_Get_V2", para);
         var result = new PagerResultModel<GetRedemptionListResult>
         {
             Datas = list,
@@ -195,7 +195,8 @@ public class RedemptionService
             para.Add("_ActualCost", input.ActualCost);
             para.Add("_ReceiptUrls", receiptUrls);
             para.Add("_Operator", input.Operator);
-            var setResult = _mainDbClient.ExecuteAsync("Store_RedemptionInfo_Set", trans, para);
+            para.Add("_BonusCode", input.BonusCode);
+            var setResult = _mainDbClient.ExecuteAsync("Store_RedemptionInfo_Set_V2", trans, para);
 
             if (setResult.Result > 0)
             {

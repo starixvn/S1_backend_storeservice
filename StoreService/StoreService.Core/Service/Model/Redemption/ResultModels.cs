@@ -34,6 +34,7 @@ public class GetRedemptionListResult
     public int Point { get; set; }
     public decimal ActualCost { get; set; }
     public string Operator { get; set; }
+    public string BonusCode { get; set; }
 }
 
 public class RedemptionListResult

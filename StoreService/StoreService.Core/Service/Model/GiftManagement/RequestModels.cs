@@ -45,6 +45,7 @@ public class CreateGiftRequest
 
     public GiftTypeEnum GiftType { get; set; }
     public int Round { get; set; }
+    public int TpId { get; set;}
 }
 
 public class UpdateGiftRequest

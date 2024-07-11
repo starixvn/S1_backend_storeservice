@@ -84,6 +84,7 @@ public class GiftManagementService
         para.Add("_GiftType", input.GiftType);
         para.Add("_Round", input.Round);
         para.Add("_TpId", input.TpId);
+        para.Add("_GameId", input.GameId);
         para.Add("_Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
         await using var conn = _mainDbClient.GetMySqlConnection();

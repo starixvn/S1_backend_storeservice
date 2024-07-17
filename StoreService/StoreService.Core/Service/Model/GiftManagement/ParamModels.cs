@@ -77,6 +77,8 @@ public class CreateGiftParams
         Operator = req.Operator;
         GiftType = (int)req.GiftType;
         Round = req.Round;
+        TpId = req.TpId;
+        GameId = req.GameId;
     }
 
     public int SiteId { get; set; }
@@ -92,6 +94,8 @@ public class CreateGiftParams
     public string Operator { get; set; }
     public int GiftType { get; set; }
     public int Round { get; set; }
+    public int TpId { get; set; }
+    public string GameId { get; set; }
 }
 
 public class UpdateGiftParams

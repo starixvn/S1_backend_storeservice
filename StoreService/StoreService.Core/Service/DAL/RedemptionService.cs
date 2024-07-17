@@ -86,7 +86,7 @@ public class RedemptionService
         para.Add("_CustId", custId);
         para.Add("_Point", point);
         para.Add("Result", dbType: DbType.Int32, direction: ParameterDirection.Output);
-        await _reportDbClient.ExecuteAsync("Store_CustRedemptionLimitCheck_Get", para);
+        await _mainDbClient.ExecuteAsync("Store_CustRedemptionLimitCheck_Get", para);
         var result = para.Get<int?>("Result") ?? 0;
 
         return result;

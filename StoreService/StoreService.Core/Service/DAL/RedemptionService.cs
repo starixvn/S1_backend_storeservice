@@ -172,7 +172,7 @@ public class RedemptionService
     {
         var para = new DynamicParameters();
         para.Add("_TransId", transId);
-        var result = await _reportDbClient.QueryAsync<GetRedemptionByTransIdResult>("Store_RedemptionByTransId_Get", para);
+        var result = await _mainDbClient.QueryAsync<GetRedemptionByTransIdResult>("Store_RedemptionByTransId_Get", para);
 
         return result.FirstOrDefault();
     }

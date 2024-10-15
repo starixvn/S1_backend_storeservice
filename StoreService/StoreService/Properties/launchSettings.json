@@ -3,9 +3,11 @@
     "StoreService": {
       "commandName": "Project",
       "commandLineArgs": "Nova", // Nova or Leobet
-      "launchBrowser": false,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:51001",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Local"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }

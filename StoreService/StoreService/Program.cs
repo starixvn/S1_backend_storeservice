@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Formatting.Json;
@@ -9,6 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 var remoteUrls = GetRemoteUrls();
 remoteUrls = builder.Configuration.CheckLocalConfig(builder.Environment, args, remoteUrls);
 builder.Configuration.AddRemoteJsonConfig(remoteUrls);
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Store Service",
+        Version = "v1",
+        Description = "API documentation for Store Service"
+    });
+});
 
 builder.Host.UseSerilog((context, configuration) =>
 {
@@ -34,6 +45,17 @@ builder.Services
     .AddNewtonsoftJson();
 
 var app = builder.Build();
+
+if (!app.Environment.IsProduction())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Store Service API v1");
+        c.RoutePrefix = "swagger";
+    });
+}
+
 app.UseRouting();
 app.UseRequestLogMiddleware();
 app.UseResponseLogMiddleware();

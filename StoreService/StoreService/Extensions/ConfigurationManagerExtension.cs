@@ -20,6 +20,7 @@ public static class ConfigurationManagerExtension
 
             try
             {
+                Console.WriteLine($"URL IN AddRemoteJsonConfig: {url} ");
                 result = client.GetAsync(url).Result.Content.ReadAsStreamAsync().Result;
                 break;
             }

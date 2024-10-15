@@ -1,4 +1,3 @@
-using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Formatting.Json;
@@ -7,19 +6,13 @@ using StoreService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var remoteUrls = GetRemoteUrls();
-remoteUrls = builder.Configuration.CheckLocalConfig(builder.Environment, args, remoteUrls);
-builder.Configuration.AddRemoteJsonConfig(remoteUrls);
+builder.Configuration.AddJsonFile("appsettings.json",
+        optional: true,
+        reloadOnChange: false);
 
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Store Service",
-        Version = "v1",
-        Description = "API documentation for Store Service"
-    });
-});
+var remoteUrls = GetRemoteUrls();
+//remoteUrls = builder.Configuration.CheckLocalConfig(builder.Environment, args, remoteUrls);
+builder.Configuration.AddRemoteJsonConfig(remoteUrls);
 
 builder.Host.UseSerilog((context, configuration) =>
 {
@@ -46,16 +39,6 @@ builder.Services
 
 var app = builder.Build();
 
-if (!app.Environment.IsProduction())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Store Service API v1");
-        c.RoutePrefix = "swagger";
-    });
-}
-
 app.UseRouting();
 app.UseRequestLogMiddleware();
 app.UseResponseLogMiddleware();
@@ -64,8 +47,14 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapGet("/health", async context =>
     {
-        await context.Response.WriteAsync($"OK");
+        await context.Response.WriteAsync($"Healthy");
     });
+
+    endpoints.MapGet("/", async context =>
+    {
+        await context.Response.WriteAsync("Healthy");
+    });
+
     endpoints.MapControllers();
 });
 
@@ -91,9 +80,5 @@ void OverrideLoggerWriteToLFile(LoggerConfiguration configuration)
 
 string[] GetRemoteUrls()
 {
-    // 如果有 Runtime Environment Variable 優先使用
-    // 沒有則使用預設 AppSetting
-    return Environment.GetEnvironmentVariable("ConfigServiceUrl") is null
-        ? builder.Configuration.GetSection("ConfigService").Get<string[]>()
-        : new List<string>() { Environment.GetEnvironmentVariable("ConfigServiceUrl") }.ToArray();
+    return builder.Configuration.GetSection("ConfigService").Get<string[]>();
 }

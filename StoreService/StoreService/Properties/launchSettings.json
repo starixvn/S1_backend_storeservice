@@ -4,11 +4,19 @@
       "commandName": "Project",
       "commandLineArgs": "Nova", // Nova or Leobet
       "launchBrowser": true,
-      "launchUrl": "swagger",
       "applicationUrl": "http://localhost:51001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    }
+  },
+  "Docker": {
+    "commandName": "Docker",
+    "launchBrowser": false,
+    "publishAllPorts": true,
+    "useSSL": true,
+    "environmentVariables": {
+      "ASPNETCORE_ENVIRONMENT": "Development"
     }
   }
 }

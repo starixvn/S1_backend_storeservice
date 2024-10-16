@@ -6,6 +6,8 @@ using StoreService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseSentry();
+
 builder.Configuration.AddJsonFile("appsettings.json",
         optional: true,
         reloadOnChange: false);
@@ -50,14 +52,10 @@ app.UseEndpoints(endpoints =>
         await context.Response.WriteAsync($"Healthy");
     });
 
-    endpoints.MapGet("/", async context =>
-    {
-        await context.Response.WriteAsync("Healthy");
-    });
-
     endpoints.MapControllers();
 });
 
+SentrySdk.CaptureMessage($"Started result admin site api at {DateTime.Now.ToString()}");
 app.Run();
 return;
 

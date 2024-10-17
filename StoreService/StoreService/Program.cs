@@ -55,7 +55,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-SentrySdk.CaptureMessage($"Started result admin site api at {DateTime.Now.ToString()}");
+SentrySdk.CaptureMessage($"Started result Store Service at {DateTime.Now.ToString()}");
 app.Run();
 return;
 

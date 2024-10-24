@@ -78,7 +78,7 @@ public class CreateGiftParams
         GiftType = (int)req.GiftType;
         Round = req.Round;
         TpId = req.TpId;
-        GameId = req.GameId;
+        GameId = req.GameId ?? "";
     }
 
     public int SiteId { get; set; }

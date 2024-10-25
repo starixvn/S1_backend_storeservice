@@ -219,7 +219,7 @@ public class GiftManagementService
         para.Add("_Desc", input.Desc);
         para.Add("_PageSize", input.PageSize);
 
-        return _reportDbClient.QueryAsync<GiftListModel>("Store_Frontend_GiftList_Get", para);
+        return _reportDbClient.QueryAsync<GiftListModel>("Store_Frontend_GiftList_Get_V2", para);
     }
 
     public Task<IEnumerable<Gift>> GetShoppingCartAsync(SetShoppingCartRequest request)

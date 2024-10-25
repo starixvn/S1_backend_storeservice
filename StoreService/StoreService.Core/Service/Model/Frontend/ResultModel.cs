@@ -7,6 +7,7 @@ namespace StoreService.Core.Service.Model.Frontend;
 public class GiftListModel
 {
     public int GiftId { get; set; }
+    public int SiteId { get; set; }
     public string GiftName { get; set; }
     public string EnGiftName { get; set; }
     public int CategoryId { get; set; }

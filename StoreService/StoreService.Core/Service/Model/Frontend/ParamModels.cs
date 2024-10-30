@@ -14,7 +14,7 @@ public class FrontendGetListParams
         StrCategoryIds = req.CategoryIds == null ? "[]" : JsonConvert.SerializeObject(req.CategoryIds);
         UseTags = req.Tags != null;
         StrTags = req.Tags == null ? "[]" : JsonConvert.SerializeObject(req.Tags);
-        Lang = req.Lang;
+        Lang = req.LangId;
         OrderByField = string.IsNullOrWhiteSpace(req.OrderByField) ? "Sort" : req.OrderByField;
         Desc = req.Desc;
         PageSize = req.PageSize;

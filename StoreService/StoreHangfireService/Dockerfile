@@ -1,12 +1,17 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS builder
+FROM hub.lumigame.com/base/dotnet/core/sdk:6.0 AS builder
 
 COPY . .
+
 WORKDIR StoreService/StoreHangfireService
+
 RUN dotnet publish "StoreHangfireService.csproj" -c Release -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM hub.lumigame.com/base/dotnet/core/sdk:6.0
+
 WORKDIR /app
+
 COPY --from=builder /app .
-EXPOSE 51003
+
+EXPOSE 5000
 
 ENTRYPOINT ["dotnet", "StoreHangfireService.dll"]

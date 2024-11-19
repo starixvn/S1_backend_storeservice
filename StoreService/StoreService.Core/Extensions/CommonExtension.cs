@@ -4,11 +4,23 @@ public static class CommonExtension
 {
     public static string GetEnvPrefix(this string envName, string prefix)
     {
-        if (envName == "Development" || envName == "Local")
+        switch (envName)
         {
-            return prefix + "D";
-        }
+            case "Development":
+            case "LOCAL":
+                return "D";
 
-        return prefix + "P";
+            case "SIT":
+                return "S";
+
+            case "UAT":
+                return "U";
+
+            case "PROD":
+                return "P";
+
+            default:
+                return "D";
+        }
     }
 }

@@ -42,7 +42,7 @@ builder.Services
 
 var app = builder.Build();
 
-if (!app.Environment.EnvironmentName.Equals("Local"))
+if (!app.Environment.EnvironmentName.Equals("LOCAL"))
 {
     app.UseDeveloperExceptionPage();
 }

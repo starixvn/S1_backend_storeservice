@@ -26,7 +26,6 @@ internal class DepositRewardServiceTest
         });
 
         var remoteUrls = builder.Configuration.GetSection("ConfigService").Get<string[]>();
-        remoteUrls = builder.Configuration.CheckLocalConfig(builder.Environment, new[] { "Nova" }, remoteUrls);
         builder.Configuration.AddRemoteJsonConfig(remoteUrls);
 
         var logger = Substitute.For<ILogger<MySqlClient>>();

@@ -8,14 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.UseSentry();
 
-builder.Environment.EnvironmentName = builder.Configuration.GetSection("env").Get<string>();
-
 builder.Configuration.AddJsonFile("appsettings.json",
         optional: true,
         reloadOnChange: false);
 
 var remoteUrls = GetRemoteUrls();
-//remoteUrls = builder.Configuration.CheckLocalConfig(builder.Environment, args, remoteUrls);
 builder.Configuration.AddRemoteJsonConfig(remoteUrls);
 
 builder.Host.UseSerilog((context, configuration) =>

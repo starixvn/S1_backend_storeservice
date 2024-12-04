@@ -12,7 +12,6 @@ using StoreHangfireService.Job;
 var builder = WebApplication.CreateBuilder(args);
 
 var remoteUrls = GetRemoteUrls();
-remoteUrls = builder.Configuration.CheckLocalConfig(builder.Environment, args, remoteUrls);
 builder.Configuration.AddRemoteJsonConfig(remoteUrls);
 
 var excludesMessage = builder.Configuration.GetSection("ExcludesMessage").Get<string[]>();
@@ -42,7 +41,7 @@ builder.Services
 
 var app = builder.Build();
 
-if (!app.Environment.EnvironmentName.Equals("LOCAL"))
+if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }

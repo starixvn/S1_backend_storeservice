@@ -2,7 +2,7 @@ namespace StoreService.Core.Extensions;
 
 public static class CommonExtension
 {
-    public static string GetEnvPrefix(this string envName, string prefix)
+    public static string GetEnvPrefix(this string envName)
     {
         switch (envName)
         {

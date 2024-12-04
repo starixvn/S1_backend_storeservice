@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 using StoreService.Core.Extensions;
 using StoreService.Core.Service.DAL;
 using StoreService.Core.Service.Model;
@@ -18,13 +17,12 @@ public class RewardPointBLL
     private readonly PointSettingService _pointSettingService;
     private readonly ILogger<RewardPointBLL> _logger;
 
-    public RewardPointBLL(IServiceProvider provider)
+    public RewardPointBLL(IServiceProvider provider, IConfiguration configuration)
     {
         _rewardPointService = provider.GetRequiredService<RewardPointService>();
         _pointSettingService = provider.GetRequiredService<PointSettingService>();
         _logger = provider.GetRequiredService<ILogger<RewardPointBLL>>();
-        var env = provider.GetRequiredService<IWebHostEnvironment>();
-        _prefix = env.EnvironmentName.GetEnvPrefix("P");
+        _prefix = CommonExtension.GetEnvPrefix(configuration.GetSection("env").Get<string>());
     }
 
     public async Task<(bool Success, string TransId)> CreateManualRewardPointInfoAsync(
